@@ -1,7 +1,7 @@
 import { createRoute, useNavigate } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { Suspense, lazy } from 'react';
-import SuspenseLoader from '@/components/SuspenseLoader/SuspenseLoader';
+import { HomePageSkeleton } from '@/components/Skeletons';
 import { useSEO, websiteSchema, organizationSchema } from '@/hooks/useSEO';
 
 const HomePage = lazy(() => import('@/features/home/HomePage'));
@@ -24,7 +24,7 @@ function IndexComponent(): React.ReactElement {
     };
 
     return (
-        <Suspense fallback={<SuspenseLoader message="Loading homepage..." />}>
+        <Suspense fallback={<HomePageSkeleton />}>
             <HomePage onNavigate={handleNavigate} />
         </Suspense>
     );

@@ -1,6 +1,6 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { Box } from '@mui/material';
-import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import React, { Suspense } from 'react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import BottomTabBar from '@/components/BottomTabBar/BottomTabBar';
@@ -16,6 +16,9 @@ function RootComponent(): React.ReactElement {
     useAnalytics();
 
     const isDev = import.meta.env.DEV;
+    const Devtools = isDev
+        ? React.lazy(() => import('@tanstack/router-devtools').then(m => ({ default: m.TanStackRouterDevtools })))
+        : null;
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -35,7 +38,11 @@ function RootComponent(): React.ReactElement {
             <Footer />
             <BottomTabBar />
             <CookieConsent />
-            {isDev && <div aria-hidden="true"><TanStackRouterDevtools /></div>}
+            {isDev && Devtools && (
+                <Suspense fallback={null}>
+                    <Devtools />
+                </Suspense>
+            )}
         </Box>
     );
 }

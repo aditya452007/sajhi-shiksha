@@ -1,7 +1,5 @@
 import { Box, Typography, Avatar, Link } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import EmailIcon from '@mui/icons-material/Email';
-import PublicIcon from '@mui/icons-material/Public';
+import { CheckCircleIcon, EmailIcon, PublicIcon } from '@/components/Icons';
 import { useTheme } from '@/context/ThemeContext';
 import contributorsData from '@/data/contributors.json';
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';

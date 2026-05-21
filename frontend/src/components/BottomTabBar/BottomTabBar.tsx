@@ -1,10 +1,6 @@
 import React from 'react';
 import { BottomNavigation, BottomNavigationAction, Box } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
-import SchoolIcon from '@mui/icons-material/School';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import SearchIcon from '@mui/icons-material/Search';
+import { HomeIcon, SchoolIcon, MenuBookIcon, AutoAwesomeIcon, SearchIcon } from '@/components/Icons';
 import { useLocation, useNavigate } from '@tanstack/react-router';
 import { FONT_MONO, COLOR_TEXT_LIGHT } from '@/lib/constants';
 

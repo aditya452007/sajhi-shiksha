@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Box, TextField, Typography, InputAdornment } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { SearchIcon } from '@/components/Icons';
 import { useNavigate } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
@@ -15,8 +15,14 @@ const HeroSection: React.FC<HeroSectionProps> = React.memo(({ onFilter }) => {
     const navigate = useNavigate();
     const [_isDark] = useTheme();
     const [activeFilter, setActiveFilter] = useState('all');
+    const [showDecorations, setShowDecorations] = useState(false);
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
+
+    useEffect(() => {
+        const id = requestAnimationFrame(() => setShowDecorations(true));
+        return () => cancelAnimationFrame(id);
+    }, []);
 
     const handleFilterClick = useCallback((value: string) => {
         setActiveFilter(value);
@@ -41,39 +47,43 @@ const HeroSection: React.FC<HeroSectionProps> = React.memo(({ onFilter }) => {
                 bgcolor: 'var(--color-bg)',
             }}
         >
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: 24,
-                    right: { xs: 16, md: 48 },
-                    opacity: 0.7,
-                    display: { xs: 'none', md: 'block' },
-                }}
-            >
-                <StarDoodle size={48} rotation={12} />
-            </Box>
-            <Box
-                sx={{
-                    position: 'absolute',
-                    bottom: 32,
-                    left: { xs: 16, md: 32 },
-                    opacity: 0.5,
-                }}
-            >
-                <StarDoodle size={32} rotation={-8} />
-            </Box>
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    right: { xs: 'auto', md: '10%' },
-                    transform: 'translateY(-50%)',
-                    opacity: 0.4,
-                    display: { xs: 'none', lg: 'block' },
-                }}
-            >
-                <PencilDoodle size={64} />
-            </Box>
+            {showDecorations && (
+                <>
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: 24,
+                            right: { xs: 16, md: 48 },
+                            opacity: 0.7,
+                            display: { xs: 'none', md: 'block' },
+                        }}
+                    >
+                        <StarDoodle size={48} rotation={12} />
+                    </Box>
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            bottom: 32,
+                            left: { xs: 16, md: 32 },
+                            opacity: 0.5,
+                        }}
+                    >
+                        <StarDoodle size={32} rotation={-8} />
+                    </Box>
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            right: { xs: 'auto', md: '10%' },
+                            transform: 'translateY(-50%)',
+                            opacity: 0.4,
+                            display: { xs: 'none', lg: 'block' },
+                        }}
+                    >
+                        <PencilDoodle size={64} />
+                    </Box>
+                </>
+            )}
 
             <Box
                 sx={{
@@ -127,113 +137,88 @@ const HeroSection: React.FC<HeroSectionProps> = React.memo(({ onFilter }) => {
                         </Typography>
                     </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.1 }}
+                    <Typography
+                        sx={{
+                            fontSize: { xs: '1.1rem', md: '1.25rem' },
+                            color: 'var(--color-text-secondary)',
+                            mb: 4,
+                            maxWidth: '540px',
+                        }}
                     >
-                        <Typography
-                            sx={{
-                                fontSize: { xs: '1.1rem', md: '1.25rem' },
-                                color: 'var(--color-text-secondary)',
-                                mb: 4,
-                                maxWidth: '540px',
-                            }}
-                        >
-                            Free study materials, question papers, and resources for KVS students. No login needed.
-                        </Typography>
-                    </motion.div>
+                        Free study materials, question papers, and resources for KVS students. No login needed.
+                    </Typography>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.2 }}
-                    >
-                        <TextField
-                            fullWidth
-                            placeholder="Search resources, subjects, classes..."
-                            onClick={() => navigate({ to: '/search' })}
-                            sx={{
-                                maxWidth: { xs: '100%', md: '480px' },
-                                mb: 3,
-                                '& .MuiOutlinedInput-root': {
-                                    borderRadius: 0,
-                                    bgcolor: 'var(--color-bg)',
-                                    border: `3px solid ${borderColor}`,
-                                    boxShadow: `3px 3px 0px ${shadowColor}`,
-                                    transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
-                                    '&:hover': {
-                                        bgcolor: 'var(--color-bg-secondary)',
-                                    },
-                                    '&.Mui-focused': {
-                                        borderColor: 'var(--color-yellow)',
-                                        borderWidth: '4px',
-                                        boxShadow: `4px 4px 0px ${shadowColor}`,
-                                    },
+                    <TextField
+                        fullWidth
+                        placeholder="Search resources, subjects, classes..."
+                        onClick={() => navigate({ to: '/search' })}
+                        sx={{
+                            maxWidth: { xs: '100%', md: '480px' },
+                            mb: 3,
+                            '& .MuiOutlinedInput-root': {
+                                borderRadius: 0,
+                                bgcolor: 'var(--color-bg)',
+                                border: `3px solid ${borderColor}`,
+                                boxShadow: `3px 3px 0px ${shadowColor}`,
+                                transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+                                '&:hover': {
+                                    bgcolor: 'var(--color-bg-secondary)',
                                 },
-                            }}
-                            slotProps={{
-                                input: {
-                                    readOnly: true,
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <SearchIcon sx={{ color: 'var(--color-text)' }} />
-                                        </InputAdornment>
-                                    ),
+                                '&.Mui-focused': {
+                                    borderColor: 'var(--color-yellow)',
+                                    borderWidth: '4px',
+                                    boxShadow: `4px 4px 0px ${shadowColor}`,
                                 },
-                            }}
-                            aria-label="Search resources"
-                        />
-                    </motion.div>
+                            },
+                        }}
+                        slotProps={{
+                            input: {
+                                readOnly: true,
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon sx={{ color: 'var(--color-text)' }} />
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                        aria-label="Search resources"
+                    />
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.3 }}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: 1.5,
+                        }}
                     >
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                gap: 1.5,
-                            }}
-                        >
-                            {FILTER_CHIPS.map((chip, i) => (
-                                <motion.button
-                                    key={chip.value}
-                                    onClick={() => handleFilterClick(chip.value)}
-                                    whileHover={{
-                                        y: -2,
-                                        boxShadow: `4px 4px 0px ${shadowColor}`,
-                                    }}
-                                    whileTap={{
-                                        y: 1,
-                                        boxShadow: `1px 1px 0px ${shadowColor}`,
-                                    }}
-                                    style={{
-                                        background: activeFilter === chip.value
-                                            ? chipColors[i % chipColors.length]
-                                            : 'var(--color-bg)',
-                                        color: activeFilter === chip.value ? COLOR_TEXT_LIGHT : 'var(--color-text)',
-                                        border: `2px solid ${borderColor}`,
-                                        boxShadow: activeFilter === chip.value
-                                            ? `1px 1px 0px ${shadowColor}`
-                                            : `2px 2px 0px ${shadowColor}`,
-                                        borderRadius: BORDER_RADIUS_PILL,
-                                        padding: '6px 16px',
-                                        fontFamily: FONT_MONO,
-                                        fontWeight: 700,
-                                        fontSize: '0.8rem',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.15s ease',
-                                        transform: activeFilter === chip.value ? 'translate(1px, 1px)' : 'translate(0, 0)',
-                                    }}
-                                >
-                                    {chip.label}
-                                </motion.button>
-                            ))}
-                        </Box>
-                    </motion.div>
+                        {FILTER_CHIPS.map((chip, i) => (
+                            <button
+                                key={chip.value}
+                                onClick={() => handleFilterClick(chip.value)}
+                                className="hero-chip"
+                                style={{
+                                    background: activeFilter === chip.value
+                                        ? chipColors[i % chipColors.length]
+                                        : 'var(--color-bg)',
+                                    color: activeFilter === chip.value ? COLOR_TEXT_LIGHT : 'var(--color-text)',
+                                    border: `2px solid ${borderColor}`,
+                                    boxShadow: activeFilter === chip.value
+                                        ? `1px 1px 0px ${shadowColor}`
+                                        : `2px 2px 0px ${shadowColor}`,
+                                    borderRadius: BORDER_RADIUS_PILL,
+                                    padding: '6px 16px',
+                                    fontFamily: FONT_MONO,
+                                    fontWeight: 700,
+                                    fontSize: '0.8rem',
+                                    cursor: 'pointer',
+                                    transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+                                    transform: activeFilter === chip.value ? 'translate(1px, 1px)' : 'translate(0, 0)',
+                                }}
+                            >
+                                {chip.label}
+                            </button>
+                        ))}
+                    </Box>
                 </Box>
 
                 <Box
@@ -266,26 +251,30 @@ const HeroSection: React.FC<HeroSectionProps> = React.memo(({ onFilter }) => {
                         >
                             <BookDoodle size={80} />
                         </Box>
-                        <Box
-                            sx={{
-                                position: 'absolute',
-                                top: -16,
-                                right: -24,
-                                transform: 'rotate(12deg)',
-                            }}
-                        >
-                            <StarDoodle size={40} color="var(--color-pink)" />
-                        </Box>
-                        <Box
-                            sx={{
-                                position: 'absolute',
-                                bottom: -12,
-                                left: -20,
-                                transform: 'rotate(-15deg)',
-                            }}
-                        >
-                            <StarDoodle size={32} color="var(--color-blue)" />
-                        </Box>
+                        {showDecorations && (
+                            <>
+                                <Box
+                                    sx={{
+                                        position: 'absolute',
+                                        top: -16,
+                                        right: -24,
+                                        transform: 'rotate(12deg)',
+                                    }}
+                                >
+                                    <StarDoodle size={40} color="var(--color-pink)" />
+                                </Box>
+                                <Box
+                                    sx={{
+                                        position: 'absolute',
+                                        bottom: -12,
+                                        left: -20,
+                                        transform: 'rotate(-15deg)',
+                                    }}
+                                >
+                                    <StarDoodle size={32} color="var(--color-blue)" />
+                                </Box>
+                            </>
+                        )}
                     </motion.div>
                 </Box>
             </Box>

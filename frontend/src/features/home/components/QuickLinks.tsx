@@ -1,11 +1,6 @@
 import React from 'react';
-import { Box, Typography, List, ListItemText, ListItemIcon } from '@mui/material';
-import EventNoteIcon from '@mui/icons-material/EventNote';
-import GavelIcon from '@mui/icons-material/Gavel';
-import DescriptionIcon from '@mui/icons-material/Description';
-import TableChartIcon from '@mui/icons-material/TableChart';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Box, Typography, List, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
+import { EventNoteIcon, GavelIcon, DescriptionIcon, TableChartIcon, ReceiptIcon, ChevronRightIcon } from '@/components/Icons';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import { SquiggleDoodle } from '@/components/Doodles';
@@ -77,28 +72,17 @@ const QuickLinks: React.FC<QuickLinksProps> = React.memo(({ onNavigate }) => {
                     }}
                 >
                     <List disablePadding>
-                        {quickLinks.map((link, i) => (
-         <Box
+                        {quickLinks.map((link) => (
+                            <ListItemButton
                                 key={link.id}
-                                role="button"
-                                tabIndex={0}
-                                aria-label={link.title}
                                 onClick={() => onNavigate?.(link.route)}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onNavigate?.(link.route); }}
                                 sx={{
-                                    borderBottom: i < quickLinks.length - 1 ? `2px solid ${borderColor}` : 'none',
-                                    cursor: onNavigate ? 'pointer' : 'default',
+                                    borderBottom: '1px solid var(--color-border)',
                                     transition: 'background-color 0.15s ease',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    px: 2,
-                                    py: 1.5,
-                                    outline: 'none',
-                                    '&:focus-visible': {
-                                        outline: '2px solid var(--color-yellow)',
-                                        outlineOffset: '-2px',
+                                    '&:last-child': {
+                                        borderBottom: 'none',
                                     },
-                                        '&:hover': onNavigate ? {
+                                    '&:hover': {
                                         bgcolor: 'var(--color-yellow)',
                                         '& .quick-link-title': {
                                             color: COLOR_TEXT_LIGHT,
@@ -106,7 +90,7 @@ const QuickLinks: React.FC<QuickLinksProps> = React.memo(({ onNavigate }) => {
                                         '& .quick-link-chevron': {
                                             color: COLOR_TEXT_LIGHT,
                                         },
-                                    } : {},
+                                    },
                                 }}
                             >
                                 <ListItemIcon sx={{ minWidth: 40 }}>
@@ -135,7 +119,7 @@ const QuickLinks: React.FC<QuickLinksProps> = React.memo(({ onNavigate }) => {
                                         transition: 'transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.15s ease',
                                     }}
                                 />
-                            </Box>
+                            </ListItemButton>
                         ))}
                     </List>
                 </Box>

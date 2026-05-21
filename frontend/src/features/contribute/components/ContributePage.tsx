@@ -1,13 +1,5 @@
 import { Box, Typography, Button, Grid, Avatar, Divider, Link } from '@mui/material';
-import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
-import EmailIcon from '@mui/icons-material/Email';
-import DescriptionIcon from '@mui/icons-material/Description';
-import ArticleIcon from '@mui/icons-material/Article';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import LinkIcon from '@mui/icons-material/Link';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import { VolunteerActivismIcon, EmailIcon, DescriptionIcon, ArticleIcon, InsertDriveFileIcon, LinkIcon, FavoriteIcon, CheckCircleIcon, WhatsAppIcon } from '@/components/Icons';
 import { useTheme } from '@/context/ThemeContext';
 import contributorsData from '@/data/contributors.json';
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';

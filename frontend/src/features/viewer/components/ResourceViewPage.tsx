@@ -1,9 +1,6 @@
 import { useMemo } from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import DownloadIcon from '@mui/icons-material/Download';
-import ShareIcon from '@mui/icons-material/Share';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { ArrowBackIcon, DownloadIcon, ShareIcon, OpenInNewIcon } from '@/components/Icons';
 import { useTheme } from '@/context/ThemeContext';
 import { useSnackbar } from '@/components/Snackbar/Snackbar';
 import resources from '@/data/resources.json';

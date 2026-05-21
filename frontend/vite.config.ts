@@ -15,4 +15,22 @@ export default defineConfig({
             '@': path.resolve(__dirname, './src'),
         },
     },
+    build: {
+        chunkSizeWarningLimit: 200,
+        rollupOptions: {
+            output: {
+                manualChunks(id: string | null) {
+                    if (id?.includes('@mui/material')) {
+                        return 'mui';
+                    }
+                    if (id?.includes('@mui/icons-material')) {
+                        return 'muiIcons';
+                    }
+                    if (id?.includes('framer-motion')) {
+                        return 'framerMotion';
+                    }
+                },
+            },
+        },
+    },
 });

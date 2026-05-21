@@ -1,7 +1,7 @@
 import { createRoute, useNavigate, useSearch } from '@tanstack/react-router';
 import { Route as resourcesRoute } from './resources';
 import { Suspense, lazy } from 'react';
-import SuspenseLoader from '@/components/SuspenseLoader/SuspenseLoader';
+import { ResourcePageSkeleton } from '@/components/Skeletons';
 import { useSEO } from '@/hooks/useSEO';
 import { searchParamsToFilters } from '@/lib/filterUtils';
 
@@ -30,7 +30,7 @@ function SecondaryResourcesPage(): React.ReactElement {
     };
 
     return (
-        <Suspense fallback={<SuspenseLoader message="Loading resources..." />}>
+        <Suspense fallback={<ResourcePageSkeleton />}>
             <ResourceListPage
                 category="classes-6-12"
                 title="Classes 6-12 Resources"

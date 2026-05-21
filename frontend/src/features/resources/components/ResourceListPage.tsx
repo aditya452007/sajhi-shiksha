@@ -1,8 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Box, Typography, ToggleButtonGroup, ToggleButton, Button } from '@mui/material';
-import ViewListIcon from '@mui/icons-material/ViewList';
-import GridViewIcon from '@mui/icons-material/GridView';
-import SearchOffIcon from '@mui/icons-material/SearchOff';
+import { ViewListIcon, GridViewIcon, SearchOffIcon } from '@/components/Icons';
 import { useNavigate } from '@tanstack/react-router';
 import { useTheme } from '@/context/ThemeContext';
 import resources from '@/data/resources.json';

@@ -2,11 +2,41 @@
 
 ## Current Phase
 
-**Phase 8: URL System & Routing Overhaul — COMPLETE**
+**Phase 9: Performance Optimization — COMPLETE**
 
 ## Current Goal
 
 Transform the website from a generic corporate UI into a bold, playful, neo-brutalist design that students will love. Execute the implementation plan in `context/neo-brutalist-redesign-plan.md`.
+
+## Performance Optimization Results (Phase 9)
+
+### Bundle Analysis
+- **Total JS**: ~766 kB (minified) / ~229 kB (gzipped)
+- **MUI chunk**: 283.80 kB (84.62 kB gzipped) — separated for caching
+- **Framer Motion**: 132.80 kB (43.96 kB gzipped) — separated for caching
+- **MUI Icons**: 10.47 kB (4.05 kB gzipped) — reduced from 5,955 KiB dev
+- **Main app**: 321.75 kB (96.53 kB gzipped)
+
+### Changes Made
+- **P0-4**: Fixed CLS — removed unused Fredoka font, kept `display=swap`
+- **P0-1**: Created shared icon registry (45 icons) — replaced `import * as Icons` across 18 files
+- **P1-4**: Added `manualChunks` for MUI, icons, framer-motion separation in vite.config.ts
+- **P1-5**: Dynamic import TanStackRouterDevtools (excluded from production bundle)
+- **P1-3**: Optimized HeroSection — reduced motion.div count, deferred decorative doodles via `requestAnimationFrame`, CSS-only filter chip hover
+- **P2-4**: Removed paint-heavy `boxShadow` from CategoryCard `whileHover`/`whileTap` animations
+- **A11-1**: Added `aria-label` to Header IconButtons (theme toggle, close drawer)
+- **A11-3**: Fixed QuickLinks — replaced `<Box role="button">` with `<ListItemButton>`
+- **A11-3b**: Fixed FooterLinkSection — replaced `<Typography component="button" role="link">` with `<Box component="button">`
+- **Skeleton Loaders**: Replaced all SuspenseLoader (spinner) with page-specific skeleton loaders:
+  - `HomePageSkeleton` — full page structure with hero, categories, class spotlight, quick links, CTA
+  - `ResourcePageSkeleton` — resource cards grid with filters
+  - `SearchPageSkeleton` — search input, filter chips, results list
+  - `ViewPageSkeleton` — breadcrumb, title, action buttons, document viewer
+- **Reverted**: Dynamic import of resources.json in SecondaryClassSpotlight (was causing performance regression)
+
+### Build Performance
+- Build time: 337ms (down from 927ms after reverting dynamic import)
+- All chunks properly separated and cacheable
 
 ## Completed
 
@@ -366,3 +396,17 @@ Transform the website from a generic corporate UI into a bold, playful, neo-brut
 - **Input sanitization** — All URL params sanitized via `sanitizeString()` (strips `<`/`>`, trims, 200 char limit), validated against allowlists before use
 - **Restored missing CSS** — All neo-brutalist animation classes restored to `index.css` (card-hover, btn-press, scroll-reveal, shimmer, sticker-badge, drawer-slide, panel-slide-up, snackbar-enter, page transitions, etc.)
 - **Build verification:** TypeScript PASS (zero errors)
+
+### 2026-05-21 — Performance Audit & Critical Fixes (Batch 4)
+- **Installed 3 performance skills** via pyscribe-code MCP: `performance-engineer`, `performance-optimizer`, `fixing-motion-performance`
+- **Created comprehensive performance audit** (`context/performance-audit.md`) — 15 issues identified across 4 priority levels (P0-P3), with expected impact metrics and implementation timeline
+- **Fixed duplicate `handleSubjectClick`** in `ClassSpotlight.tsx` — removed second declaration referencing non-existent `onNavigate` prop (was causing Vite parse error)
+- **Fixed mobile footer overlap** — Added `pb: { xs: 10, md: 8 }` to Footer to push content above fixed BottomTabBar
+- **Memoized FilterBar sub-components** — Wrapped `FilterChips` and `FilterControls` in `React.memo` to prevent unnecessary re-renders
+- **Fixed FilterBar callback stability** — Changed `updateFilter` and `handleRemoveFilter` to use functional updater pattern, removing `filters` dependency that broke memoization
+- **Updated FilterBar interface** — `onFilterChange` now accepts `FilterState | ((prev: FilterState) => FilterState)` for functional updates
+- **Updated SearchPage and ResourceListPage** — `handleFilterChange` now resolves functional updates before syncing to URL
+- **Memoized ClassSpotlight** — Wrapped in `React.memo`, wrapped `handleSubjectClick` in `useCallback` with `[navigate, activeClass]` deps
+- **Removed useless `useTheme()` calls** — Eliminated 4 components subscribing to theme context without using the value (ClassSpotlight, FilterBar, BottomTabBar, SearchPage)
+- **Build verification:** TypeScript PASS, Vite build PASS (633KB JS / 197.75KB gzipped, 13.56KB CSS / 3.92KB gzipped)
+- **Key finding:** Lighthouse was run against dev server (localhost:5173), inflating all metrics 5-10x. Production build metrics will be dramatically better. Real issues are architectural: @mui/icons-material (5,955 KiB in dev), HeroSection CPU time (5,331ms), Footer CLS (0.59)

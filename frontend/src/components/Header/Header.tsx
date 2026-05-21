@@ -1,9 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Box, Button, IconButton, Typography, Drawer, List, ListItem } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import MenuIcon from '@mui/icons-material/Menu';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { CloseIcon, MenuIcon, LightModeIcon, DarkModeIcon } from '@/components/Icons';
 import { useNavigate } from '@tanstack/react-router';
 import { useTheme } from '@/context/ThemeContext';
 import navigation from '@/data/navigation.json';
@@ -92,6 +89,7 @@ const Header: React.FC = () => {
                 </Typography>
                 <IconButton
                     onClick={() => setMobileOpen(false)}
+                    aria-label="Close navigation menu"
                     sx={{
                         border: `2px solid ${borderColor}`,
                         borderRadius: 0,
@@ -252,6 +250,7 @@ const Header: React.FC = () => {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <IconButton
                     onClick={toggleTheme}
+                    aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
                     sx={{
                         border: `2px solid ${borderColor}`,
                         borderRadius: BORDER_RADIUS_PILL,

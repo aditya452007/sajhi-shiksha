@@ -1,7 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { TextField, InputAdornment, IconButton } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import ClearIcon from '@mui/icons-material/Clear';
+import { SearchIcon, ClearIcon } from '@/components/Icons';
 import { useDebounceCallback } from '@/hooks/useDebounce';
 
 interface SearchInputProps {

@@ -20,13 +20,6 @@ const FooterLinkSection: React.FC<FooterLinkSectionProps> = React.memo(({ title,
         navigate({ to: route });
     }, [navigate]);
 
-    const handleKeyDown = useCallback((e: React.KeyboardEvent, route: string) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleNavigate(route);
-        }
-    }, [handleNavigate]);
-
     return (
         <Box sx={{ mb: { xs: 3, md: 0 } }} aria-label={title}>
             <Typography
@@ -43,16 +36,13 @@ const FooterLinkSection: React.FC<FooterLinkSectionProps> = React.memo(({ title,
                 {title}
             </Typography>
             {items.map((item) => (
-                <Typography
+                <Box
                     key={item.label}
                     component="button"
-                    role="link"
-                    aria-label={`Navigate to ${item.label}`}
-                    tabIndex={0}
                     onClick={() => handleNavigate(item.route)}
-                    onKeyDown={(e) => handleKeyDown(e, item.route)}
                     sx={{
                         display: 'block',
+                        width: '100%',
                         color: 'var(--color-text-secondary)',
                         textDecoration: 'none',
                         mb: 1,
@@ -89,7 +79,7 @@ const FooterLinkSection: React.FC<FooterLinkSectionProps> = React.memo(({ title,
                     }}
                 >
                     {item.label}
-                </Typography>
+                </Box>
             ))}
         </Box>
     );

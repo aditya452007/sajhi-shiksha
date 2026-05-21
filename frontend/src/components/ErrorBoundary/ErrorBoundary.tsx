@@ -1,6 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { Box, Typography, Button, Paper } from '@mui/material';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import { ErrorOutlineOutlinedIcon } from '@/components/Icons';
 
 interface ErrorBoundaryProps {
     children: ReactNode;
@@ -55,7 +55,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                             bgcolor: 'background.paper',
                         }}
                     >
-                        <ErrorOutlineIcon
+                        <ErrorOutlineOutlinedIcon
                             sx={{ fontSize: 48, color: 'error.main', mb: 2 }}
                         />
                         <Typography variant="h6" gutterBottom>

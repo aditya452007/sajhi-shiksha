@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Box, Typography, Chip } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { SearchIcon } from '@/components/Icons';
 import { useNavigate } from '@tanstack/react-router';
 import resources from '@/data/resources.json';
 import SearchInput from '@/components/SearchBar/SearchInput';

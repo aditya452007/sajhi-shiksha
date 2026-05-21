@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import { VolunteerActivismIcon } from '@/components/Icons';
 import { useTheme } from '@/context/ThemeContext';
 import siteConfig from '@/data/site-config.json';
 import { ArrowDoodle, StarDoodle } from '@/components/Doodles';

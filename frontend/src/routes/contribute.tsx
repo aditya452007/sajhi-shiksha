@@ -1,7 +1,7 @@
 import { createRoute, useNavigate } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { Suspense, lazy } from 'react';
-import SuspenseLoader from '@/components/SuspenseLoader/SuspenseLoader';
+import { ResourcePageSkeleton } from '@/components/Skeletons';
 import { useSEO } from '@/hooks/useSEO';
 
 const ContributePage = lazy(() => import('@/features/contribute/components/ContributePage'));
@@ -20,7 +20,7 @@ function ContributeRouteComponent(): React.ReactElement {
     };
 
     return (
-        <Suspense fallback={<SuspenseLoader message="Loading..." />}>
+        <Suspense fallback={<ResourcePageSkeleton />}>
             <ContributePage onNavigate={handleNavigate} />
         </Suspense>
     );

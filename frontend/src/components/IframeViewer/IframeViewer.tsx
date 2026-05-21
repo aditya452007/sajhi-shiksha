@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import Error from '@mui/icons-material/Error';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { ErrorIcon, RefreshIcon, OpenInNewIcon } from '@/components/Icons';
 import Skeleton from '@/components/Skeleton/Skeleton';
 import { useTheme } from '@/context/ThemeContext';
 import { getDriveEmbedUrl } from '@/lib/utils';
@@ -78,7 +76,7 @@ export default function IframeViewer({
                     boxShadow: `4px 4px 0px ${shadowColor}`,
                 }}
             >
-                <Error sx={{ fontSize: 48, color: 'var(--color-red)' }} />
+                <ErrorIcon sx={{ fontSize: 48, color: 'var(--color-red)' }} />
                 <Typography
                     sx={{
                         fontFamily: FONT_HEADING,

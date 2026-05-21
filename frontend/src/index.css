@@ -357,3 +357,38 @@ textarea:focus-visible,
 .sticker-badge:hover {
     transform: rotate(2deg) scale(1.05);
 }
+
+/* Content Visibility for below-fold sections */
+.cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 300px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .scroll-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    [data-theme] {
+        transition: none !important;
+    }
+}
+
+/* Hero Filter Chips — compositor-only hover (no paint-heavy boxShadow) */
+.hero-chip:hover {
+    transform: translateY(-2px);
+}
+
+.hero-chip:active {
+    transform: translateY(1px);
+}

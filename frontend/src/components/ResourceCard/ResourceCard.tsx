@@ -1,11 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import DescriptionIcon from '@mui/icons-material/Description';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import LinkIcon from '@mui/icons-material/Link';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import DownloadIcon from '@mui/icons-material/Download';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { DescriptionIcon, PictureAsPdfIcon, LinkIcon, InsertDriveFileIcon, DownloadIcon, VisibilityIcon } from '@/components/Icons';
 import { useTheme } from '@/context/ThemeContext';
 import type { Resource } from '@/types';
 import { FONT_HEADING, FONT_MONO, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';

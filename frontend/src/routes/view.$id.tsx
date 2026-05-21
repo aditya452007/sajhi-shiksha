@@ -1,7 +1,7 @@
 import { createRoute, useNavigate, useParams } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { Suspense, lazy, useMemo } from 'react';
-import SuspenseLoader from '@/components/SuspenseLoader/SuspenseLoader';
+import { ViewPageSkeleton } from '@/components/Skeletons';
 import { useSEO } from '@/hooks/useSEO';
 import resources from '@/data/resources.json';
 import type { Resource } from '@/types';
@@ -31,7 +31,7 @@ function ViewResourcePage(): React.ReactElement {
     };
 
     return (
-        <Suspense fallback={<SuspenseLoader message="Loading resource..." />}>
+        <Suspense fallback={<ViewPageSkeleton />}>
             <ResourceViewPage
                 resourceId={id}
                 onBack={handleBack}

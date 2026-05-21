@@ -13,9 +13,7 @@ import {
     useMediaQuery,
     useTheme as useMuiTheme,
 } from '@mui/material';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import CloseIcon from '@mui/icons-material/Close';
-import ClearAllIcon from '@mui/icons-material/ClearAll';
+import { FilterListIcon, CloseIcon, ClearAllIcon } from '@/components/Icons';
 import { FONT_HEADING, FONT_MONO, BORDER_RADIUS_PILL, COLOR_TEXT_LIGHT } from '@/lib/constants';
 
 export interface FilterState {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import HomeIcon from '@mui/icons-material/Home';
+import { NavigateNextIcon, HomeIcon } from '@/components/Icons';
 import { FONT_HEADING, FONT_MONO } from '@/lib/constants';
 
 interface BreadcrumbItem {

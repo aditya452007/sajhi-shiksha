@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { Box, Typography, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
-import DescriptionIcon from '@mui/icons-material/Description';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { DescriptionIcon, ChevronRightIcon } from '@/components/Icons';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import { CLASS_RANGES, MAX_CONTENT_WIDTH, FONT_HEADING, FONT_MONO, BORDER_RADIUS_PILL } from '@/lib/constants';

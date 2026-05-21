@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Box, Typography } from '@mui/material';
-import * as Icons from '@mui/icons-material';
+import { MenuBook, School, LocalLibraryIcon, GavelIcon, AssignmentIcon, VolunteerActivismIcon, InfoIcon, HelpOutlinedIcon } from '@/components/Icons';
 import { motion } from 'framer-motion';
 import { formatResourceCount } from '@/lib/utils';
 import { useTheme } from '@/context/ThemeContext';
@@ -16,13 +16,13 @@ interface CategoryCardProps {
 }
 
 const iconMap: Record<string, React.ElementType> = {
-    MenuBook: Icons.MenuBook,
-    School: Icons.School,
-    LocalLibrary: Icons.LocalLibrary,
-    Gavel: Icons.Gavel,
-    Assignment: Icons.Assignment,
-    VolunteerActivism: Icons.VolunteerActivism,
-    Info: Icons.Info,
+    MenuBook,
+    School,
+    LocalLibrary: LocalLibraryIcon,
+    Gavel: GavelIcon,
+    Assignment: AssignmentIcon,
+    VolunteerActivism: VolunteerActivismIcon,
+    Info: InfoIcon,
 };
 
 const bgColors = [
@@ -37,7 +37,7 @@ const bgColors = [
 const CategoryCard: React.FC<CategoryCardProps> = React.memo(
     ({ title, description, icon, resourceCount, onClick, index = 0 }) => {
         const [_isDark] = useTheme();
-        const IconComponent = iconMap[icon] ?? Icons.HelpOutlined;
+        const IconComponent = iconMap[icon] ?? HelpOutlinedIcon;
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
 
@@ -53,12 +53,10 @@ const CategoryCard: React.FC<CategoryCardProps> = React.memo(
                 whileHover={{
                     y: -4,
                     rotate: rotation - 1,
-                    boxShadow: `6px 6px 0px ${shadowColor}`,
                     transition: { type: 'spring', stiffness: 400, damping: 17 },
                 }}
                 whileTap={{
                     y: 2,
-                    boxShadow: `1px 1px 0px ${shadowColor}`,
                     transition: { duration: 0.1 },
                 }}
                 initial={{ opacity: 0, y: 24 }}

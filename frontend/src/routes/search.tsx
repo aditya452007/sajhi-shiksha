@@ -1,7 +1,7 @@
 import { createRoute, useNavigate, useSearch } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { Suspense, lazy } from 'react';
-import SuspenseLoader from '@/components/SuspenseLoader/SuspenseLoader';
+import { SearchPageSkeleton } from '@/components/Skeletons';
 import { useSEO } from '@/hooks/useSEO';
 import { searchParamsToFilters, sanitizeString, VALID_CLASSES, VALID_SUBJECTS, VALID_TYPES } from '@/lib/filterUtils';
 
@@ -41,7 +41,7 @@ function SearchRouteComponent(): React.ReactElement {
     };
 
     return (
-        <Suspense fallback={<SuspenseLoader message="Searching..." />}>
+        <Suspense fallback={<SearchPageSkeleton />}>
             <SearchPage
                 initialFilters={filters}
                 onViewResource={handleViewResource}
