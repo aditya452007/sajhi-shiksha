@@ -5,9 +5,12 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ShareIcon from '@mui/icons-material/Share';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@/context/ThemeContext';
+import { useSnackbar } from '@/components/Snackbar/Snackbar';
 import resources from '@/data/resources.json';
 import IframeViewer from '@/components/IframeViewer/IframeViewer';
+import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
 import type { Resource } from '@/types';
+import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
 
 interface ResourceViewPageProps {
     resourceId: string;
@@ -16,7 +19,8 @@ interface ResourceViewPageProps {
 }
 
 export default function ResourceViewPage({ resourceId, onBack, onNavigate }: ResourceViewPageProps) {
-    const [isDark] = useTheme();
+    const [_isDark] = useTheme();
+    const { showSnackbar } = useSnackbar();
     const resource = useMemo(() => {
         return (resources as Resource[]).find((r) => r.id === resourceId);
     }, [resourceId]);
@@ -25,7 +29,7 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
 
     if (!resource) {
         return (
-            <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, md: 4 }, py: 8, textAlign: 'center' }}>
+            <Box sx={{ maxWidth: MAX_CONTENT_WIDTH, mx: 'auto', px: { xs: 2, md: 4 }, py: 8, textAlign: 'center' }}>
                 <Box
                     sx={{
                         p: 6,
@@ -36,7 +40,7 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                 >
                     <Typography
                         sx={{
-                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontFamily: FONT_HEADING,
                             fontWeight: 800,
                             fontSize: '1.75rem',
                             mb: 2,
@@ -50,7 +54,7 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                         onClick={onBack}
                         sx={{
                             bgcolor: 'var(--color-yellow)',
-                            color: '#1A1A1A',
+                            color: COLOR_TEXT_LIGHT,
                             border: `3px solid ${borderColor}`,
                             boxShadow: `3px 3px 0px ${shadowColor}`,
                         }}
@@ -68,10 +72,29 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
 
     const handleShare = async () => {
         const url = window.location.href;
-        try {
-            await navigator.clipboard.writeText(url);
-        } catch {
-            // Fallback: select the URL
+        const shareData = {
+            title: resource.title,
+            text: resource.description,
+            url,
+        };
+
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+                showSnackbar('Shared successfully!', 'success');
+            } catch (err) {
+                if ((err as Error).name !== 'AbortError') {
+                    await navigator.clipboard.writeText(url);
+                    showSnackbar('Link copied to clipboard!', 'info');
+                }
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(url);
+                showSnackbar('Link copied to clipboard!', 'success');
+            } catch {
+                showSnackbar('Failed to copy link', 'error');
+            }
         }
     };
 
@@ -80,33 +103,19 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
     };
 
     return (
-        <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
-            <Box sx={{ mb: 3 }}>
-                <button
-                    onClick={() => onNavigate('/')}
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 4,
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        color: 'var(--color-text)',
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        fontWeight: 700,
-                        fontSize: '1rem',
-                        padding: 0,
-                    }}
-                >
-                    <ArrowBackIcon fontSize="small" />
-                    Home
-                </button>
-            </Box>
+        <Box sx={{ maxWidth: MAX_CONTENT_WIDTH, mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
+            <Breadcrumb
+                items={[
+                    { label: 'Resources', route: '/' },
+                    { label: resource.title },
+                ]}
+                onNavigate={onNavigate}
+            />
 
             <Box sx={{ mb: 4 }}>
                 <Typography
                     sx={{
-                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontFamily: FONT_HEADING,
                         fontWeight: 800,
                         fontSize: { xs: '1.75rem', md: '2.25rem' },
                         mb: 1,
@@ -126,11 +135,11 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                                 py: 0.5,
                                 bgcolor: 'var(--color-yellow)',
                                 border: `2px solid ${borderColor}`,
-                                borderRadius: '9999px',
-                                fontFamily: "'Space Mono', monospace",
+                                borderRadius: BORDER_RADIUS_PILL,
+                                fontFamily: FONT_MONO,
                                 fontWeight: 700,
                                 fontSize: '0.8rem',
-                                color: '#1A1A1A',
+                                color: COLOR_TEXT_LIGHT,
                                 boxShadow: `2px 2px 0px ${shadowColor}`,
                             }}
                         >
@@ -144,8 +153,8 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                                 py: 0.5,
                                 bgcolor: 'var(--color-bg)',
                                 border: `2px solid ${borderColor}`,
-                                borderRadius: '9999px',
-                                fontFamily: "'Space Mono', monospace",
+                                borderRadius: BORDER_RADIUS_PILL,
+                                fontFamily: FONT_MONO,
                                 fontWeight: 700,
                                 fontSize: '0.8rem',
                                 boxShadow: `2px 2px 0px ${shadowColor}`,
@@ -160,8 +169,8 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                             py: 0.5,
                             bgcolor: 'var(--color-pink)',
                             border: `2px solid ${borderColor}`,
-                            borderRadius: '9999px',
-                            fontFamily: "'Space Mono', monospace",
+                            borderRadius: BORDER_RADIUS_PILL,
+                            fontFamily: FONT_MONO,
                             fontWeight: 700,
                             fontSize: '0.8rem',
                             boxShadow: `2px 2px 0px ${shadowColor}`,
@@ -178,12 +187,12 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                         onClick={handleDownload}
                         sx={{
                             bgcolor: 'var(--color-yellow)',
-                            color: '#1A1A1A',
+                            color: COLOR_TEXT_LIGHT,
                             border: `3px solid ${borderColor}`,
                             boxShadow: `3px 3px 0px ${shadowColor}`,
                             '&:hover': {
                                 bgcolor: 'var(--color-bg-secondary)',
-                                color: '#1A1A1A',
+                                color: COLOR_TEXT_LIGHT,
                                 transform: 'translate(-2px, -2px)',
                                 boxShadow: `5px 5px 0px ${shadowColor}`,
                             },
@@ -240,7 +249,7 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                 <Box>
                     <Typography
                         sx={{
-                            fontFamily: "'Space Mono', monospace",
+                            fontFamily: FONT_MONO,
                             fontSize: '0.8rem',
                             color: 'var(--color-text-secondary)',
                         }}
@@ -249,7 +258,7 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                     </Typography>
                     <Typography
                         sx={{
-                            fontFamily: "'Space Mono', monospace",
+                            fontFamily: FONT_MONO,
                             fontSize: '0.8rem',
                             color: 'var(--color-text-secondary)',
                         }}

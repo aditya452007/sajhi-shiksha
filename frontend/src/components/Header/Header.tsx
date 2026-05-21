@@ -1,26 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Box, Button, IconButton, Typography, Drawer, List, ListItem } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { useNavigate } from '@tanstack/react-router';
 import { useTheme } from '@/context/ThemeContext';
 import navigation from '@/data/navigation.json';
 import siteConfig from '@/data/site-config.json';
 import { BookDoodle } from '@/components/Doodles';
+import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
 
-interface HeaderProps {
-    onNavigate: (route: string) => void;
-}
-
-const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
+const Header: React.FC = () => {
     const [isDark, toggleTheme] = useTheme();
     const [mobileOpen, setMobileOpen] = useState(false);
+    const navigate = useNavigate();
 
-    const handleNavClick = (route: string) => {
-        onNavigate(route);
+    const handleNavClick = useCallback((route: string) => {
+        navigate({ to: route });
         setMobileOpen(false);
-    };
+    }, [navigate]);
+
+    const drawerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!mobileOpen || !drawerRef.current) return;
+
+        const focusableElements = drawerRef.current.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        firstElement?.focus();
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key !== 'Tab') return;
+
+            if (e.shiftKey) {
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement?.focus();
+                }
+            } else {
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement?.focus();
+                }
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [mobileOpen]);
 
     const navItems = navigation.navItems.slice(0, 5);
     const borderColor = 'var(--color-border)';
@@ -28,6 +60,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
 
     const drawerContent = (
         <Box
+            ref={drawerRef}
             sx={{
                 width: 280,
                 height: '100%',
@@ -49,7 +82,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
             >
                 <Typography
                     sx={{
-                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontFamily: FONT_HEADING,
                         fontWeight: 800,
                         fontSize: '1.25rem',
                         color: 'var(--color-text)',
@@ -85,7 +118,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                     >
                         <Typography
                             sx={{
-                                fontFamily: "'Space Grotesk', sans-serif",
+                                fontFamily: FONT_HEADING,
                                 fontWeight: 700,
                                 color: 'var(--color-text)',
                             }}
@@ -109,7 +142,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                     >
                         <Typography
                             sx={{
-                                fontFamily: "'Space Grotesk', sans-serif",
+                                fontFamily: FONT_HEADING,
                                 fontWeight: 700,
                                 color: 'var(--color-text)',
                             }}
@@ -138,7 +171,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
             >
                 <Box
                     sx={{
-                        maxWidth: '1200px',
+                        maxWidth: MAX_CONTENT_WIDTH,
                         mx: 'auto',
                         display: 'flex',
                         alignItems: 'center',
@@ -157,7 +190,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                         <BookDoodle size={32} />
                         <Typography
                             sx={{
-                                fontFamily: "'Space Grotesk', sans-serif",
+                                fontFamily: FONT_HEADING,
                                 fontWeight: 800,
                                 fontSize: { xs: '1.25rem', md: '1.5rem' },
                                 lineHeight: 1,
@@ -183,7 +216,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                                 onClick={() => handleNavClick(item.route)}
                                 sx={{
                                     color: 'var(--color-text)',
-                                    fontFamily: "'Space Grotesk', sans-serif",
+                                    fontFamily: FONT_HEADING,
                                     fontWeight: 700,
                                     fontSize: '0.95rem',
                                     border: 'none',
@@ -221,7 +254,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                     onClick={toggleTheme}
                     sx={{
                         border: `2px solid ${borderColor}`,
-                        borderRadius: '9999px',
+                        borderRadius: BORDER_RADIUS_PILL,
                         boxShadow: `2px 2px 0px ${shadowColor}`,
                                 bgcolor: 'var(--color-bg)',
                         color: 'var(--color-text)',
@@ -244,13 +277,13 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                                 borderRadius: 0,
                                 boxShadow: `2px 2px 0px ${shadowColor}`,
                                 bgcolor: 'var(--color-yellow)',
-                                color: '#1A1A1A',
-                                fontFamily: "'Space Mono', monospace",
+                                color: COLOR_TEXT_LIGHT,
+                                fontFamily: FONT_MONO,
                                 fontWeight: 700,
                                 fontSize: '0.85rem',
                                 px: 2,
                                 '& .MuiButton-startIcon': {
-                                    color: '#1A1A1A',
+                                    color: COLOR_TEXT_LIGHT,
                                 },
                                 '&:active': {
                                     transform: 'translate(2px, 2px)',
@@ -268,7 +301,11 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                 variant="temporary"
                 open={mobileOpen}
                 onClose={() => setMobileOpen(false)}
-                ModalProps={{ keepMounted: true }}
+                ModalProps={{
+                    keepMounted: true,
+                    role: 'dialog',
+                    'aria-modal': true,
+                }}
             >
                 {drawerContent}
             </Drawer>

@@ -6,6 +6,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Skeleton from '@/components/Skeleton/Skeleton';
 import { useTheme } from '@/context/ThemeContext';
 import { getDriveEmbedUrl } from '@/lib/utils';
+import { FONT_HEADING, COLOR_TEXT_LIGHT } from '@/lib/constants';
 
 export interface IframeViewerProps {
     driveUrl: string;
@@ -26,7 +27,7 @@ export default function IframeViewer({
     onLoad,
     onError,
 }: IframeViewerProps) {
-    const [isDark] = useTheme();
+    const [_isDark] = useTheme();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const embedUrl = getDriveEmbedUrl(driveUrl);
@@ -80,7 +81,7 @@ export default function IframeViewer({
                 <Error sx={{ fontSize: 48, color: 'var(--color-red)' }} />
                 <Typography
                     sx={{
-                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontFamily: FONT_HEADING,
                         fontWeight: 700,
                         fontSize: '1.25rem',
                     }}
@@ -97,7 +98,7 @@ export default function IframeViewer({
                         onClick={() => window.open(driveUrl, '_blank')}
                         sx={{
                             bgcolor: 'var(--color-yellow)',
-                            color: '#1A1A1A',
+                            color: COLOR_TEXT_LIGHT,
                             border: `3px solid ${borderColor}`,
                             boxShadow: `3px 3px 0px ${shadowColor}`,
                         }}

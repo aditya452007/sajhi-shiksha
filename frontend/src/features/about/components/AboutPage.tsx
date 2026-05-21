@@ -1,10 +1,11 @@
 import { Box, Typography, Avatar, Link } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import EmailIcon from '@mui/icons-material/Email';
 import PublicIcon from '@mui/icons-material/Public';
 import { useTheme } from '@/context/ThemeContext';
 import contributorsData from '@/data/contributors.json';
+import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
+import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH } from '@/lib/constants';
 
 interface AboutPageProps {
     onNavigate: (route: string) => void;
@@ -27,29 +28,11 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
     const shadowColor = 'var(--color-shadow)';
 
     return (
-        <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
-            <Box sx={{ mb: 4 }}>
-                <button
-                    onClick={() => onNavigate('/')}
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 4,
-                        marginBottom: 8,
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        color: 'var(--color-text)',
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        fontWeight: 700,
-                        fontSize: '1rem',
-                        padding: 0,
-                    }}
-                >
-                    <HomeIcon fontSize="small" />
-                    Home
-                </button>
-            </Box>
+        <Box sx={{ maxWidth: MAX_CONTENT_WIDTH, mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
+            <Breadcrumb
+                items={[{ label: 'About' }]}
+                onNavigate={onNavigate}
+            />
 
             <Box
                 sx={{
@@ -63,7 +46,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
             >
                 <Typography
                     sx={{
-                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontFamily: FONT_HEADING,
                         fontWeight: 800,
                         fontSize: { xs: '2rem', md: '2.5rem' },
                         mb: 2,
@@ -88,7 +71,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                         fontStyle: 'italic',
                         color: 'var(--color-text)',
                         fontWeight: 700,
-                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontFamily: FONT_HEADING,
                         fontSize: '1.25rem',
                     }}
                 >
@@ -98,7 +81,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
 
             <Typography
                 sx={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: FONT_HEADING,
                     fontWeight: 800,
                     fontSize: { xs: '1.5rem', md: '2rem' },
                     mb: 4,
@@ -127,7 +110,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
 
             <Typography
                 sx={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: FONT_HEADING,
                     fontWeight: 800,
                     fontSize: { xs: '1.5rem', md: '2rem' },
                     mb: 4,
@@ -173,14 +156,14 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                                     mx: 'auto',
                                     mb: 2,
                                     border: `2px solid ${borderColor}`,
-                                    fontFamily: "'Space Grotesk', sans-serif",
+                                    fontFamily: FONT_HEADING,
                                 }}
                             >
                                 {member.initials}
                             </Avatar>
                             <Typography
                                 sx={{
-                                    fontFamily: "'Space Grotesk', sans-serif",
+                                    fontFamily: FONT_HEADING,
                                     fontWeight: 700,
                                     mb: 0.5,
                                 }}
@@ -192,7 +175,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                             </Typography>
                             <Typography
                                 sx={{
-                                    fontFamily: "'Space Mono', monospace",
+                                    fontFamily: FONT_MONO,
                                     fontSize: '0.75rem',
                                     color: 'var(--color-yellow)',
                                     fontWeight: 700,
@@ -207,7 +190,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
 
             <Typography
                 sx={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: FONT_HEADING,
                     fontWeight: 800,
                     fontSize: { xs: '1.5rem', md: '2rem' },
                     mb: 4,
@@ -229,7 +212,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                         <EmailIcon sx={{ color: 'var(--color-text)' }} />
-                        <Link href={mailtoLink} sx={{ fontWeight: 700, color: 'var(--color-text)', fontFamily: "'Space Mono', monospace" }}>
+                        <Link href={mailtoLink} sx={{ fontWeight: 700, color: 'var(--color-text)', fontFamily: FONT_MONO }}>
                             {email}
                         </Link>
                     </Box>
@@ -239,7 +222,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                             href="https://www.sajhishiksha.in"
                             target="_blank"
                             rel="noopener noreferrer"
-                            sx={{ fontWeight: 700, color: 'var(--color-text)', fontFamily: "'Space Mono', monospace" }}
+                            sx={{ fontWeight: 700, color: 'var(--color-text)', fontFamily: FONT_MONO }}
                         >
                             www.sajhishiksha.in
                         </Link>

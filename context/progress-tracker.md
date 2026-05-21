@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-**Phase 7: Neo-Brutalist Playful Redesign — PHASE 2 (Foundation + Core Components) COMPLETE**
+**Phase 8: URL System & Routing Overhaul — COMPLETE**
 
 ## Current Goal
 
@@ -314,3 +314,55 @@ Transform the website from a generic corporate UI into a bold, playful, neo-brut
 - **Applied ScrollReveal** to all homepage sections (CategoryGrid, ClassSpotlight, SecondaryClassSpotlight, QuickLinks, ContributeCTA) with staggered delays (0ms-200ms)
 - **Replaced MUI Skeleton** in IframeViewer with custom Skeleton component for consistency
 - **Build passes successfully** — 672KB JS (205KB gzipped), 10.9KB CSS (3.2KB gzipped)
+
+### 2026-05-21 — Professional Standards Audit & Critical Fixes
+- **Created comprehensive audit checklist** (`frontend/src/AUDIT_FULL_CHECKLIST.md`) — 100 issues identified across 8 categories: 13 critical, 24 high, 18 medium, 13 low
+- **Fixed Critical #1: Root ErrorBoundary** — Added `<ErrorBoundary>` wrapper in `main.tsx` to prevent total app crashes from unhandled runtime errors
+- **Fixed Critical #2: useAnalytics.ts** — Added script cleanup on unmount (`useRef` + `removeChild`), deduplication check to prevent duplicate GA scripts, proper dependency array `[pathname, search]` for pageview tracking
+- **Fixed Critical #3: useSEO.ts** — Complete meta tag cleanup on unmount: added `removeMeta()` and `removeLink()` helpers, resets title to previous value, removes all OG/Twitter/canonical tags, prevents SEO data leaking between pages
+- **Fixed Critical #4: `as never` type hack** — Replaced `r.class as never` in `SecondaryClassSpotlight.tsx` with proper null check `r.class !== null && active.range.includes(r.class)`
+- **Fixed Critical #5: Lazy loading for all routes** — Applied `React.lazy()` + `Suspense` to all 10 route files: `index.tsx`, `resources.primary.tsx`, `resources.secondary.tsx`, `resources.formats.tsx`, `resources.programs.tsx`, `resources.admissions.tsx`, `view.$id.tsx`, `search.tsx`, `contribute.tsx`, `about.tsx`. Enables code splitting and reduces initial bundle size
+- **Fixed High #1: Footer accessibility** — Extracted `linkSection` inline JSX into proper `FooterLinkSection` component with `React.memo`, added `role="link"`, `aria-label`, `tabIndex={0}`, `onKeyDown` handler for keyboard navigation, `&:focus-visible` styles, `aria-hidden="true"` on decorative doodles, `role="contentinfo"` and `aria-label="Site footer"` on footer element
+- **Fixed High #2: QuickLinks accessibility** — Replaced non-semantic `ListItem` with `Box` having `role="button"`, `tabIndex={0}`, `aria-label`, `onKeyDown` handler, `&:focus-visible` styles, `aria-hidden="true"` on decorative chevron icon
+- **Fixed High #3: SearchInput accessibility** — Added `aria-label="Search resources"`, `aria-label="Clear search"` on clear button, `aria-hidden="true"` on decorative icons
+- **Fixed High #4: FilterBar accessibility** — Added `aria-label="Close filters"` to drawer close IconButton, `aria-hidden="true"` on CloseIcon
+- **Fixed High #5: React.memo on all homepage components** — Added `React.memo` + `displayName` to `HomePage`, `HeroSection`, `CategoryGrid`, `SecondaryClassSpotlight`, `QuickLinks`, `ContributeCTA`. Added `useMemo` to `filteredCategories` (HomePage) and `chipColors` (HeroSection). Added `useCallback` to handlers in `HeroSection` and `SecondaryClassSpotlight`
+- **Fixed Medium #1: 404 Not Found page** — Created `routes/$.tsx` with neo-brutalist styling, animated 404 heading, doodle decorations, "Go Back Home" CTA, `noIndex: true` SEO config
+- **Fixed Medium #2: HomePage aria-label** — Added `aria-label="Home page content"` to main landmark element
+- **Build verification:** TypeScript PASS, Vite build PASS (647KB JS / 205KB gzipped, 12.4KB CSS / 3.7KB gzipped) — all 10 routes now code-split into separate chunks
+
+### 2026-05-21 — Performance, Accessibility & UX Enhancements (Batch 2)
+- **Created `useDebounce` hook** (`src/hooks/useDebounce.ts`) — `useDebounceCallback` and `useDebounceValue` utilities with proper cleanup on unmount
+- **Added debounced search (300ms)** — `SearchInput` now debounces search calls via `useDebounceCallback`, added `debounceMs` prop for configurability, wrapped handlers in `useCallback` to prevent re-renders
+- **Added scroll restoration** — `router.ts` now has `scrollRestoration: true` and `defaultPreloadStaleTime: 0` for better UX on route navigation
+- **Hidden devtools in production** — `TanStackRouterDevtools` wrapped in `import.meta.env.DEV` check with `aria-hidden="true"` to prevent screen reader exposure
+- **Added skip link** — "Skip to main content" link added to `__root.tsx` with `.skip-link` CSS class (hidden off-screen, visible on focus), `#main-content` ID on content area
+- **Added prefers-reduced-motion** — `@media (prefers-reduced-motion: reduce)` in `index.css` disables all animations/transitions for users who prefer reduced motion, including scroll-reveal, theme transitions, and Framer Motion animations
+- **Added input validation** — `getDriveEmbedUrl()` now validates empty/null/whitespace strings, returns empty string for invalid input
+- **Added aria-current to BottomTabBar** — Active tab now has `aria-current="page"` for screen reader announcement of current page
+- **Fixed unused imports** — Removed unused `ListItem` import from `QuickLinks.tsx`, prefixed unused `isDark` variables with `_` across 12 components
+- **Build verification:** TypeScript PASS, Vite build PASS (618KB JS / 194KB gzipped, 13.1KB CSS / 3.8KB gzipped) — 11KB reduction from code splitting optimizations
+
+### 2026-05-21 — Audit Checklist Completion (Batch 3)
+- **Replaced hardcoded values** — Added `FONT_HEADING`, `FONT_MONO`, `FONT_BODY`, `MAX_CONTENT_WIDTH`, `BORDER_RADIUS_PILL`, `COLOR_TEXT_LIGHT`, `COLOR_TEXT_DARK`, `COLOR_SHADOW_DARK` to `lib/constants.ts`. Updated 20+ files to use constants instead of hardcoded `'Space Grotesk'`, `'Space Mono'`, `'1200px'`, `'9999px'`, `'#1A1A1A'`
+- **Extracted inline JSX from FilterBar** — Split `filterContent` inline expression into `FilterControls` and `FilterChips` components. Added `useMemo`/`useCallback` for handlers. Eliminated code duplication between mobile/desktop active chips rendering
+- **Fixed ResourceCard code duplication** — Extracted `ResourceCardTags` sub-component used by both grid and list views. Tag rendering (class badge + subject badge) now shared
+- **Added Breadcrumb component** — Created `components/Breadcrumb/Breadcrumb.tsx` with neo-brutalist styling, keyboard navigation, `aria-current="page"` on last item, `aria-live` support. Added to all route pages: ResourceListPage, ResourceViewPage, SearchPage, ContributePage, AboutPage
+- **Enhanced empty states** — Added `SearchOffIcon` illustration, "Clear All Filters" CTA button, and `aria-live="polite"` to ResourceListPage empty state. Enhanced SearchPage no-results state with larger icon
+- **Removed Header/Footer prop drilling** — Header and Footer now use `useNavigate()` from TanStack Router directly instead of receiving `onNavigate` prop. Root route simplified — no longer creates `handleNavigate` callback
+- **Added keyboard focus trapping** — Mobile drawer in Header now traps Tab/Shift+Tab focus within drawer content. Uses `useRef` + `useEffect` with `keydown` listener. Auto-focuses first element on open. Added `role="dialog"` and `aria-modal="true"` to Drawer ModalProps
+- **Added global focus-visible styles** — Added `*:focus-visible` rules to `index.css` with yellow outline + box-shadow glow. Covers buttons, links, inputs, MUI components. Removes default outline for mouse users (`:focus:not(:focus-visible)`)
+- **Added cookie consent banner** — Created `components/CookieConsent/CookieConsent.tsx` with Accept/Decline buttons, localStorage persistence (`cookie-consent` key), neo-brutalist styling, `role="dialog"`, `aria-describedby`. Integrated into root layout
+- **Build verification:** TypeScript PASS, Vite build PASS (620KB JS / 195KB gzipped, 11.4KB CSS / 3.4KB gzipped)
+
+### 2026-05-21 — Phase 8: URL System & Routing Overhaul
+- **Created `lib/filterUtils.ts`** — URL ↔ FilterState conversion utilities: `filtersToSearchParams()`, `searchParamsToFilters()`, `sanitizeString()`, validation helpers (`isValidClass`, `isValidSubject`, `isValidType`), constant arrays for valid values
+- **Fixed URL-synced filters on all resource routes** — All 5 resource routes (`primary`, `secondary`, `programs`, `formats`, `admissions`) now accept `?class=`, `?subject=`, `?type=`, `?q=` URL params via `validateSearch`, parse them into `FilterState`, and pass `initialFilters` to `ResourceListPage`
+- **Fixed SearchPage URL sync** — `/search` route now validates and parses all filter params (`class`, `subject`, `type`, `q`), passes `initialFilters` to SearchPage, and syncs filter changes back to URL via `navigate({ search: ..., replace: true })`
+- **Fixed ResourceListPage URL sync** — Now accepts `initialFilters` prop, initializes filters from URL, syncs filter changes to URL params
+- **Fixed ClassSpotlight navigation** — Subject card clicks now navigate to `/search` with proper `class` and `subject` search params using `useNavigate` directly (removed broken `onNavigate` prop pattern)
+- **Fixed Share button** — `ResourceViewPage` now uses native Web Share API (`navigator.share`) on mobile, falls back to clipboard copy on desktop, shows snackbar feedback for success/error/abort states. Added `useSnackbar` hook to `SnackbarProvider`
+- **Enhanced 404 page** — Neo-brutalist styling with thick borders, hard shadows, doodle decorations, quick-link chips (Classes 1-5, Classes 6-12, Search, Programs), improved copy ("This page took a different path")
+- **Input sanitization** — All URL params sanitized via `sanitizeString()` (strips `<`/`>`, trims, 200 char limit), validated against allowlists before use
+- **Restored missing CSS** — All neo-brutalist animation classes restored to `index.css` (card-hover, btn-press, scroll-reveal, shimmer, sticker-badge, drawer-slide, panel-slide-up, snackbar-enter, page transitions, etc.)
+- **Build verification:** TypeScript PASS (zero errors)

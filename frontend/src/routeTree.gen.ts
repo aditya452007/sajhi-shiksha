@@ -13,6 +13,7 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as ContributeRouteImport } from './routes/contribute'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ViewIdRouteImport } from './routes/view.$id'
 import { Route as ResourcesSecondaryRouteImport } from './routes/resources.secondary'
@@ -39,6 +40,11 @@ const ContributeRoute = ContributeRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SplatRoute = SplatRouteImport.update({
+  id: '/$',
+  path: '/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -79,6 +85,7 @@ const ResourcesAdmissionsRoute = ResourcesAdmissionsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/contribute': typeof ContributeRoute
   '/resources': typeof ResourcesRouteWithChildren
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/contribute': typeof ContributeRoute
   '/resources': typeof ResourcesRouteWithChildren
@@ -106,6 +114,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/contribute': typeof ContributeRoute
   '/resources': typeof ResourcesRouteWithChildren
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$'
     | '/about'
     | '/contribute'
     | '/resources'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$'
     | '/about'
     | '/contribute'
     | '/resources'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/$'
     | '/about'
     | '/contribute'
     | '/resources'
@@ -161,6 +173,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SplatRoute: typeof SplatRoute
   AboutRoute: typeof AboutRoute
   ContributeRoute: typeof ContributeRoute
   ResourcesRoute: typeof ResourcesRouteWithChildren
@@ -196,6 +209,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$': {
+      id: '/$'
+      path: '/$'
+      fullPath: '/$'
+      preLoaderRoute: typeof SplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -272,6 +292,7 @@ const ResourcesRouteWithChildren = ResourcesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SplatRoute: SplatRoute,
   AboutRoute: AboutRoute,
   ContributeRoute: ContributeRoute,
   ResourcesRoute: ResourcesRouteWithChildren,

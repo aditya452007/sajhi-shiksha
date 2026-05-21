@@ -1,10 +1,12 @@
 import { createRoute, useNavigate, useParams } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
-import { useMemo } from 'react';
-import ResourceViewPage from '@/features/viewer/components/ResourceViewPage';
+import { Suspense, lazy, useMemo } from 'react';
+import SuspenseLoader from '@/components/SuspenseLoader/SuspenseLoader';
 import { useSEO } from '@/hooks/useSEO';
 import resources from '@/data/resources.json';
 import type { Resource } from '@/types';
+
+const ResourceViewPage = lazy(() => import('@/features/viewer/components/ResourceViewPage'));
 
 function ViewResourcePage(): React.ReactElement {
     const navigate = useNavigate();
@@ -29,11 +31,13 @@ function ViewResourcePage(): React.ReactElement {
     };
 
     return (
-        <ResourceViewPage
-            resourceId={id}
-            onBack={handleBack}
-            onNavigate={handleNavigate}
-        />
+        <Suspense fallback={<SuspenseLoader message="Loading resource..." />}>
+            <ResourceViewPage
+                resourceId={id}
+                onBack={handleBack}
+                onNavigate={handleNavigate}
+            />
+        </Suspense>
     );
 }
 

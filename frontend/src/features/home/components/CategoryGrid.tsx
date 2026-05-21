@@ -4,13 +4,14 @@ import { motion } from 'framer-motion';
 import CategoryCard from '@/components/CategoryCard/CategoryCard';
 import { SquiggleDoodle } from '@/components/Doodles';
 import type { CategoryCard as CategoryCardType } from '@/types';
+import { MAX_CONTENT_WIDTH, FONT_HEADING } from '@/lib/constants';
 
 interface CategoryGridProps {
     categories: CategoryCardType[];
     onCategoryClick: (route: string) => void;
 }
 
-const CategoryGrid: React.FC<CategoryGridProps> = ({ categories, onCategoryClick }) => {
+const CategoryGrid: React.FC<CategoryGridProps> = React.memo(({ categories, onCategoryClick }) => {
     return (
         <Box
             sx={{
@@ -19,7 +20,7 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({ categories, onCategoryClick
                 position: 'relative',
             }}
         >
-            <Box sx={{ maxWidth: '1200px', mx: 'auto' }}>
+            <Box sx={{ maxWidth: MAX_CONTENT_WIDTH, mx: 'auto' }}>
                 <motion.div
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -27,7 +28,7 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({ categories, onCategoryClick
                 >
                     <Typography
                         sx={{
-                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontFamily: FONT_HEADING,
                             fontWeight: 800,
                             fontSize: { xs: '1.75rem', md: '2.25rem' },
                             textAlign: 'center',
@@ -75,6 +76,8 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({ categories, onCategoryClick
             </Box>
         </Box>
     );
-};
+});
+
+CategoryGrid.displayName = 'CategoryGrid';
 
 export default CategoryGrid;

@@ -1,4 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                               */
+/* ------------------------------------------------------------------ */
 
 interface SEOConfig {
     title: string;
@@ -9,9 +13,19 @@ interface SEOConfig {
     jsonLd?: Record<string, unknown>;
 }
 
+/* ------------------------------------------------------------------ */
+/*  Constants                                                           */
+/* ------------------------------------------------------------------ */
+
 const SITE_URL = 'https://www.sajhishiksha.in';
 const DEFAULT_TITLE = 'Sajhi Shiksha — Free Study Materials for KVS Students';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-image.png`;
+const DEFAULT_KEYWORDS =
+    'KVS, Kendriya Vidyalaya, study materials, question papers, class 1-5, class 6-12, education, free resources, India';
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                             */
+/* ------------------------------------------------------------------ */
 
 function setMeta(name: string, content: string, attr = 'name'): void {
     let el = document.querySelector(`meta[${attr}="${name}"]`);
@@ -23,25 +37,59 @@ function setMeta(name: string, content: string, attr = 'name'): void {
     el.setAttribute('content', content);
 }
 
-export function useSEO({ title, description, canonicalPath, ogImage, noIndex, jsonLd }: SEOConfig): void {
+function removeMeta(name: string, attr = 'name'): void {
+    const el = document.querySelector(`meta[${attr}="${name}"]`);
+    if (el && el.parentNode) {
+        el.parentNode.removeChild(el);
+    }
+}
+
+function setLink(rel: string, href: string): void {
+    let el = document.querySelector(`link[rel="${rel}"]`);
+    if (!el) {
+        el = document.createElement('link');
+        el.setAttribute('rel', rel);
+        document.head.appendChild(el);
+    }
+    el.setAttribute('href', href);
+}
+
+function removeLink(rel: string): void {
+    const el = document.querySelector(`link[rel="${rel}"]`);
+    if (el && el.parentNode) {
+        el.parentNode.removeChild(el);
+    }
+}
+
+let jsonLdEl: HTMLScriptElement | null = null;
+
+/* ------------------------------------------------------------------ */
+/*  useSEO hook                                                         */
+/* ------------------------------------------------------------------ */
+
+export function useSEO({
+    title,
+    description,
+    canonicalPath,
+    ogImage,
+    noIndex,
+    jsonLd,
+}: SEOConfig): void {
+    const prevTitleRef = useRef<string>(document.title);
+
     useEffect(() => {
         const fullTitle = title === DEFAULT_TITLE ? title : `${title} — Sajhi Shiksha`;
+        prevTitleRef.current = document.title;
         document.title = fullTitle;
 
         setMeta('description', description);
-        setMeta('keywords', 'KVS, Kendriya Vidyalaya, study materials, question papers, class 1-5, class 6-12, education, free resources, India');
+        setMeta('keywords', DEFAULT_KEYWORDS);
         setMeta('author', 'Sajhi Shiksha');
         setMeta('robots', noIndex ? 'noindex, nofollow' : 'index, follow');
         setMeta('language', 'English');
 
         const canonical = canonicalPath ? `${SITE_URL}${canonicalPath}` : SITE_URL;
-        let canonicalEl = document.querySelector('link[rel="canonical"]');
-        if (!canonicalEl) {
-            canonicalEl = document.createElement('link');
-            canonicalEl.setAttribute('rel', 'canonical');
-            document.head.appendChild(canonicalEl);
-        }
-        canonicalEl.setAttribute('href', canonical);
+        setLink('canonical', canonical);
 
         setMeta('og:type', 'website', 'property');
         setMeta('og:url', canonical, 'property');
@@ -54,11 +102,10 @@ export function useSEO({ title, description, canonicalPath, ogImage, noIndex, js
         setMeta('og:locale', 'en_US', 'property');
 
         setMeta('twitter:card', 'summary_large_image');
-        setMeta('twitter:title', fullTitle, 'name');
-        setMeta('twitter:description', description, 'name');
-        setMeta('twitter:image', ogImage || DEFAULT_OG_IMAGE, 'name');
+        setMeta('twitter:title', fullTitle);
+        setMeta('twitter:description', description);
+        setMeta('twitter:image', ogImage || DEFAULT_OG_IMAGE);
 
-        let jsonLdEl = document.querySelector('script[type="application/ld+json"]');
         if (jsonLd) {
             if (!jsonLdEl) {
                 jsonLdEl = document.createElement('script');
@@ -71,6 +118,33 @@ export function useSEO({ title, description, canonicalPath, ogImage, noIndex, js
         }
 
         return () => {
+            /*  Reset to previous title */
+            document.title = prevTitleRef.current;
+
+            /*  Remove dynamic meta tags */
+            removeMeta('description');
+            removeMeta('keywords');
+            removeMeta('author');
+            removeMeta('robots');
+            removeMeta('language');
+            removeMeta('og:type', 'property');
+            removeMeta('og:url', 'property');
+            removeMeta('og:title', 'property');
+            removeMeta('og:description', 'property');
+            removeMeta('og:image', 'property');
+            removeMeta('og:image:width', 'property');
+            removeMeta('og:image:height', 'property');
+            removeMeta('og:site_name', 'property');
+            removeMeta('og:locale', 'property');
+            removeMeta('twitter:card');
+            removeMeta('twitter:title');
+            removeMeta('twitter:description');
+            removeMeta('twitter:image');
+
+            /*  Remove canonical */
+            removeLink('canonical');
+
+            /*  Clear JSON-LD */
             if (jsonLdEl) {
                 jsonLdEl.textContent = '';
             }
@@ -78,13 +152,17 @@ export function useSEO({ title, description, canonicalPath, ogImage, noIndex, js
     }, [title, description, canonicalPath, ogImage, noIndex, jsonLd]);
 }
 
+/* ------------------------------------------------------------------ */
+/*  Static helper objects                                               */
+/* ------------------------------------------------------------------ */
+
 export const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Sajhi Shiksha',
     url: SITE_URL,
     description: 'Free educational resources for KVS students',
-    sameAs: [],
+    sameAs: [] as string[],
 };
 
 export const websiteSchema = {

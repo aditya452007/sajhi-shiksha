@@ -6,7 +6,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import SearchIcon from '@mui/icons-material/Search';
 import { useLocation, useNavigate } from '@tanstack/react-router';
-import { useTheme } from '@/context/ThemeContext';
+import { FONT_MONO, COLOR_TEXT_LIGHT } from '@/lib/constants';
 
 interface TabConfig {
     label: string;
@@ -25,7 +25,6 @@ const tabs: TabConfig[] = [
 const BottomTabBar: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [isDark] = useTheme();
     const borderColor = 'var(--color-border)';
 
     const activeIndex = tabs.findIndex((tab) => {
@@ -64,7 +63,7 @@ const BottomTabBar: React.FC = () => {
                         padding: '6px 4px 8px',
                         color: 'var(--color-text)',
                         '&.Mui-selected': {
-                            color: '#1A1A1A',
+                            color: COLOR_TEXT_LIGHT,
                             bgcolor: 'var(--color-yellow)',
                             border: `2px solid ${borderColor}`,
                             borderRadius: 0,
@@ -76,7 +75,7 @@ const BottomTabBar: React.FC = () => {
                         '& .MuiBottomNavigationAction-label': {
                             fontSize: '0.675rem',
                             lineHeight: 1.2,
-                            fontFamily: "'Space Mono', monospace",
+                            fontFamily: FONT_MONO,
                         },
                         '& .MuiSvgIcon-root': {
                             fontSize: '1.3rem',
@@ -85,12 +84,13 @@ const BottomTabBar: React.FC = () => {
                     },
                 }}
             >
-                {tabs.map((tab) => (
+                {tabs.map((tab, index) => (
                     <BottomNavigationAction
                         key={tab.route}
                         label={tab.label}
                         icon={tab.icon}
                         aria-label={tab.label}
+                        aria-current={index === activeIndex ? 'page' : undefined}
                     />
                 ))}
             </BottomNavigation>

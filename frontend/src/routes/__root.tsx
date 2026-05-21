@@ -1,10 +1,11 @@
-import { createRootRoute, Outlet, useNavigate } from '@tanstack/react-router';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { Box } from '@mui/material';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import BottomTabBar from '@/components/BottomTabBar/BottomTabBar';
 import PageTransition from '@/components/PageTransition/PageTransition';
+import CookieConsent from '@/components/CookieConsent/CookieConsent';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
 export const Route = createRootRoute({
@@ -13,16 +14,15 @@ export const Route = createRootRoute({
 
 function RootComponent(): React.ReactElement {
     useAnalytics();
-    const navigate = useNavigate();
 
-    const handleNavigate = (route: string): void => {
-        navigate({ to: route });
-    };
+    const isDev = import.meta.env.DEV;
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <Header onNavigate={handleNavigate} />
+            <a href="#main-content" className="skip-link">Skip to main content</a>
+            <Header />
             <Box
+                id="main-content"
                 sx={{
                     flex: 1,
                     pb: { xs: 8, md: 0 },
@@ -32,9 +32,10 @@ function RootComponent(): React.ReactElement {
                     <Outlet />
                 </PageTransition>
             </Box>
-            <Footer onNavigate={handleNavigate} />
+            <Footer />
             <BottomTabBar />
-            <TanStackRouterDevtools />
+            <CookieConsent />
+            {isDev && <div aria-hidden="true"><TanStackRouterDevtools /></div>}
         </Box>
     );
 }

@@ -1,7 +1,10 @@
 import { createRoute, useNavigate } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
-import AboutPage from '@/features/about/components/AboutPage';
+import { Suspense, lazy } from 'react';
+import SuspenseLoader from '@/components/SuspenseLoader/SuspenseLoader';
 import { useSEO, educationalOrgSchema } from '@/hooks/useSEO';
+
+const AboutPage = lazy(() => import('@/features/about/components/AboutPage'));
 
 function AboutRouteComponent(): React.ReactElement {
     useSEO({
@@ -17,7 +20,11 @@ function AboutRouteComponent(): React.ReactElement {
         navigate({ to: route });
     };
 
-    return <AboutPage onNavigate={handleNavigate} />;
+    return (
+        <Suspense fallback={<SuspenseLoader message="Loading..." />}>
+            <AboutPage onNavigate={handleNavigate} />
+        </Suspense>
+    );
 }
 
 export const Route = createRoute({

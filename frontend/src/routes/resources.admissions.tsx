@@ -1,16 +1,25 @@
-import { createRoute, useNavigate } from '@tanstack/react-router';
+import { createRoute, useNavigate, useSearch } from '@tanstack/react-router';
 import { Route as resourcesRoute } from './resources';
-import ResourceListPage from '@/features/resources/components/ResourceListPage';
+import { Suspense, lazy } from 'react';
+import SuspenseLoader from '@/components/SuspenseLoader/SuspenseLoader';
 import { useSEO } from '@/hooks/useSEO';
+import { searchParamsToFilters } from '@/lib/filterUtils';
+
+const ResourceListPage = lazy(() => import('@/features/resources/components/ResourceListPage'));
 
 function AdmissionsResourcesPage(): React.ReactElement {
+    const navigate = useNavigate();
+    const search = useSearch({ from: Route.id });
+
+    const filters = searchParamsToFilters(new URLSearchParams(
+        `class=${search.class || ''}&subject=${search.subject || ''}&type=${search.type || ''}&q=${search.q || ''}`
+    ));
+
     useSEO({
         title: 'Admissions',
-        description: 'KVS admission guidelines, CBSE/NIOS formats, and enrollment information for students and parents.',
+        description: 'CBSE/NIOS guidelines, KVS admission procedures, and eligibility criteria.',
         canonicalPath: '/resources/admissions',
     });
-
-    const navigate = useNavigate();
 
     const handleViewResource = (id: string): void => {
         navigate({ to: '/view/$id', params: { id } });
@@ -21,18 +30,27 @@ function AdmissionsResourcesPage(): React.ReactElement {
     };
 
     return (
-        <ResourceListPage
-            category="admissions"
-            title="Admissions"
-            description="KVS admission guidelines, CBSE/NIOS formats, and enrollment information."
-            onViewResource={handleViewResource}
-            onNavigate={handleNavigate}
-        />
+        <Suspense fallback={<SuspenseLoader message="Loading resources..." />}>
+            <ResourceListPage
+                category="admissions"
+                title="Admissions"
+                description="CBSE/NIOS guidelines, KVS admission procedures, and eligibility criteria."
+                initialFilters={filters}
+                onViewResource={handleViewResource}
+                onNavigate={handleNavigate}
+            />
+        </Suspense>
     );
 }
 
 export const Route = createRoute({
     getParentRoute: () => resourcesRoute,
     path: 'admissions',
+    validateSearch: (search: Record<string, unknown>): { class?: string; subject?: string; type?: string; q?: string } => ({
+        class: typeof search.class === 'string' ? search.class : undefined,
+        subject: typeof search.subject === 'string' ? search.subject : undefined,
+        type: typeof search.type === 'string' ? search.type : undefined,
+        q: typeof search.q === 'string' ? search.q : undefined,
+    }),
     component: AdmissionsResourcesPage,
 });

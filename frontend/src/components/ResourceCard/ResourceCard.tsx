@@ -8,6 +8,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useTheme } from '@/context/ThemeContext';
 import type { Resource } from '@/types';
+import { FONT_HEADING, FONT_MONO, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
 
 interface ResourceCardProps {
     resource: Resource;
@@ -45,12 +46,60 @@ const subjectColorMap: Record<string, string> = {
     General: 'var(--subject-general)',
 };
 
+const ResourceCardTags: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
+    const subjectColor = resource.subject ? (subjectColorMap[resource.subject] ?? 'var(--color-text-secondary)') : 'var(--color-text-secondary)';
+
+    return (
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+            {resource.class && (
+                <Box
+                    sx={{
+                        px: 1.5,
+                        py: 0.5,
+                        bgcolor: 'var(--color-yellow)',
+                        border: `2px solid ${borderColor}`,
+                        borderRadius: BORDER_RADIUS_PILL,
+                        fontFamily: FONT_MONO,
+                        fontWeight: 700,
+                        fontSize: '0.75rem',
+                        color: COLOR_TEXT_LIGHT,
+                        boxShadow: `2px 2px 0px ${shadowColor}`,
+                    }}
+                >
+                    Class {resource.class}
+                </Box>
+            )}
+            {resource.subject && (
+                <Box
+                    sx={{
+                        px: 1.5,
+                        py: 0.5,
+                        bgcolor: `${subjectColor}30`,
+                        border: `2px solid ${borderColor}`,
+                        borderRadius: BORDER_RADIUS_PILL,
+                        fontFamily: FONT_MONO,
+                        fontWeight: 700,
+                        fontSize: '0.75rem',
+                        color: subjectColor,
+                        boxShadow: `2px 2px 0px ${shadowColor}`,
+                    }}
+                >
+                    {resource.subject}
+                </Box>
+            )}
+        </Box>
+    );
+});
+
+ResourceCardTags.displayName = 'ResourceCardTags';
+
 const ResourceCard: React.FC<ResourceCardProps> = React.memo(
     ({ resource, viewMode = 'grid', onView, onDownload }) => {
-        const [isDark] = useTheme();
+        const [_isDark] = useTheme();
         const IconComponent = typeIconMap[resource.type] ?? DescriptionIcon;
         const iconColor = typeColorMap[resource.type] ?? 'var(--color-text-secondary)';
-        const subjectColor = resource.subject ? (subjectColorMap[resource.subject] ?? 'var(--color-text-secondary)') : 'var(--color-text-secondary)';
         const borderColor = 'var(--color-border)';
         const shadowColor = 'var(--color-shadow)';
 
@@ -87,7 +136,7 @@ const ResourceCard: React.FC<ResourceCardProps> = React.memo(
                         </Box>
                         <Box sx={{ flex: 1, minWidth: 0 }}>
                             <Typography
-                                sx={{ fontWeight: 700, mb: 0.5, fontFamily: "'Space Grotesk', sans-serif", fontSize: { xs: '1rem', sm: 'inherit' } }}
+                                sx={{ fontWeight: 700, mb: 0.5, fontFamily: FONT_HEADING, fontSize: { xs: '1rem', sm: 'inherit' } }}
                                 noWrap
                             >
                                 {resource.title}
@@ -100,44 +149,7 @@ const ResourceCard: React.FC<ResourceCardProps> = React.memo(
                             </Typography>
                         </Box>
                     </Box>
-                    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', width: { xs: '100%', sm: 'auto' } }}>
-                        {resource.class && (
-                            <Box
-                                sx={{
-                                    px: 1.5,
-                                    py: 0.5,
-                                    bgcolor: 'var(--color-yellow)',
-                                    border: `2px solid ${borderColor}`,
-                                    borderRadius: '9999px',
-                                    fontFamily: "'Space Mono', monospace",
-                                    fontWeight: 700,
-                                    fontSize: '0.75rem',
-                                    color: '#1A1A1A',
-                                    boxShadow: `2px 2px 0px ${shadowColor}`,
-                                }}
-                            >
-                                Class {resource.class}
-                            </Box>
-                        )}
-                        {resource.subject && (
-                            <Box
-                                sx={{
-                                    px: 1.5,
-                                    py: 0.5,
-                                    bgcolor: `${subjectColor}30`,
-                                    border: `2px solid ${borderColor}`,
-                                    borderRadius: '9999px',
-                                    fontFamily: "'Space Mono', monospace",
-                                    fontWeight: 700,
-                                    fontSize: '0.75rem',
-                                    color: subjectColor,
-                                    boxShadow: `2px 2px 0px ${shadowColor}`,
-                                }}
-                            >
-                                {resource.subject}
-                            </Box>
-                        )}
-                    </Box>
+                    <ResourceCardTags resource={resource} />
                     <Box sx={{ display: 'flex', gap: 1, flexShrink: 0, width: { xs: '100%', sm: 'auto' } }}>
                         <Button
                             size="small"
@@ -219,49 +231,12 @@ const ResourceCard: React.FC<ResourceCardProps> = React.memo(
                         <IconComponent sx={{ fontSize: 32, color: iconColor }} />
                     </Box>
                     <Typography
-                        sx={{ mb: 1, fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.1rem' }}
+                        sx={{ mb: 1, fontWeight: 800, fontFamily: FONT_HEADING, fontSize: '1.1rem' }}
                         noWrap
                     >
                         {resource.title}
                     </Typography>
-                    <Box sx={{ display: 'flex', gap: 1, mb: 1.5, flexWrap: 'wrap' }}>
-                        {resource.class && (
-                            <Box
-                                sx={{
-                                    px: 1.5,
-                                    py: 0.5,
-                                    bgcolor: 'var(--color-yellow)',
-                                    border: `2px solid ${borderColor}`,
-                                    borderRadius: '9999px',
-                                    fontFamily: "'Space Mono', monospace",
-                                    fontWeight: 700,
-                                    fontSize: '0.75rem',
-                                    color: '#1A1A1A',
-                                    boxShadow: `2px 2px 0px ${shadowColor}`,
-                                }}
-                            >
-                                Class {resource.class}
-                            </Box>
-                        )}
-                        {resource.subject && (
-                            <Box
-                                sx={{
-                                    px: 1.5,
-                                    py: 0.5,
-                                    bgcolor: `${subjectColor}30`,
-                                    border: `2px solid ${borderColor}`,
-                                    borderRadius: '9999px',
-                                    fontFamily: "'Space Mono', monospace",
-                                    fontWeight: 700,
-                                    fontSize: '0.75rem',
-                                    color: subjectColor,
-                                    boxShadow: `2px 2px 0px ${shadowColor}`,
-                                }}
-                            >
-                                {resource.subject}
-                            </Box>
-                        )}
-                    </Box>
+                    <ResourceCardTags resource={resource} />
                     <Typography
                         sx={{
                             color: 'var(--color-text-secondary)',
@@ -286,12 +261,12 @@ const ResourceCard: React.FC<ResourceCardProps> = React.memo(
                         }}
                         sx={{
                             bgcolor: 'var(--color-yellow)',
-                            color: '#1A1A1A',
+                            color: COLOR_TEXT_LIGHT,
                             border: `2px solid ${borderColor}`,
                             boxShadow: `2px 2px 0px ${shadowColor}`,
                             '&:hover': {
                                 bgcolor: 'var(--color-bg-secondary)',
-                                color: '#1A1A1A',
+                                color: COLOR_TEXT_LIGHT,
                                 transform: 'translate(-1px, -1px)',
                                 boxShadow: `3px 3px 0px ${shadowColor}`,
                             },

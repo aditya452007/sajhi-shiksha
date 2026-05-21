@@ -1,7 +1,10 @@
 import { createRoute, useNavigate } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
-import ContributePage from '@/features/contribute/components/ContributePage';
+import { Suspense, lazy } from 'react';
+import SuspenseLoader from '@/components/SuspenseLoader/SuspenseLoader';
 import { useSEO } from '@/hooks/useSEO';
+
+const ContributePage = lazy(() => import('@/features/contribute/components/ContributePage'));
 
 function ContributeRouteComponent(): React.ReactElement {
     useSEO({
@@ -16,7 +19,11 @@ function ContributeRouteComponent(): React.ReactElement {
         navigate({ to: route });
     };
 
-    return <ContributePage onNavigate={handleNavigate} />;
+    return (
+        <Suspense fallback={<SuspenseLoader message="Loading..." />}>
+            <ContributePage onNavigate={handleNavigate} />
+        </Suspense>
+    );
 }
 
 export const Route = createRoute({

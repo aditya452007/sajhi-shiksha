@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Box, Typography, Tabs, Tab } from '@mui/material';
+import { useNavigate } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/context/ThemeContext';
-import { SUBJECTS_PRIMARY } from '@/lib/constants';
+import { SUBJECTS_PRIMARY, MAX_CONTENT_WIDTH, FONT_HEADING, FONT_MONO, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
 import { SquiggleDoodle } from '@/components/Doodles';
 
 interface ClassSpotlightProps {
     title: string;
     classNumbers: number[];
-    onNavigate?: (route: string) => void;
 }
 
-const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers, onNavigate }) => {
-    const [isDark] = useTheme();
+const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers }) => {
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState(0);
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
@@ -27,11 +26,12 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers, on
         General: 'var(--subject-general)',
     };
 
-    const handleSubjectClick = (subject: string) => {
-        if (onNavigate) {
-            onNavigate(`/resources/primary?class=${activeClass}&subject=${encodeURIComponent(subject)}`);
-        }
-    };
+    const handleSubjectClick = useCallback((subject: string) => {
+        navigate({
+            to: '/search',
+            search: { class: String(activeClass), subject },
+        });
+    }, [navigate, activeClass]);
 
     return (
         <Box
@@ -43,7 +43,7 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers, on
                 borderBottom: `3px solid ${borderColor}`,
             }}
         >
-            <Box sx={{ maxWidth: '1200px', mx: 'auto' }}>
+            <Box sx={{ maxWidth: MAX_CONTENT_WIDTH, mx: 'auto' }}>
                 <motion.div
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -52,38 +52,38 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers, on
                 >
                     <Typography
                         sx={{
-                            fontFamily: "'Space Grotesk', sans-serif",
-                            fontWeight: 800,
-                            fontSize: { xs: '1.75rem', md: '2.25rem' },
-                            textAlign: 'center',
-                            mb: 2,
-                            color: 'var(--color-text)',
-                        }}
-                    >
-                        {title}
-                    </Typography>
-                </motion.div>
+                        fontFamily: FONT_HEADING,
+                        fontWeight: 800,
+                        fontSize: { xs: '1.75rem', md: '2.25rem' },
+                        textAlign: 'center',
+                        mb: 2,
+                        color: 'var(--color-text)',
+                    }}
+                >
+                    {title}
+                </Typography>
+            </motion.div>
 
-                <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
-                    <SquiggleDoodle width={100} />
-                </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
+                <SquiggleDoodle width={100} />
+            </Box>
 
-                <Tabs
-                    value={activeTab}
-                    onChange={(_event, newValue) => setActiveTab(newValue)}
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    sx={{
-                        mb: 4,
-                        '& .MuiTabs-indicator': {
-                            display: 'none',
-                        },
-                        '& .MuiTab-root': {
-                            border: `2px solid ${borderColor}`,
-                            borderRadius: '9999px',
-                            boxShadow: `2px 2px 0px ${shadowColor}`,
-                            mx: 0.5,
-                            fontFamily: "'Space Mono', monospace",
+            <Tabs
+                value={activeTab}
+                onChange={(_event, newValue) => setActiveTab(newValue)}
+                variant="scrollable"
+                scrollButtons="auto"
+                sx={{
+                    mb: 4,
+                    '& .MuiTabs-indicator': {
+                        display: 'none',
+                    },
+                    '& .MuiTab-root': {
+                        border: `2px solid ${borderColor}`,
+                        borderRadius: BORDER_RADIUS_PILL,
+                        boxShadow: `2px 2px 0px ${shadowColor}`,
+                        mx: 0.5,
+                        fontFamily: FONT_MONO,
                             fontWeight: 700,
                             fontSize: '0.8rem',
                             minHeight: '40px',
@@ -139,23 +139,23 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers, on
                                 sx={{
                                     p: 2,
                                     textAlign: 'center',
-                                    cursor: onNavigate ? 'pointer' : 'default',
+                                    cursor: 'pointer',
                                     bgcolor: subjectColors[subject] || 'var(--color-bg)',
                                     border: `3px solid ${borderColor}`,
                                     boxShadow: `3px 3px 0px ${shadowColor}`,
                                     transition: 'transform 0.15s ease, box-shadow 0.15s ease',
-                                    '&:hover': onNavigate ? {
+                                    '&:hover': {
                                         transform: 'translate(-2px, -2px)',
                                         boxShadow: `5px 5px 0px ${shadowColor}`,
-                                    } : {},
-                                    '&:active': onNavigate ? {
+                                    },
+                                    '&:active': {
                                         transform: 'translate(2px, 2px)',
                                         boxShadow: `1px 1px 0px ${shadowColor}`,
-                                    } : {},
+                                    },
                                 }}
-                                role={onNavigate ? 'button' : undefined}
-                                tabIndex={onNavigate ? 0 : undefined}
-                                aria-label={onNavigate ? `${subject} Class ${activeClass}` : undefined}
+                                role="button"
+                                tabIndex={0}
+                                aria-label={`${subject} Class ${activeClass}`}
                             >
                                 <Box
                                     sx={{
@@ -172,7 +172,7 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers, on
                                 >
                                     <Typography
                                         sx={{
-                                            fontFamily: "'Space Grotesk', sans-serif",
+                                            fontFamily: FONT_HEADING,
                                             fontWeight: 800,
                                             color: subjectColors[subject] || 'var(--color-text)',
                                         }}
@@ -182,18 +182,18 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers, on
                                 </Box>
                                 <Typography
                                     sx={{
-                                        fontFamily: "'Space Grotesk', sans-serif",
+                                        fontFamily: FONT_HEADING,
                                         fontWeight: 700,
                                         fontSize: '0.9rem',
                                         mb: 0.5,
-                                        color: '#1A1A1A',
+                                color: COLOR_TEXT_LIGHT,
                                     }}
                                 >
                                     {subject}
                                 </Typography>
                                 <Typography
                                     sx={{
-                                        fontFamily: "'Space Mono', monospace",
+                                        fontFamily: FONT_MONO,
                                         fontSize: '0.7rem',
                                         color: 'rgba(26, 26, 26, 0.7)',
                                     }}
@@ -209,4 +209,4 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers, on
     );
 };
 
-export default ClassSpotlight;
+export default React.memo(ClassSpotlight);

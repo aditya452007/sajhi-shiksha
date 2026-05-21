@@ -1,35 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Box, TextField, Typography, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
-import { FILTER_CHIPS } from '@/lib/constants';
+import { FILTER_CHIPS, MAX_CONTENT_WIDTH, FONT_HEADING, FONT_MONO, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
 import { StarDoodle, PencilDoodle, BookDoodle } from '@/components/Doodles';
 
 interface HeroSectionProps {
     onFilter: (filter: string) => void;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({ onFilter }) => {
+const HeroSection: React.FC<HeroSectionProps> = React.memo(({ onFilter }) => {
     const navigate = useNavigate();
-    const [isDark] = useTheme();
+    const [_isDark] = useTheme();
     const [activeFilter, setActiveFilter] = useState('all');
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
 
-    const handleFilterClick = (value: string) => {
+    const handleFilterClick = useCallback((value: string) => {
         setActiveFilter(value);
         onFilter(value);
-    };
+    }, [onFilter]);
 
-    const chipColors = [
+    const chipColors = useMemo(() => [
         'var(--color-yellow)',
         'var(--color-pink)',
         'var(--color-blue)',
         'var(--color-green)',
         'var(--color-purple)',
-    ];
+    ], []);
 
     return (
         <Box
@@ -77,7 +77,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFilter }) => {
 
             <Box
                 sx={{
-                    maxWidth: '1200px',
+                    maxWidth: MAX_CONTENT_WIDTH,
                     mx: 'auto',
                     position: 'relative',
                     zIndex: 1,
@@ -95,7 +95,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFilter }) => {
                     >
                         <Typography
                             sx={{
-                                fontFamily: "'Space Grotesk', sans-serif",
+                                fontFamily: FONT_HEADING,
                                 fontWeight: 800,
                                 fontSize: { xs: '2rem', sm: '2.5rem', md: '3.5rem', lg: '4rem' },
                                 lineHeight: 1.05,
@@ -214,14 +214,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFilter }) => {
                                         background: activeFilter === chip.value
                                             ? chipColors[i % chipColors.length]
                                             : 'var(--color-bg)',
-                                        color: activeFilter === chip.value ? '#1A1A1A' : 'var(--color-text)',
+                                        color: activeFilter === chip.value ? COLOR_TEXT_LIGHT : 'var(--color-text)',
                                         border: `2px solid ${borderColor}`,
                                         boxShadow: activeFilter === chip.value
                                             ? `1px 1px 0px ${shadowColor}`
                                             : `2px 2px 0px ${shadowColor}`,
-                                        borderRadius: '9999px',
+                                        borderRadius: BORDER_RADIUS_PILL,
                                         padding: '6px 16px',
-                                        fontFamily: "'Space Mono', monospace",
+                                        fontFamily: FONT_MONO,
                                         fontWeight: 700,
                                         fontSize: '0.8rem',
                                         cursor: 'pointer',
@@ -291,6 +291,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFilter }) => {
             </Box>
         </Box>
     );
-};
+});
+
+HeroSection.displayName = 'HeroSection';
 
 export default HeroSection;

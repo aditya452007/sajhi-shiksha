@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
+import { Box, Typography, List, ListItemText, ListItemIcon } from '@mui/material';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import GavelIcon from '@mui/icons-material/Gavel';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -9,6 +9,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import { SquiggleDoodle } from '@/components/Doodles';
+import { FONT_HEADING, COLOR_TEXT_LIGHT } from '@/lib/constants';
 
 interface QuickLinkItem {
     id: string;
@@ -29,8 +30,8 @@ interface QuickLinksProps {
     onNavigate?: (route: string) => void;
 }
 
-const QuickLinks: React.FC<QuickLinksProps> = ({ onNavigate }) => {
-    const [isDark] = useTheme();
+const QuickLinks: React.FC<QuickLinksProps> = React.memo(({ onNavigate }) => {
+    const [_isDark] = useTheme();
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
 
@@ -53,14 +54,14 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onNavigate }) => {
                 >
                     <Typography
                         sx={{
-                            fontFamily: "'Space Grotesk', sans-serif",
-                            fontWeight: 800,
-                            fontSize: { xs: '1.75rem', md: '2.25rem' },
-                            textAlign: 'center',
-                            mb: 2,
-                        }}
-                    >
-                        Quick Links
+                        fontFamily: FONT_HEADING,
+                        fontWeight: 800,
+                        fontSize: { xs: '1.75rem', md: '2.25rem' },
+                        textAlign: 'center',
+                        mb: 2,
+                    }}
+                >
+                    Quick Links
                     </Typography>
                 </motion.div>
 
@@ -77,20 +78,33 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onNavigate }) => {
                 >
                     <List disablePadding>
                         {quickLinks.map((link, i) => (
-                            <ListItem
+         <Box
                                 key={link.id}
+                                role="button"
+                                tabIndex={0}
+                                aria-label={link.title}
                                 onClick={() => onNavigate?.(link.route)}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onNavigate?.(link.route); }}
                                 sx={{
                                     borderBottom: i < quickLinks.length - 1 ? `2px solid ${borderColor}` : 'none',
                                     cursor: onNavigate ? 'pointer' : 'default',
                                     transition: 'background-color 0.15s ease',
-                                    '&:hover': onNavigate ? {
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    px: 2,
+                                    py: 1.5,
+                                    outline: 'none',
+                                    '&:focus-visible': {
+                                        outline: '2px solid var(--color-yellow)',
+                                        outlineOffset: '-2px',
+                                    },
+                                        '&:hover': onNavigate ? {
                                         bgcolor: 'var(--color-yellow)',
                                         '& .quick-link-title': {
-                                            color: '#1A1A1A',
+                                            color: COLOR_TEXT_LIGHT,
                                         },
                                         '& .quick-link-chevron': {
-                                            color: '#1A1A1A',
+                                            color: COLOR_TEXT_LIGHT,
                                         },
                                     } : {},
                                 }}
@@ -103,7 +117,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onNavigate }) => {
                                         <Typography
                                             className="quick-link-title"
                                             sx={{
-                                                fontFamily: "'Space Grotesk', sans-serif",
+                                                fontFamily: FONT_HEADING,
                                                 fontWeight: 700,
                                                 color: 'var(--color-text)',
                                                 transition: 'color 0.15s ease',
@@ -115,18 +129,21 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onNavigate }) => {
                                 />
                                 <ChevronRightIcon
                                     className="quick-link-chevron"
+                                    aria-hidden="true"
                                     sx={{
                                         color: 'var(--color-text-secondary)',
                                         transition: 'transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.15s ease',
                                     }}
                                 />
-                            </ListItem>
+                            </Box>
                         ))}
                     </List>
                 </Box>
             </Box>
         </Box>
     );
-};
+});
+
+QuickLinks.displayName = 'QuickLinks';
 
 export default QuickLinks;

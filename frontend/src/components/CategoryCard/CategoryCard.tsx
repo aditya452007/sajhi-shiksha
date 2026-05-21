@@ -4,6 +4,7 @@ import * as Icons from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { formatResourceCount } from '@/lib/utils';
 import { useTheme } from '@/context/ThemeContext';
+import { FONT_HEADING, FONT_MONO, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
 
 interface CategoryCardProps {
     title: string;
@@ -35,7 +36,7 @@ const bgColors = [
 
 const CategoryCard: React.FC<CategoryCardProps> = React.memo(
     ({ title, description, icon, resourceCount, onClick, index = 0 }) => {
-        const [isDark] = useTheme();
+        const [_isDark] = useTheme();
         const IconComponent = iconMap[icon] ?? Icons.HelpOutlined;
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
@@ -113,12 +114,12 @@ const CategoryCard: React.FC<CategoryCardProps> = React.memo(
                     </Box>
                     <Typography
                         sx={{
-                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontFamily: FONT_HEADING,
                             fontWeight: 800,
                             fontSize: '1.25rem',
                             mb: 1,
                             lineHeight: 1.2,
-                            color: '#1A1A1A',
+                            color: COLOR_TEXT_LIGHT,
                         }}
                     >
                         {title}
@@ -135,7 +136,7 @@ const CategoryCard: React.FC<CategoryCardProps> = React.memo(
                     </Typography>
                     <Typography
                         sx={{
-                            fontFamily: "'Space Mono', monospace",
+                            fontFamily: FONT_MONO,
                             fontSize: '0.8rem',
                             fontWeight: 700,
                             color: 'var(--color-text)',
@@ -143,7 +144,7 @@ const CategoryCard: React.FC<CategoryCardProps> = React.memo(
                             border: `2px solid ${borderColor}`,
                             px: 2,
                             py: 0.5,
-                            borderRadius: '9999px',
+                            borderRadius: BORDER_RADIUS_PILL,
                             boxShadow: `2px 2px 0px ${shadowColor}`,
                         }}
                     >

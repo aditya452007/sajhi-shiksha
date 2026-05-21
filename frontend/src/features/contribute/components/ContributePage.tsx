@@ -8,9 +8,10 @@ import LinkIcon from '@mui/icons-material/Link';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import HomeIcon from '@mui/icons-material/Home';
 import { useTheme } from '@/context/ThemeContext';
 import contributorsData from '@/data/contributors.json';
+import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
+import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH, COLOR_TEXT_LIGHT } from '@/lib/constants';
 
 interface ContributePageProps {
     onNavigate: (route: string) => void;
@@ -55,27 +56,11 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
     const shadowColor = 'var(--color-shadow)';
 
     return (
-        <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
-            <Box sx={{ mb: 4 }}>
-                <Button
-                    onClick={() => onNavigate('/')}
-                    sx={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 0.5,
-                        mb: 2,
-                        color: 'var(--color-text)',
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        fontWeight: 700,
-                        border: 'none',
-                        boxShadow: 'none',
-                        '&:hover': { bgcolor: 'transparent' },
-                    }}
-                    startIcon={<HomeIcon fontSize="small" />}
-                >
-                    Home
-                </Button>
-            </Box>
+        <Box sx={{ maxWidth: MAX_CONTENT_WIDTH, mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
+            <Breadcrumb
+                items={[{ label: 'Contribute' }]}
+                onNavigate={onNavigate}
+            />
 
             <Box
                 sx={{
@@ -92,7 +77,7 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                 />
                 <Typography
                     sx={{
-                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontFamily: FONT_HEADING,
                         fontWeight: 800,
                         fontSize: { xs: '2rem', md: '2.5rem' },
                         mb: 2,
@@ -139,7 +124,7 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
 
             <Typography
                 sx={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: FONT_HEADING,
                     fontWeight: 800,
                     fontSize: { xs: '1.5rem', md: '2rem' },
                     mb: 4,
@@ -181,8 +166,8 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                                     justifyContent: 'center',
                                     fontWeight: 800,
                                     fontSize: '0.875rem',
-                                    fontFamily: "'Space Grotesk', sans-serif",
-                                    color: '#1A1A1A',
+                                    fontFamily: FONT_HEADING,
+                                    color: COLOR_TEXT_LIGHT,
                                 }}
                             >
                                 {step.number}
@@ -192,7 +177,7 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                             </Box>
                             <Typography
                                 sx={{
-                                    fontFamily: "'Space Grotesk', sans-serif",
+                                    fontFamily: FONT_HEADING,
                                     fontWeight: 700,
                                     fontSize: '1.1rem',
                                     mb: 1,
@@ -210,7 +195,7 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
 
             <Typography
                 sx={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: FONT_HEADING,
                     fontWeight: 800,
                     fontSize: { xs: '1.5rem', md: '2rem' },
                     mb: 4,
@@ -243,7 +228,7 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                                 <Box>
                                     <Typography
                                         sx={{
-                                            fontFamily: "'Space Grotesk', sans-serif",
+                                            fontFamily: FONT_HEADING,
                                             fontWeight: 700,
                                             mb: 0.5,
                                         }}
@@ -262,7 +247,7 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
 
             <Typography
                 sx={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: FONT_HEADING,
                     fontWeight: 800,
                     fontSize: { xs: '1.5rem', md: '2rem' },
                     mb: 4,
@@ -290,7 +275,7 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                                         height: 48,
                                         fontWeight: 800,
                                         border: `2px solid ${borderColor}`,
-                                        fontFamily: "'Space Grotesk', sans-serif",
+                                        fontFamily: FONT_HEADING,
                                     }}
                                 >
                                     {contributor.initials}
@@ -298,7 +283,7 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                                 <Box>
                                     <Typography
                                         sx={{
-                                            fontFamily: "'Space Grotesk', sans-serif",
+                                            fontFamily: FONT_HEADING,
                                             fontWeight: 700,
                                         }}
                                     >
@@ -309,7 +294,7 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                                     </Typography>
                                     <Typography
                                         sx={{
-                                            fontFamily: "'Space Mono', monospace",
+                                            fontFamily: FONT_MONO,
                                             fontSize: '0.75rem',
                                             color: 'var(--color-yellow)',
                                         }}
@@ -332,7 +317,7 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
 
             <Typography
                 sx={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: FONT_HEADING,
                     fontWeight: 800,
                     fontSize: { xs: '1.5rem', md: '2rem' },
                     mb: 4,
@@ -351,14 +336,14 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                         <EmailIcon sx={{ color: 'var(--color-text)' }} />
-                        <Link href={mailtoLink} sx={{ fontWeight: 700, color: 'var(--color-text)', fontFamily: "'Space Mono', monospace" }}>
+                        <Link href={mailtoLink} sx={{ fontWeight: 700, color: 'var(--color-text)', fontFamily: FONT_MONO }}>
                             {email}
                         </Link>
                     </Box>
                     {contributorsData.whatsapp && (
                         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                             <WhatsAppIcon sx={{ color: 'var(--color-text)' }} />
-                            <Typography sx={{ fontFamily: "'Space Mono', monospace" }}>{contributorsData.whatsapp}</Typography>
+                            <Typography sx={{ fontFamily: FONT_MONO }}>{contributorsData.whatsapp}</Typography>
                         </Box>
                     )}
                 </Box>

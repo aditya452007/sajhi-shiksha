@@ -133,6 +133,85 @@ input[type='button'],
     }
 }
 
+/* Global focus-visible styles for keyboard navigation */
+*:focus-visible {
+    outline: 3px solid var(--color-yellow);
+    outline-offset: 2px;
+}
+
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible,
+[role='link']:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.MuiButtonBase-root:focus-visible {
+    outline: 3px solid var(--color-yellow);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px rgba(255, 214, 0, 0.3);
+}
+
+.MuiButton-root:focus-visible,
+.MuiIconButton-root:focus-visible {
+    outline: 3px solid var(--color-yellow);
+    outline-offset: 2px;
+}
+
+/* Remove default outline for mouse users */
+*:focus:not(:focus-visible) {
+    outline: none;
+}
+
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 12px 24px;
+    background: var(--color-yellow);
+    color: var(--color-text);
+    border: var(--border-thick);
+    box-shadow: var(--shadow-card);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 0;
+    transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+    top: 8px;
+    outline: none;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Prefers Reduced Motion                                             */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .scroll-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    [data-theme] {
+        transition: none !important;
+    }
+}
+
+/* Safe Area Support */
 @supports (padding: env(safe-area-inset-bottom)) {
     .safe-bottom {
         padding-bottom: env(safe-area-inset-bottom);

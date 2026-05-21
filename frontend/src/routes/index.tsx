@@ -1,9 +1,10 @@
 import { createRoute, useNavigate } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
-import { Suspense } from 'react';
-import HomePage from '@/features/home/HomePage';
+import { Suspense, lazy } from 'react';
 import SuspenseLoader from '@/components/SuspenseLoader/SuspenseLoader';
 import { useSEO, websiteSchema, organizationSchema } from '@/hooks/useSEO';
+
+const HomePage = lazy(() => import('@/features/home/HomePage'));
 
 function IndexComponent(): React.ReactElement {
     useSEO({

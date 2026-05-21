@@ -1,21 +1,22 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Box, Typography, Chip } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import HomeIcon from '@mui/icons-material/Home';
-import { useTheme } from '@/context/ThemeContext';
+import { useNavigate } from '@tanstack/react-router';
 import resources from '@/data/resources.json';
 import SearchInput from '@/components/SearchBar/SearchInput';
 import FilterBar, { type FilterState } from '@/components/FilterBar/FilterBar';
 import ResourceCard from '@/components/ResourceCard/ResourceCard';
+import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
 import type { Resource } from '@/types';
+import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH } from '@/lib/constants';
+import { filtersToSearchParams } from '@/lib/filterUtils';
 
 interface SearchPageProps {
-    initialQuery?: string;
+    initialFilters: FilterState;
     onViewResource: (id: string) => void;
     onNavigate: (route: string) => void;
 }
 
-const DEFAULT_FILTERS: FilterState = { class: 'all', subject: 'all', type: 'all', search: '' };
 const MAX_RECENT = 5;
 
 function getRecentSearches(): string[] {
@@ -62,27 +63,18 @@ function scoreResource(resource: Resource, query: string): number {
 }
 
 export default function SearchPage({
-    initialQuery = '',
+    initialFilters,
     onViewResource,
     onNavigate,
 }: SearchPageProps) {
-    const [isDark] = useTheme();
-    const [query, setQuery] = useState(initialQuery);
-    const [filters, setFilters] = useState<FilterState>({
-        ...DEFAULT_FILTERS,
-        search: initialQuery,
-    });
-    const [hasSearched, setHasSearched] = useState(!!initialQuery);
-    const borderColor = 'var(--color-border)';
-    const shadowColor = 'var(--color-shadow)';
+    const navigate = useNavigate();
+
+    const [filters, setFilters] = useState<FilterState>(initialFilters);
+    const hasSearched = initialFilters.search !== '' || initialFilters.class !== 'all' || initialFilters.subject !== 'all' || initialFilters.type !== 'all';
 
     useEffect(() => {
-        if (initialQuery) {
-            setQuery(initialQuery);
-            setFilters((prev) => ({ ...prev, search: initialQuery }));
-            setHasSearched(true);
-        }
-    }, [initialQuery]);
+        setFilters(initialFilters);
+    }, [initialFilters]);
 
     const allResources = useMemo(() => resources as Resource[], []);
 
@@ -121,14 +113,28 @@ export default function SearchPage({
         return filtered;
     }, [allResources, filters, hasSearched]);
 
+    const syncFiltersToUrl = useCallback((newFilters: FilterState) => {
+        setFilters(newFilters);
+        const params = filtersToSearchParams(newFilters);
+        navigate({
+            to: '/search',
+            search: Object.fromEntries(params),
+            replace: true,
+        });
+    }, [navigate]);
+
     const handleSearch = useCallback((value: string) => {
-        setQuery(value);
-        setFilters((prev) => ({ ...prev, search: value }));
-        setHasSearched(true);
+        const newFilters = { ...filters, search: value };
+        syncFiltersToUrl(newFilters);
         if (value.trim()) {
             saveRecentSearch(value.trim());
         }
-    }, []);
+    }, [filters, syncFiltersToUrl]);
+
+    const handleFilterChange = useCallback((newFilters: FilterState | ((prev: FilterState) => FilterState)) => {
+        const resolved = typeof newFilters === 'function' ? newFilters(filters) : newFilters;
+        syncFiltersToUrl(resolved);
+    }, [filters, syncFiltersToUrl]);
 
     const handleDownload = (url: string) => {
         window.open(url, '_blank');
@@ -137,32 +143,15 @@ export default function SearchPage({
     const recentSearches = getRecentSearches();
 
     return (
-        <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
-            <Box sx={{ mb: 3 }}>
-                <button
-                    onClick={() => onNavigate('/')}
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 4,
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        color: 'var(--color-text)',
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        fontWeight: 700,
-                        fontSize: '1rem',
-                        padding: 0,
-                    }}
-                >
-                    <HomeIcon fontSize="small" />
-                    Home
-                </button>
-            </Box>
+        <Box sx={{ maxWidth: MAX_CONTENT_WIDTH, mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
+            <Breadcrumb
+                items={[{ label: 'Search' }]}
+                onNavigate={onNavigate}
+            />
 
             <Typography
                 sx={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: FONT_HEADING,
                     fontWeight: 800,
                     fontSize: { xs: '1.75rem', md: '2.25rem' },
                     mb: 3,
@@ -173,8 +162,8 @@ export default function SearchPage({
 
             <Box sx={{ mb: 3 }}>
                 <SearchInput
-                    value={query}
-                    onChange={setQuery}
+                    value={filters.search}
+                    onChange={(val) => setFilters((prev) => ({ ...prev, search: val }))}
                     onSearch={handleSearch}
                     autoFocus
                 />
@@ -184,7 +173,7 @@ export default function SearchPage({
                 <Box sx={{ mb: 4 }}>
                     <Typography
                         sx={{
-                            fontFamily: "'Space Mono', monospace",
+                            fontFamily: FONT_MONO,
                             fontSize: '0.8rem',
                             color: 'var(--color-text-secondary)',
                             mb: 1,
@@ -200,9 +189,9 @@ export default function SearchPage({
                                 onClick={() => handleSearch(search)}
                                 clickable
                                 sx={{
-                                    border: `2px solid ${borderColor}`,
-                                    boxShadow: `2px 2px 0px ${shadowColor}`,
-                                    fontFamily: "'Space Mono', monospace",
+                                    border: `2px solid var(--color-border)`,
+                                    boxShadow: `2px 2px 0px var(--color-shadow)`,
+                                    fontFamily: FONT_MONO,
                                     fontWeight: 600,
                                     bgcolor: 'var(--color-bg)',
                                     color: 'var(--color-text)',
@@ -215,13 +204,13 @@ export default function SearchPage({
 
             {hasSearched && (
                 <>
-                    <FilterBar filters={filters} onFilterChange={setFilters} />
+                    <FilterBar filters={filters} onFilterChange={handleFilterChange} />
 
                     <Box sx={{ mt: 3, mb: 2 }}>
                         {filters.search ? (
                             <Typography
                                 sx={{
-                                    fontFamily: "'Space Mono', monospace",
+                                    fontFamily: FONT_MONO,
                                     fontSize: '0.85rem',
                                     color: 'var(--color-text-secondary)',
                                 }}
@@ -231,7 +220,7 @@ export default function SearchPage({
                         ) : (
                             <Typography
                                 sx={{
-                                    fontFamily: "'Space Mono', monospace",
+                                    fontFamily: FONT_MONO,
                                     fontSize: '0.85rem',
                                     color: 'var(--color-text-secondary)',
                                 }}
@@ -249,14 +238,14 @@ export default function SearchPage({
                         p: 6,
                         textAlign: 'center',
                         bgcolor: 'var(--color-bg)',
-                        border: `3px solid ${borderColor}`,
-                        boxShadow: `4px 4px 0px ${shadowColor}`,
+                        border: `3px solid var(--color-border)`,
+                        boxShadow: `4px 4px 0px var(--color-shadow)`,
                     }}
                 >
                     <SearchIcon sx={{ fontSize: 48, color: 'var(--color-text-secondary)', mb: 2 }} />
                     <Typography
                         sx={{
-                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontFamily: FONT_HEADING,
                             fontWeight: 700,
                             fontSize: '1.25rem',
                             mb: 1,
@@ -271,17 +260,19 @@ export default function SearchPage({
             ) : results.length === 0 ? (
                 <Box
                     sx={{
-                        p: 6,
+                        p: { xs: 4, md: 6 },
                         textAlign: 'center',
                         bgcolor: 'var(--color-bg)',
-                        border: `3px solid ${borderColor}`,
-                        boxShadow: `4px 4px 0px ${shadowColor}`,
+                        border: `3px solid var(--color-border)`,
+                        boxShadow: `4px 4px 0px var(--color-shadow)`,
                     }}
+                    role="status"
+                    aria-live="polite"
                 >
-                    <SearchIcon sx={{ fontSize: 48, color: 'var(--color-text-secondary)', mb: 2 }} />
+                    <SearchIcon sx={{ fontSize: 64, color: 'var(--color-text-secondary)', mb: 2 }} />
                     <Typography
                         sx={{
-                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontFamily: FONT_HEADING,
                             fontWeight: 700,
                             fontSize: '1.25rem',
                             mb: 1,
@@ -300,9 +291,9 @@ export default function SearchPage({
                                 onClick={() => handleSearch(term)}
                                 clickable
                                 sx={{
-                                    border: `2px solid ${borderColor}`,
-                                    boxShadow: `2px 2px 0px ${shadowColor}`,
-                                    fontFamily: "'Space Mono', monospace",
+                                    border: `2px solid var(--color-border)`,
+                                    boxShadow: `2px 2px 0px var(--color-shadow)`,
+                                    fontFamily: FONT_MONO,
                                     fontWeight: 600,
                                     bgcolor: 'var(--color-bg)',
                                     color: 'var(--color-text)',

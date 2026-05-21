@@ -1,4 +1,6 @@
 export function getDriveEmbedUrl(driveUrl: string): string {
+    if (!driveUrl || driveUrl.trim() === '') return '';
+
     const fileIdMatch = driveUrl.match(/\/d\/([^/]+)/);
     if (fileIdMatch?.[1]) {
         return `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`;

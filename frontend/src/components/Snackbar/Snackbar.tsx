@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, createContext, useContext } from 'react';
 import { Snackbar as MuiSnackbar, Alert } from '@mui/material';
 import type { AlertColor } from '@mui/material';
 
@@ -8,9 +8,28 @@ interface SnackbarMessage {
     severity: AlertColor;
 }
 
+interface SnackbarContextType {
+    showSnackbar: (text: string, severity?: AlertColor) => void;
+}
+
+const SnackbarContext = createContext<SnackbarContextType | undefined>(undefined);
+
+export const useSnackbar = (): SnackbarContextType => {
+    const context = useContext(SnackbarContext);
+    if (!context) {
+        throw new Error('useSnackbar must be used within a SnackbarProvider');
+    }
+    return context;
+};
+
 export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [messages, setMessages] = useState<SnackbarMessage[]>([]);
     const [open, setOpen] = useState<boolean>(false);
+
+    const showSnackbar = useCallback((text: string, severity: AlertColor = 'success') => {
+        setMessages((prev) => [...prev, { id: Date.now(), text, severity }]);
+        setOpen(true);
+    }, []);
 
     const handleClose = useCallback((): void => {
         setOpen(false);
@@ -22,7 +41,7 @@ export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const current = messages[0];
 
     return (
-        <>
+        <SnackbarContext.Provider value={{ showSnackbar }}>
             {children}
             <MuiSnackbar
                 open={open && !!current}
@@ -47,6 +66,6 @@ export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                     </Alert>
                 )}
             </MuiSnackbar>
-        </>
+        </SnackbarContext.Provider>
     );
 };

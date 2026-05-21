@@ -1,7 +1,8 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { TextField, InputAdornment, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
+import { useDebounceCallback } from '@/hooks/useDebounce';
 
 interface SearchInputProps {
     value: string;
@@ -11,6 +12,7 @@ interface SearchInputProps {
     autoFocus?: boolean;
     size?: 'small' | 'medium';
     fullWidth?: boolean;
+    debounceMs?: number;
 }
 
 export default function SearchInput({
@@ -21,6 +23,7 @@ export default function SearchInput({
     autoFocus = false,
     size = 'medium',
     fullWidth = true,
+    debounceMs = 300,
 }: SearchInputProps) {
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -30,38 +33,49 @@ export default function SearchInput({
         }
     }, [autoFocus]);
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    const debouncedSearch = useDebounceCallback((v: string) => onSearch(v), debounceMs);
+
+    const handleChange = useCallback((newValue: string) => {
+        onChange(newValue);
+        debouncedSearch(newValue);
+    }, [onChange, debouncedSearch]);
+
+    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             onSearch(value);
         }
-    };
+    }, [onSearch, value]);
+
+    const handleClear = useCallback(() => {
+        onChange('');
+        onSearch('');
+    }, [onChange, onSearch]);
 
     return (
         <TextField
             inputRef={inputRef}
             value={value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
+            aria-label="Search resources"
             size={size}
             fullWidth={fullWidth}
             slotProps={{
                 input: {
                     startAdornment: (
                         <InputAdornment position="start">
-                            <SearchIcon color="action" />
+                            <SearchIcon color="action" aria-hidden="true" />
                         </InputAdornment>
                     ),
                     endAdornment: value && (
                         <InputAdornment position="end">
                             <IconButton
                                 size="small"
-                                onClick={() => {
-                                    onChange('');
-                                    onSearch('');
-                                }}
+                                aria-label="Clear search"
+                                onClick={handleClear}
                             >
-                                <ClearIcon fontSize="small" />
+                                <ClearIcon fontSize="small" aria-hidden="true" />
                             </IconButton>
                         </InputAdornment>
                     ),

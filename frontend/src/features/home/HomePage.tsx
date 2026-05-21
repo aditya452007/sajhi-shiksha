@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Box } from '@mui/material';
 import HeroSection from './components/HeroSection';
 import CategoryGrid from './components/CategoryGrid';
@@ -14,7 +14,7 @@ interface HomePageProps {
     onNavigate: (route: string) => void;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
+const HomePage: React.FC<HomePageProps> = React.memo(({ onNavigate }) => {
     const [activeFilter, setActiveFilter] = useState<string>('all');
 
     const handleFilter = useCallback((filter: string): void => {
@@ -28,8 +28,8 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         [onNavigate]
     );
 
-    const filteredCategories: CategoryCardType[] =
-        activeFilter === 'all'
+    const filteredCategories: CategoryCardType[] = useMemo(
+        () => activeFilter === 'all'
             ? categories
             : categories.filter((c) => {
                   if (activeFilter === 'primary') return c.id === 'primary';
@@ -37,10 +37,12 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   if (activeFilter === 'formats') return c.id === 'formats';
                   if (activeFilter === 'rules') return c.id === 'formats';
                   return true;
-              });
+              }),
+        [activeFilter]
+    );
 
     return (
-        <Box component="main">
+        <Box component="main" aria-label="Home page content">
             <HeroSection onFilter={handleFilter} />
             <ScrollReveal>
                 <CategoryGrid
@@ -52,7 +54,6 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <ClassSpotlight
                     title="Resources for Primary Classes"
                     classNumbers={[1, 2, 3, 4, 5]}
-                    onNavigate={onNavigate}
                 />
             </ScrollReveal>
             <ScrollReveal delay={200}>
@@ -66,6 +67,8 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </ScrollReveal>
         </Box>
     );
-};
+});
+
+HomePage.displayName = 'HomePage';
 
 export default HomePage;

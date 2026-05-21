@@ -4,8 +4,9 @@ import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import { useTheme } from '@/context/ThemeContext';
 import siteConfig from '@/data/site-config.json';
 import { ArrowDoodle, StarDoodle } from '@/components/Doodles';
+import { MAX_CONTENT_WIDTH, FONT_HEADING } from '@/lib/constants';
 
-const ContributeCTA: React.FC = () => {
+const ContributeCTA: React.FC = React.memo(() => {
     const [isDark] = useTheme();
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
@@ -33,7 +34,7 @@ const ContributeCTA: React.FC = () => {
 
             <Box
                 sx={{
-                    maxWidth: '1200px',
+                    maxWidth: MAX_CONTENT_WIDTH,
                     mx: 'auto',
                     p: { xs: 4, md: 6 },
                     textAlign: 'center',
@@ -63,7 +64,7 @@ const ContributeCTA: React.FC = () => {
                 />
                 <Typography
                     sx={{
-                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontFamily: FONT_HEADING,
                         fontWeight: 800,
                         fontSize: { xs: '1.75rem', md: '2.25rem' },
                         mb: 2,
@@ -91,7 +92,7 @@ const ContributeCTA: React.FC = () => {
                         color: 'var(--color-text)',
                         border: `3px solid ${borderColor}`,
                         boxShadow: `4px 4px 0px ${shadowColor}`,
-                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontFamily: FONT_HEADING,
                         fontWeight: 800,
                         fontSize: '1.1rem',
                         px: 4,
@@ -109,6 +110,8 @@ const ContributeCTA: React.FC = () => {
             </Box>
         </Box>
     );
-};
+});
+
+ContributeCTA.displayName = 'ContributeCTA';
 
 export default ContributeCTA;

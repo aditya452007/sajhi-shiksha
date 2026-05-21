@@ -1,36 +1,45 @@
-import { useState, useMemo } from 'react';
-import { Box, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { useState, useMemo, useEffect, useCallback } from 'react';
+import { Box, Typography, ToggleButtonGroup, ToggleButton, Button } from '@mui/material';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import GridViewIcon from '@mui/icons-material/GridView';
-import HomeIcon from '@mui/icons-material/Home';
+import SearchOffIcon from '@mui/icons-material/SearchOff';
+import { useNavigate } from '@tanstack/react-router';
 import { useTheme } from '@/context/ThemeContext';
 import resources from '@/data/resources.json';
 import FilterBar, { type FilterState } from '@/components/FilterBar/FilterBar';
 import ResourceCard from '@/components/ResourceCard/ResourceCard';
+import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
 import type { Resource } from '@/types';
+import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH, COLOR_TEXT_LIGHT } from '@/lib/constants';
+import { filtersToSearchParams, DEFAULT_FILTERS } from '@/lib/filterUtils';
 
 interface ResourceListPageProps {
     category: string;
     title: string;
     description: string;
+    initialFilters?: FilterState;
     onViewResource: (id: string) => void;
     onNavigate: (route: string) => void;
 }
-
-const DEFAULT_FILTERS: FilterState = { class: 'all', subject: 'all', type: 'all', search: '' };
 
 export default function ResourceListPage({
     category,
     title,
     description,
+    initialFilters = DEFAULT_FILTERS,
     onViewResource,
     onNavigate,
 }: ResourceListPageProps) {
-    const [isDark] = useTheme();
-    const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
+    const [_isDark] = useTheme();
+    const navigate = useNavigate();
+    const [filters, setFilters] = useState<FilterState>(initialFilters);
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
+
+    useEffect(() => {
+        setFilters(initialFilters);
+    }, [initialFilters]);
 
     const categoryResources = useMemo(() => {
         return (resources as Resource[]).filter((r) => r.category === category);
@@ -60,37 +69,36 @@ export default function ResourceListPage({
         return result;
     }, [categoryResources, filters]);
 
+    const syncFiltersToUrl = useCallback((newFilters: FilterState) => {
+        setFilters(newFilters);
+        const params = filtersToSearchParams(newFilters);
+        const paramString = params.toString();
+        navigate({
+            to: window.location.pathname as any,
+            search: paramString ? Object.fromEntries(params) as any : undefined,
+            replace: true,
+        });
+    }, [navigate]);
+
+    const handleFilterChange = useCallback((newFilters: FilterState | ((prev: FilterState) => FilterState)) => {
+        const resolved = typeof newFilters === 'function' ? newFilters(filters) : newFilters;
+        syncFiltersToUrl(resolved);
+    }, [filters, syncFiltersToUrl]);
+
     const handleDownload = (url: string) => {
         window.open(url, '_blank');
     };
 
     return (
-        <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
-            <Box sx={{ mb: 3 }}>
-                <button
-                    onClick={() => onNavigate('/')}
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 4,
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        color: 'var(--color-text)',
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        fontWeight: 700,
-                        fontSize: '1rem',
-                        padding: 0,
-                    }}
-                >
-                    <HomeIcon fontSize="small" />
-                    Home
-                </button>
-            </Box>
+        <Box sx={{ maxWidth: MAX_CONTENT_WIDTH, mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
+            <Breadcrumb
+                items={[{ label: title }]}
+                onNavigate={onNavigate}
+            />
 
             <Typography
                 sx={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: FONT_HEADING,
                     fontWeight: 800,
                     fontSize: { xs: '1.75rem', md: '2.25rem' },
                     mb: 1,
@@ -102,12 +110,12 @@ export default function ResourceListPage({
                 {description}
             </Typography>
 
-            <FilterBar filters={filters} onFilterChange={setFilters} />
+            <FilterBar filters={filters} onFilterChange={handleFilterChange} />
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 3, mb: 2 }}>
                 <Typography
                     sx={{
-                        fontFamily: "'Space Mono', monospace",
+                        fontFamily: FONT_MONO,
                         fontSize: '0.85rem',
                         color: 'var(--color-text-secondary)',
                     }}
@@ -128,7 +136,7 @@ export default function ResourceListPage({
                             bgcolor: 'var(--color-bg)',
                             '&.Mui-selected': {
                                 bgcolor: 'var(--color-yellow)',
-                                color: '#1A1A1A',
+                                color: COLOR_TEXT_LIGHT,
                                 boxShadow: `2px 2px 0px ${shadowColor}`,
                             },
                         },
@@ -146,16 +154,19 @@ export default function ResourceListPage({
             {filteredResources.length === 0 ? (
                 <Box
                     sx={{
-                        p: 6,
+                        p: { xs: 4, md: 6 },
                         textAlign: 'center',
                         bgcolor: 'var(--color-bg)',
                         border: `3px solid ${borderColor}`,
                         boxShadow: `4px 4px 0px ${shadowColor}`,
                     }}
+                    role="status"
+                    aria-live="polite"
                 >
+                    <SearchOffIcon sx={{ fontSize: 64, color: 'var(--color-text-secondary)', mb: 2 }} />
                     <Typography
                         sx={{
-                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontFamily: FONT_HEADING,
                             fontWeight: 700,
                             fontSize: '1.25rem',
                             mb: 1,
@@ -163,9 +174,29 @@ export default function ResourceListPage({
                     >
                         No resources found
                     </Typography>
-                    <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>
-                        Try adjusting your filters or search terms.
+                    <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', mb: 3 }}>
+                        Try adjusting your filters or search terms to find what you&apos;re looking for.
                     </Typography>
+                    <Button
+                        variant="contained"
+                        onClick={() => handleFilterChange(DEFAULT_FILTERS)}
+                        sx={{
+                            bgcolor: 'var(--color-yellow)',
+                            color: COLOR_TEXT_LIGHT,
+                            border: `3px solid ${borderColor}`,
+                            boxShadow: `3px 3px 0px ${shadowColor}`,
+                            fontFamily: FONT_HEADING,
+                            fontWeight: 700,
+                            '&:hover': {
+                                bgcolor: 'var(--color-bg-secondary)',
+                                color: COLOR_TEXT_LIGHT,
+                                transform: 'translate(-1px, -1px)',
+                                boxShadow: `4px 4px 0px ${shadowColor}`,
+                            },
+                        }}
+                    >
+                        Clear All Filters
+                    </Button>
                 </Box>
             ) : viewMode === 'grid' ? (
                 <Box
