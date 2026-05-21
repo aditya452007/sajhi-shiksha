@@ -1,0 +1,58 @@
+[
+    {
+        "id": "primary",
+        "title": "Classes 1-5",
+        "description": "Primary class study materials",
+        "icon": "MenuBook",
+        "resourceCount": 15,
+        "route": "/resources/primary"
+    },
+    {
+        "id": "secondary",
+        "title": "Classes 6-12",
+        "description": "Question papers and resources",
+        "icon": "School",
+        "resourceCount": 11,
+        "route": "/resources/secondary"
+    },
+    {
+        "id": "programs",
+        "title": "Programs",
+        "description": "Nipun/FLN, CMP, TBP, Cub & Bulbul",
+        "icon": "LocalLibrary",
+        "resourceCount": 4,
+        "route": "/resources/programs"
+    },
+    {
+        "id": "formats",
+        "title": "Formats & Rules",
+        "description": "Assembly formats, GOI/KVS rules",
+        "icon": "Gavel",
+        "resourceCount": 5,
+        "route": "/resources/formats"
+    },
+    {
+        "id": "admissions",
+        "title": "Admissions",
+        "description": "CBSE/NIOS, KVS admission info",
+        "icon": "Assignment",
+        "resourceCount": 2,
+        "route": "/resources/admissions"
+    },
+    {
+        "id": "contribute",
+        "title": "Contribute",
+        "description": "Share your resources",
+        "icon": "VolunteerActivism",
+        "resourceCount": 0,
+        "route": "/contribute"
+    },
+    {
+        "id": "about",
+        "title": "About Us",
+        "description": "About Sajhi Shiksha",
+        "icon": "Info",
+        "resourceCount": 0,
+        "route": "/about"
+    }
+]
