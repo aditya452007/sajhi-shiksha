@@ -7,7 +7,7 @@ interface SquiggleDoodleProps {
 
 const SquiggleDoodle: React.FC<SquiggleDoodleProps> = ({
     width = 200,
-    color = '#1A1A1A',
+    color = 'var(--color-border)',
 }) => (
     <svg
         width={width}

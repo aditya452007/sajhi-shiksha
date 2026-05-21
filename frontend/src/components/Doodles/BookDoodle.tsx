@@ -7,7 +7,7 @@ interface BookDoodleProps {
 
 const BookDoodle: React.FC<BookDoodleProps> = ({
     size = 40,
-    color = '#4ECDC4',
+    color = 'var(--color-teal)',
 }) => (
     <svg
         width={size}
@@ -19,37 +19,37 @@ const BookDoodle: React.FC<BookDoodleProps> = ({
         <path
             d="M6 8C6 8 14 6 24 8C34 6 42 8 42 8V38C42 38 34 36 24 38C14 36 6 38 6 38V8Z"
             fill={color}
-            stroke="#1A1A1A"
+            stroke="var(--color-border)"
             strokeWidth="2.5"
             strokeLinejoin="round"
         />
         <path
             d="M24 8V38"
-            stroke="#1A1A1A"
+            stroke="var(--color-border)"
             strokeWidth="2.5"
             strokeLinecap="round"
         />
         <path
             d="M12 16H18"
-            stroke="#1A1A1A"
+            stroke="var(--color-border)"
             strokeWidth="2"
             strokeLinecap="round"
         />
         <path
             d="M12 22H18"
-            stroke="#1A1A1A"
+            stroke="var(--color-border)"
             strokeWidth="2"
             strokeLinecap="round"
         />
         <path
             d="M30 16H36"
-            stroke="#1A1A1A"
+            stroke="var(--color-border)"
             strokeWidth="2"
             strokeLinecap="round"
         />
         <path
             d="M30 22H36"
-            stroke="#1A1A1A"
+            stroke="var(--color-border)"
             strokeWidth="2"
             strokeLinecap="round"
         />

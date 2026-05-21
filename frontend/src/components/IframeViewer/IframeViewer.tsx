@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Box, Typography, Button, Paper } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import Error from '@mui/icons-material/Error';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Skeleton from '@/components/Skeleton/Skeleton';
+import { useTheme } from '@/context/ThemeContext';
 import { getDriveEmbedUrl } from '@/lib/utils';
 
 export interface IframeViewerProps {
@@ -25,9 +26,12 @@ export default function IframeViewer({
     onLoad,
     onError,
 }: IframeViewerProps) {
+    const [isDark] = useTheme();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const embedUrl = getDriveEmbedUrl(driveUrl);
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
 
     const handleLoad = useCallback(() => {
         setLoading(false);
@@ -56,7 +60,7 @@ export default function IframeViewer({
 
     if (error) {
         return (
-            <Paper
+            <Box
                 sx={{
                     p: 4,
                     textAlign: 'center',
@@ -68,11 +72,22 @@ export default function IframeViewer({
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 2,
+                    bgcolor: 'var(--color-bg)',
+                    border: `3px solid ${borderColor}`,
+                    boxShadow: `4px 4px 0px ${shadowColor}`,
                 }}
             >
-                <Error sx={{ fontSize: 48, color: 'error.main' }} />
-                <Typography variant="h6">Unable to load document</Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Error sx={{ fontSize: 48, color: 'var(--color-red)' }} />
+                <Typography
+                    sx={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontWeight: 700,
+                        fontSize: '1.25rem',
+                    }}
+                >
+                    Unable to load document
+                </Typography>
+                <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>
                     The document could not be displayed in the viewer.
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mt: 2 }}>
@@ -80,6 +95,12 @@ export default function IframeViewer({
                         variant="contained"
                         startIcon={<OpenInNewIcon />}
                         onClick={() => window.open(driveUrl, '_blank')}
+                        sx={{
+                            bgcolor: 'var(--color-yellow)',
+                            color: '#1A1A1A',
+                            border: `3px solid ${borderColor}`,
+                            boxShadow: `3px 3px 0px ${shadowColor}`,
+                        }}
                     >
                         Open in New Tab
                     </Button>
@@ -87,11 +108,16 @@ export default function IframeViewer({
                         variant="outlined"
                         startIcon={<RefreshIcon />}
                         onClick={handleRetry}
+                        sx={{
+                            border: `3px solid ${borderColor}`,
+                            color: 'var(--color-text)',
+                            boxShadow: `3px 3px 0px ${shadowColor}`,
+                        }}
                     >
                         Try Again
                     </Button>
                 </Box>
-            </Paper>
+            </Box>
         );
     }
 
@@ -102,11 +128,9 @@ export default function IframeViewer({
                 width: '100%',
                 maxWidth,
                 mx: 'auto',
-                borderRadius: '12px',
-                overflow: 'hidden',
-                border: '1px solid',
-                borderColor: 'divider',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                bgcolor: 'var(--color-bg)',
+                border: `3px solid ${borderColor}`,
+                boxShadow: `6px 6px 0px ${shadowColor}`,
             }}
         >
             {loading && (
@@ -114,7 +138,7 @@ export default function IframeViewer({
                     sx={{
                         position: 'absolute',
                         inset: 0,
-                        bgcolor: 'background.default',
+                        bgcolor: 'var(--color-bg)',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -127,9 +151,8 @@ export default function IframeViewer({
                         variant="rectangular"
                         width="80%"
                         height="60%"
-                        sx={{ borderRadius: 2 }}
                     />
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>
                         Loading document...
                     </Typography>
                 </Box>

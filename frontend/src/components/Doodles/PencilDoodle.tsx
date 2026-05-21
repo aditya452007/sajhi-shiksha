@@ -7,7 +7,7 @@ interface PencilDoodleProps {
 
 const PencilDoodle: React.FC<PencilDoodleProps> = ({
     size = 40,
-    color = '#FF8C42',
+    color = 'var(--color-orange)',
 }) => (
     <svg
         width={size}
@@ -19,23 +19,23 @@ const PencilDoodle: React.FC<PencilDoodleProps> = ({
         <path
             d="M28 6L36 14L14 36L6 42L8 34L28 6Z"
             fill={color}
-            stroke="#1A1A1A"
+            stroke="var(--color-border)"
             strokeWidth="2.5"
             strokeLinejoin="round"
         />
         <path
             d="M28 6L36 14"
-            stroke="#1A1A1A"
+            stroke="var(--color-border)"
             strokeWidth="2.5"
             strokeLinecap="round"
         />
         <path
             d="M6 42L8 34L14 36L6 42Z"
-            fill="#1A1A1A"
+            fill="var(--color-text)"
         />
         <path
             d="M30 8L34 12"
-            stroke="#1A1A1A"
+            stroke="var(--color-border)"
             strokeWidth="1.5"
             strokeLinecap="round"
         />

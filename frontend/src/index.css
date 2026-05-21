@@ -58,6 +58,13 @@
     --color-orange: #FFB07A;
     --color-red: #FF9999;
     --color-teal: #7EDDD6;
+
+    --subject-math: #7DD87D;
+    --subject-english: #B88FE6;
+    --subject-hindi: #E8A050;
+    --subject-science: #E08080;
+    --subject-social: #6BC5BC;
+    --subject-general: #9CA3AF;
 }
 
 * {

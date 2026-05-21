@@ -1,29 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Box, Typography, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '@/context/ThemeContext';
 import { CLASS_RANGES } from '@/lib/constants';
 import { SquiggleDoodle } from '@/components/Doodles';
+import resources from '@/data/resources.json';
+import type { Resource } from '@/types';
 
 interface SecondaryClassSpotlightProps {
     title: string;
+    onNavigate?: (route: string) => void;
 }
 
-const SAMPLE_RESOURCES = [
-    { id: '1', title: 'Mathematics Question Paper 2025', class: 10, subject: 'Mathematics' },
-    { id: '2', title: 'English Literature Notes', class: 9, subject: 'English' },
-    { id: '3', title: 'Science Lab Manual', class: 8, subject: 'Science' },
-    { id: '4', title: 'Hindi Grammar Guide', class: 7, subject: 'Hindi' },
-    { id: '5', title: 'Social Science Map Work', class: 6, subject: 'Social Science' },
-] as const;
-
-const SecondaryClassSpotlight: React.FC<SecondaryClassSpotlightProps> = ({ title }) => {
+const SecondaryClassSpotlight: React.FC<SecondaryClassSpotlightProps> = ({ title, onNavigate }) => {
     const [isDark] = useTheme();
     const [activeFilter, setActiveFilter] = useState('6-8');
-    const borderColor = isDark ? '#FFFFFF' : '#1A1A1A';
-    const shadowColor = isDark ? '#000000' : '#1A1A1A';
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
 
     const filters = [
         { label: 'Class 6-8', value: '6-8', range: CLASS_RANGES.middle },
@@ -31,11 +26,18 @@ const SecondaryClassSpotlight: React.FC<SecondaryClassSpotlightProps> = ({ title
         { label: 'Class 11-12', value: '11-12', range: CLASS_RANGES.senior },
     ];
 
-    const filteredResources = SAMPLE_RESOURCES.filter((r) => {
+    const allResources = resources as Resource[];
+    const secondaryResources = useMemo(() => {
+        return allResources.filter((r) => r.category === 'secondary');
+    }, [allResources]);
+
+    const filteredResources = useMemo(() => {
         const active = filters.find((f) => f.value === activeFilter);
-        if (!active) return true;
-        return active.range.includes(r.class as never);
-    });
+        if (!active) return secondaryResources;
+        return secondaryResources.filter((r) => r.class && active.range.includes(r.class as never));
+    }, [secondaryResources, activeFilter]);
+
+    const displayResources = filteredResources.length > 0 ? filteredResources.slice(0, 5) : secondaryResources.slice(0, 5);
 
     return (
         <Box sx={{ py: { xs: 6, md: 8 }, px: { xs: 2, md: 4 } }}>
@@ -107,16 +109,17 @@ const SecondaryClassSpotlight: React.FC<SecondaryClassSpotlightProps> = ({ title
                     }}
                 >
                     <List disablePadding>
-                        {filteredResources.map((resource, i) => (
+                        {displayResources.map((resource, i) => (
                             <ListItem
                                 key={resource.id}
+                                onClick={() => onNavigate?.(`/view/${resource.id}`)}
                                 sx={{
-                                    borderBottom: i < filteredResources.length - 1 ? `2px solid ${borderColor}` : 'none',
-                                    cursor: 'pointer',
+                                    borderBottom: i < displayResources.length - 1 ? `2px solid ${borderColor}` : 'none',
+                                    cursor: onNavigate ? 'pointer' : 'default',
                                     transition: 'background-color 0.15s ease',
-                                    '&:hover': {
+                                    '&:hover': onNavigate ? {
                                         bgcolor: 'var(--color-bg-secondary)',
-                                    },
+                                    } : {},
                                 }}
                             >
                                 <ListItemIcon sx={{ minWidth: 40 }}>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Box, TextField, Typography, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '@/context/ThemeContext';
 import { FILTER_CHIPS } from '@/lib/constants';
 import { StarDoodle, PencilDoodle, BookDoodle } from '@/components/Doodles';
 
@@ -11,10 +12,11 @@ interface HeroSectionProps {
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ onFilter }) => {
+    const navigate = useNavigate();
     const [isDark] = useTheme();
     const [activeFilter, setActiveFilter] = useState('all');
-    const borderColor = isDark ? '#FFFFFF' : '#1A1A1A';
-    const shadowColor = isDark ? '#000000' : '#1A1A1A';
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
 
     const handleFilterClick = (value: string) => {
         setActiveFilter(value);
@@ -150,7 +152,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFilter }) => {
                         <TextField
                             fullWidth
                             placeholder="Search resources, subjects, classes..."
-                            onClick={() => window.location.href = '/search'}
+                            onClick={() => navigate({ to: '/search' })}
                             sx={{
                                 maxWidth: { xs: '100%', md: '480px' },
                                 mb: 3,
@@ -212,6 +214,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onFilter }) => {
                                         background: activeFilter === chip.value
                                             ? chipColors[i % chipColors.length]
                                             : 'var(--color-bg)',
+                                        color: activeFilter === chip.value ? '#1A1A1A' : 'var(--color-text)',
                                         border: `2px solid ${borderColor}`,
                                         boxShadow: activeFilter === chip.value
                                             ? `1px 1px 0px ${shadowColor}`

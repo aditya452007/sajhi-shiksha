@@ -8,7 +8,7 @@ interface ArrowDoodleProps {
 
 const ArrowDoodle: React.FC<ArrowDoodleProps> = ({
     size = 48,
-    color = '#1A1A1A',
+    color = 'var(--color-border)',
     direction = 'right',
 }) => {
     const rotation = { right: 0, down: 90, left: 180, up: 270 }[direction];

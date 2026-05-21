@@ -1,7 +1,8 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import { Box, Typography, Grid, Breadcrumbs, Link, Paper, Chip } from '@mui/material';
+import { Box, Typography, Chip } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
+import { useTheme } from '@/context/ThemeContext';
 import resources from '@/data/resources.json';
 import SearchInput from '@/components/SearchBar/SearchInput';
 import FilterBar, { type FilterState } from '@/components/FilterBar/FilterBar';
@@ -65,12 +66,15 @@ export default function SearchPage({
     onViewResource,
     onNavigate,
 }: SearchPageProps) {
+    const [isDark] = useTheme();
     const [query, setQuery] = useState(initialQuery);
     const [filters, setFilters] = useState<FilterState>({
         ...DEFAULT_FILTERS,
         search: initialQuery,
     });
     const [hasSearched, setHasSearched] = useState(!!initialQuery);
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
 
     useEffect(() => {
         if (initialQuery) {
@@ -134,19 +138,36 @@ export default function SearchPage({
 
     return (
         <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
-            <Breadcrumbs sx={{ mb: 3 }}>
-                <Link
-                    component="button"
+            <Box sx={{ mb: 3 }}>
+                <button
                     onClick={() => onNavigate('/')}
-                    sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
+                    style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: 'var(--color-text)',
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontWeight: 700,
+                        fontSize: '1rem',
+                        padding: 0,
+                    }}
                 >
                     <HomeIcon fontSize="small" />
                     Home
-                </Link>
-                <Typography color="text.primary">Search</Typography>
-            </Breadcrumbs>
+                </button>
+            </Box>
 
-            <Typography variant="h3" sx={{ fontWeight: 800, mb: 3, fontFamily: "'Nunito', sans-serif" }}>
+            <Typography
+                sx={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 800,
+                    fontSize: { xs: '1.75rem', md: '2.25rem' },
+                    mb: 3,
+                }}
+            >
                 Search Resources
             </Typography>
 
@@ -161,7 +182,14 @@ export default function SearchPage({
 
             {!hasSearched && recentSearches.length > 0 && (
                 <Box sx={{ mb: 4 }}>
-                    <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
+                    <Typography
+                        sx={{
+                            fontFamily: "'Space Mono', monospace",
+                            fontSize: '0.8rem',
+                            color: 'var(--color-text-secondary)',
+                            mb: 1,
+                        }}
+                    >
                         Recent Searches
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
@@ -171,7 +199,14 @@ export default function SearchPage({
                                 label={search}
                                 onClick={() => handleSearch(search)}
                                 clickable
-                                variant="outlined"
+                                sx={{
+                                    border: `2px solid ${borderColor}`,
+                                    boxShadow: `2px 2px 0px ${shadowColor}`,
+                                    fontFamily: "'Space Mono', monospace",
+                                    fontWeight: 600,
+                                    bgcolor: 'var(--color-bg)',
+                                    color: 'var(--color-text)',
+                                }}
                             />
                         ))}
                     </Box>
@@ -184,11 +219,23 @@ export default function SearchPage({
 
                     <Box sx={{ mt: 3, mb: 2 }}>
                         {filters.search ? (
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography
+                                sx={{
+                                    fontFamily: "'Space Mono', monospace",
+                                    fontSize: '0.85rem',
+                                    color: 'var(--color-text-secondary)',
+                                }}
+                            >
                                 {results.length} result{results.length !== 1 ? 's' : ''} for &quot;{filters.search}&quot;
                             </Typography>
                         ) : (
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography
+                                sx={{
+                                    fontFamily: "'Space Mono', monospace",
+                                    fontSize: '0.85rem',
+                                    color: 'var(--color-text-secondary)',
+                                }}
+                            >
                                 {results.length} resource{results.length !== 1 ? 's' : ''}
                             </Typography>
                         )}
@@ -197,43 +244,91 @@ export default function SearchPage({
             )}
 
             {!hasSearched ? (
-                <Paper sx={{ p: 6, textAlign: 'center' }}>
-                    <SearchIcon sx={{ fontSize: 48, color: 'text.muted', mb: 2 }} />
-                    <Typography variant="h6" sx={{ mb: 1 }}>
+                <Box
+                    sx={{
+                        p: 6,
+                        textAlign: 'center',
+                        bgcolor: 'var(--color-bg)',
+                        border: `3px solid ${borderColor}`,
+                        boxShadow: `4px 4px 0px ${shadowColor}`,
+                    }}
+                >
+                    <SearchIcon sx={{ fontSize: 48, color: 'var(--color-text-secondary)', mb: 2 }} />
+                    <Typography
+                        sx={{
+                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontWeight: 700,
+                            fontSize: '1.25rem',
+                            mb: 1,
+                        }}
+                    >
                         Search for study materials
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>
                         Type keywords like &quot;mathematics&quot;, &quot;class 3&quot;, or &quot;question papers&quot;
                     </Typography>
-                </Paper>
+                </Box>
             ) : results.length === 0 ? (
-                <Paper sx={{ p: 6, textAlign: 'center' }}>
-                    <SearchIcon sx={{ fontSize: 48, color: 'text.muted', mb: 2 }} />
-                    <Typography variant="h6" sx={{ mb: 1 }}>
+                <Box
+                    sx={{
+                        p: 6,
+                        textAlign: 'center',
+                        bgcolor: 'var(--color-bg)',
+                        border: `3px solid ${borderColor}`,
+                        boxShadow: `4px 4px 0px ${shadowColor}`,
+                    }}
+                >
+                    <SearchIcon sx={{ fontSize: 48, color: 'var(--color-text-secondary)', mb: 2 }} />
+                    <Typography
+                        sx={{
+                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontWeight: 700,
+                            fontSize: '1.25rem',
+                            mb: 1,
+                        }}
+                    >
                         No results found
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                    <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', mb: 3 }}>
                         Try different keywords or remove some filters
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <Chip label="Mathematics" onClick={() => handleSearch('Mathematics')} clickable />
-                        <Chip label="Class 3" onClick={() => handleSearch('Class 3')} clickable />
-                        <Chip label="Question Papers" onClick={() => handleSearch('Question Papers')} clickable />
-                    </Box>
-                </Paper>
-            ) : (
-                <Grid container spacing={3}>
-                    {results.map((resource) => (
-                        <Grid size={{ xs: 12, sm: 6, md: 4 }} key={resource.id}>
-                            <ResourceCard
-                                resource={resource}
-                                viewMode="grid"
-                                onView={onViewResource}
-                                onDownload={handleDownload}
+                        {['Mathematics', 'Class 3', 'Question Papers'].map((term) => (
+                            <Chip
+                                key={term}
+                                label={term}
+                                onClick={() => handleSearch(term)}
+                                clickable
+                                sx={{
+                                    border: `2px solid ${borderColor}`,
+                                    boxShadow: `2px 2px 0px ${shadowColor}`,
+                                    fontFamily: "'Space Mono', monospace",
+                                    fontWeight: 600,
+                                    bgcolor: 'var(--color-bg)',
+                                    color: 'var(--color-text)',
+                                }}
                             />
-                        </Grid>
+                        ))}
+                    </Box>
+                </Box>
+            ) : (
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' },
+                        gap: 3,
+                    }}
+                >
+                    {results.map((resource) => (
+                        <ResourceCard
+                            key={resource.id}
+                            resource={resource}
+                            viewMode="grid"
+                            onView={onViewResource}
+                            onDownload={handleDownload}
+                        />
                     ))}
-                </Grid>
+                </Box>
             )}
         </Box>
     );

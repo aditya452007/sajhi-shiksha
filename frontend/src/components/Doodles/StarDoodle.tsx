@@ -8,7 +8,7 @@ interface StarDoodleProps {
 
 const StarDoodle: React.FC<StarDoodleProps> = ({
     size = 32,
-    color = '#FFD600',
+    color = 'var(--color-yellow)',
     rotation = 0,
 }) => (
     <svg
@@ -22,7 +22,7 @@ const StarDoodle: React.FC<StarDoodleProps> = ({
         <path
             d="M20 2L25 14L38 16L28 25L31 38L20 32L9 38L12 25L2 16L15 14L20 2Z"
             fill={color}
-            stroke="#1A1A1A"
+            stroke="var(--color-border)"
             strokeWidth="2.5"
             strokeLinejoin="round"
         />

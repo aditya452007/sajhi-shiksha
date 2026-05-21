@@ -17,14 +17,14 @@ export function formatResourceCount(count: number): string {
 
 export function getSubjectColor(subject: string): string {
     const colors: Record<string, string> = {
-        mathematics: '#3B82F6',
-        english: '#8B5CF6',
-        hindi: '#F59E0B',
-        science: '#10B981',
-        'social science': '#EF4444',
-        evs: '#10B981',
-        general: '#6B7280',
+        mathematics: 'var(--subject-math)',
+        english: 'var(--subject-english)',
+        hindi: 'var(--subject-hindi)',
+        science: 'var(--subject-science)',
+        'social science': 'var(--subject-social)',
+        evs: 'var(--subject-science)',
+        general: 'var(--subject-general)',
     };
-    return colors[subject.toLowerCase()] ?? '#6B7280';
+    return colors[subject.toLowerCase()] ?? 'var(--subject-general)';
 }
 

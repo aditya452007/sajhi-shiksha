@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { Box, Typography, Tabs, Tab } from '@mui/material';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '@/context/ThemeContext';
 import { SUBJECTS_PRIMARY } from '@/lib/constants';
 import { SquiggleDoodle } from '@/components/Doodles';
 
 interface ClassSpotlightProps {
     title: string;
     classNumbers: number[];
+    onNavigate?: (route: string) => void;
 }
 
-const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers }) => {
+const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers, onNavigate }) => {
     const [isDark] = useTheme();
     const [activeTab, setActiveTab] = useState(0);
-    const borderColor = isDark ? '#FFFFFF' : '#1A1A1A';
-    const shadowColor = isDark ? '#000000' : '#1A1A1A';
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
 
     const activeClass = classNumbers[activeTab] ?? 1;
 
@@ -24,6 +25,12 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers }) 
         Hindi: 'var(--subject-hindi)',
         EVS: 'var(--subject-science)',
         General: 'var(--subject-general)',
+    };
+
+    const handleSubjectClick = (subject: string) => {
+        if (onNavigate) {
+            onNavigate(`/resources/primary?class=${activeClass}&subject=${encodeURIComponent(subject)}`);
+        }
     };
 
     return (
@@ -50,6 +57,7 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers }) 
                             fontSize: { xs: '1.75rem', md: '2.25rem' },
                             textAlign: 'center',
                             mb: 2,
+                            color: 'var(--color-text)',
                         }}
                     >
                         {title}
@@ -81,9 +89,11 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers }) 
                             minHeight: '40px',
                             minWidth: 'auto',
                             px: 2,
+                            color: 'var(--color-text)',
                             transition: 'all 0.15s ease',
                             '&.Mui-selected': {
                                 bgcolor: 'var(--color-yellow)',
+                                color: '#1A1A1A',
                                 boxShadow: `1px 1px 0px ${shadowColor}`,
                                 transform: 'translate(1px, 1px)',
                             },
@@ -119,23 +129,33 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers }) 
                             }}
                         >
                             <Box
+                                onClick={() => handleSubjectClick(subject)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        handleSubjectClick(subject);
+                                    }
+                                }}
                                 sx={{
                                     p: 2,
                                     textAlign: 'center',
-                                    cursor: 'pointer',
+                                    cursor: onNavigate ? 'pointer' : 'default',
                                     bgcolor: subjectColors[subject] || 'var(--color-bg)',
                                     border: `3px solid ${borderColor}`,
                                     boxShadow: `3px 3px 0px ${shadowColor}`,
                                     transition: 'transform 0.15s ease, box-shadow 0.15s ease',
-                                    '&:hover': {
+                                    '&:hover': onNavigate ? {
                                         transform: 'translate(-2px, -2px)',
                                         boxShadow: `5px 5px 0px ${shadowColor}`,
-                                    },
-                                    '&:active': {
+                                    } : {},
+                                    '&:active': onNavigate ? {
                                         transform: 'translate(2px, 2px)',
                                         boxShadow: `1px 1px 0px ${shadowColor}`,
-                                    },
+                                    } : {},
                                 }}
+                                role={onNavigate ? 'button' : undefined}
+                                tabIndex={onNavigate ? 0 : undefined}
+                                aria-label={onNavigate ? `${subject} Class ${activeClass}` : undefined}
                             >
                                 <Box
                                     sx={{
@@ -166,6 +186,7 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers }) 
                                         fontWeight: 700,
                                         fontSize: '0.9rem',
                                         mb: 0.5,
+                                        color: '#1A1A1A',
                                     }}
                                 >
                                     {subject}
@@ -174,7 +195,7 @@ const ClassSpotlight: React.FC<ClassSpotlightProps> = ({ title, classNumbers }) 
                                     sx={{
                                         fontFamily: "'Space Mono', monospace",
                                         fontSize: '0.7rem',
-                                        color: 'var(--color-text-secondary)',
+                                        color: 'rgba(26, 26, 26, 0.7)',
                                     }}
                                 >
                                     Class {activeClass}

@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import * as Icons from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { formatResourceCount } from '@/lib/utils';
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '@/context/ThemeContext';
 
 interface CategoryCardProps {
     title: string;
@@ -37,8 +37,8 @@ const CategoryCard: React.FC<CategoryCardProps> = React.memo(
     ({ title, description, icon, resourceCount, onClick, index = 0 }) => {
         const [isDark] = useTheme();
         const IconComponent = iconMap[icon] ?? Icons.HelpOutlined;
-        const borderColor = isDark ? '#FFFFFF' : '#1A1A1A';
-        const shadowColor = isDark ? '#000000' : '#1A1A1A';
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
 
         const rotation = useMemo(() => {
             const seed = (index * 7 + 3) % 11;
@@ -118,6 +118,7 @@ const CategoryCard: React.FC<CategoryCardProps> = React.memo(
                             fontSize: '1.25rem',
                             mb: 1,
                             lineHeight: 1.2,
+                            color: '#1A1A1A',
                         }}
                     >
                         {title}
@@ -125,7 +126,7 @@ const CategoryCard: React.FC<CategoryCardProps> = React.memo(
                     <Typography
                         sx={{
                             fontSize: '0.95rem',
-                            color: 'var(--color-text-secondary)',
+                            color: 'rgba(26, 26, 26, 0.75)',
                             mb: 1.5,
                             flex: 1,
                         }}
@@ -137,6 +138,7 @@ const CategoryCard: React.FC<CategoryCardProps> = React.memo(
                             fontFamily: "'Space Mono', monospace",
                             fontSize: '0.8rem',
                             fontWeight: 700,
+                            color: 'var(--color-text)',
                             bgcolor: 'var(--color-bg)',
                             border: `2px solid ${borderColor}`,
                             px: 2,

@@ -1,8 +1,9 @@
 import { useState, useMemo } from 'react';
-import { Box, Typography, Grid, Breadcrumbs, Link, ToggleButtonGroup, ToggleButton, Paper } from '@mui/material';
+import { Box, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import GridViewIcon from '@mui/icons-material/GridView';
 import HomeIcon from '@mui/icons-material/Home';
+import { useTheme } from '@/context/ThemeContext';
 import resources from '@/data/resources.json';
 import FilterBar, { type FilterState } from '@/components/FilterBar/FilterBar';
 import ResourceCard from '@/components/ResourceCard/ResourceCard';
@@ -25,8 +26,11 @@ export default function ResourceListPage({
     onViewResource,
     onNavigate,
 }: ResourceListPageProps) {
+    const [isDark] = useTheme();
     const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
 
     const categoryResources = useMemo(() => {
         return (resources as Resource[]).filter((r) => r.category === category);
@@ -62,29 +66,52 @@ export default function ResourceListPage({
 
     return (
         <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
-            <Breadcrumbs sx={{ mb: 3 }}>
-                <Link
-                    component="button"
+            <Box sx={{ mb: 3 }}>
+                <button
                     onClick={() => onNavigate('/')}
-                    sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
+                    style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: 'var(--color-text)',
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontWeight: 700,
+                        fontSize: '1rem',
+                        padding: 0,
+                    }}
                 >
                     <HomeIcon fontSize="small" />
                     Home
-                </Link>
-                <Typography color="text.primary">{title}</Typography>
-            </Breadcrumbs>
+                </button>
+            </Box>
 
-            <Typography variant="h3" sx={{ fontWeight: 800, mb: 1, fontFamily: "'Nunito', sans-serif" }}>
+            <Typography
+                sx={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 800,
+                    fontSize: { xs: '1.75rem', md: '2.25rem' },
+                    mb: 1,
+                }}
+            >
                 {title}
             </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+            <Typography sx={{ color: 'var(--color-text-secondary)', mb: 4, fontSize: '1rem' }}>
                 {description}
             </Typography>
 
             <FilterBar filters={filters} onFilterChange={setFilters} />
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 3, mb: 2 }}>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                    sx={{
+                        fontFamily: "'Space Mono', monospace",
+                        fontSize: '0.85rem',
+                        color: 'var(--color-text-secondary)',
+                    }}
+                >
                     {filteredResources.length === categoryResources.length
                         ? `${categoryResources.length} resources`
                         : `Showing ${filteredResources.length} of ${categoryResources.length} resources`}
@@ -94,6 +121,18 @@ export default function ResourceListPage({
                     exclusive
                     onChange={(_, val) => val && setViewMode(val)}
                     size="small"
+                    sx={{
+                        '& .MuiToggleButton-root': {
+                            border: `2px solid ${borderColor}`,
+                            color: 'var(--color-text)',
+                            bgcolor: 'var(--color-bg)',
+                            '&.Mui-selected': {
+                                bgcolor: 'var(--color-yellow)',
+                                color: '#1A1A1A',
+                                boxShadow: `2px 2px 0px ${shadowColor}`,
+                            },
+                        },
+                    }}
                 >
                     <ToggleButton value="grid">
                         <GridViewIcon fontSize="small" />
@@ -105,27 +144,47 @@ export default function ResourceListPage({
             </Box>
 
             {filteredResources.length === 0 ? (
-                <Paper sx={{ p: 6, textAlign: 'center' }}>
-                    <Typography variant="h6" sx={{ mb: 1 }}>
+                <Box
+                    sx={{
+                        p: 6,
+                        textAlign: 'center',
+                        bgcolor: 'var(--color-bg)',
+                        border: `3px solid ${borderColor}`,
+                        boxShadow: `4px 4px 0px ${shadowColor}`,
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontWeight: 700,
+                            fontSize: '1.25rem',
+                            mb: 1,
+                        }}
+                    >
                         No resources found
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>
                         Try adjusting your filters or search terms.
                     </Typography>
-                </Paper>
+                </Box>
             ) : viewMode === 'grid' ? (
-                <Grid container spacing={3}>
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' },
+                        gap: 3,
+                    }}
+                >
                     {filteredResources.map((resource) => (
-                        <Grid size={{ xs: 12, sm: 6, md: 4 }} key={resource.id}>
-                            <ResourceCard
-                                resource={resource}
-                                viewMode="grid"
-                                onView={onViewResource}
-                                onDownload={handleDownload}
-                            />
-                        </Grid>
+                        <ResourceCard
+                            key={resource.id}
+                            resource={resource}
+                            viewMode="grid"
+                            onView={onViewResource}
+                            onDownload={handleDownload}
+                        />
                     ))}
-                </Grid>
+                </Box>
             ) : (
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     {filteredResources.map((resource) => (

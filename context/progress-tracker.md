@@ -224,6 +224,35 @@ Transform the website from a generic corporate UI into a bold, playful, neo-brut
 - **Added safe-area CSS utility** — `.safe-bottom` class for components needing bottom safe-area padding
 - **Build passes successfully** — 661KB JS (202KB gzipped), 9.0KB CSS (2.7KB gzipped)
 
+### 2026-05-21 — Theme & Navigation Critical Fix: Full Application-Wide Resolution
+- **Root cause:** `hooks/useTheme.ts` was a standalone hook creating isolated state per component. `ThemeContext` existed but was only used by `BottomTabBar`. 7 components imported from the wrong source. MUI theme never updated on toggle.
+- **Deleted `hooks/useTheme.ts`** — eliminated duplicate theme state source
+- **Updated `ThemeContext.tsx`** — returns tuple `[boolean, () => void]` for backward compatibility
+- **Updated 8 components** to import from `@/context/ThemeContext`: Header, Footer, HeroSection, CategoryCard, ClassSpotlight, SecondaryClassSpotlight, QuickLinks, ContributeCTA
+- **Fixed `App.tsx`** and **`BottomTabBar.tsx`** to use tuple destructuring `[isDark]`
+- **Rewrote `ContributePage.tsx`** — replaced hardcoded warm gradient with neo-brutalist yellow banner, CSS variables for all colors, thick borders, hard shadows, Space Grotesk typography
+- **Rewrote `AboutPage.tsx`** — replaced hardcoded blue gradient with neo-brutalist blue banner, CSS variables, thick borders, Space Mono labels
+- **Rewrote `ResourceCard.tsx`** — replaced MUI Card with Box using CSS variables, replaced hardcoded type/subject colors with CSS variable references (`var(--color-red)`, `var(--subject-math)`, etc.), neo-brutalist chips and buttons
+- **Rewrote `FilterBar.tsx`** — CSS variable support for Select, TextField, Chips, Drawer; MUI theme aliased as `useMuiTheme` for breakpoints only
+- **Rewrote `ResourceListPage.tsx`** — CSS variables, Space Grotesk headings, Space Mono counts, neo-brutalist toggle buttons
+- **Rewrote `SearchPage.tsx`** — CSS variables, neo-brutalist empty/error states, Space Mono labels
+- **Rewrote `ResourceViewPage.tsx`** — CSS variables, neo-brutalist chips/buttons, Space Mono metadata
+- **Rewrote `IframeViewer.tsx`** — CSS variables, neo-brutalist error state with thick borders
+- **Fixed navigation — ClassSpotlight:** Added `onNavigate` prop, subject cards now navigate to `/resources/primary?class=N&subject=Subject`
+- **Fixed navigation — SecondaryClassSpotlight:** Added `onNavigate` prop, resource items now navigate to `/view/$id`, replaced fake SAMPLE_RESOURCES with real data from `resources.json`
+- **Fixed navigation — QuickLinks:** Added route mappings (all → `/resources/formats`), `onNavigate` prop, onClick handlers
+- **Fixed navigation — HeroSection:** Replaced `window.location.href` with TanStack Router `navigate({ to: '/search' })` for SPA navigation
+- **Build passes:** TypeScript ✅ | Vite ✅ | 810.94KB JS (247.37KB gzipped)
+
+### 2026-05-21 — Theme Toggle Fix: Root Cause Analysis & Resolution
+- **Root cause identified:** `useTheme()` was a standalone hook — each component call created its own `useState`, meaning every component had isolated theme state. `App.tsx` only consumed `isDark` (not `toggle`), so when `Header` called `toggleTheme()`, only Header's local state changed. `App.tsx` never re-rendered, MUI `ThemeProvider` never got a new theme.
+- **Secondary issue:** `FilterBar.tsx` imported `useTheme` from **MUI** (returns theme object), not our hook (returns `[boolean, () => void]`) — naming collision caused confusion.
+- **Created `ThemeContext.tsx`** — centralized React context with `ThemeProvider` wrapper, single source of truth for `isDark` + `toggleTheme`, localStorage persistence, `data-theme` attribute sync, `useMemo`-optimized value.
+- **Updated `App.tsx`** — wraps app in `<ThemeProvider>`, inner `AppContent` consumes `useTheme()` from context, MUI theme recreated on every `isDark` change.
+- **Fixed `FilterBar.tsx`** — renamed MUI `useTheme` import to `useMuiTheme` to avoid collision with our context hook.
+- **Updated `BottomTabBar.tsx`** — now consumes `useTheme()` from context, uses neo-brutalist styling (thick borders, yellow active tab, Space Mono labels).
+- **Build passes:** TypeScript ✅ | Vite ✅ | 804KB JS (247.85KB gzipped)
+
 ### 2026-05-21 — Phase 7: Neo-Brutalist Redesign — Phase 1 Cleanup COMPLETE
 - **Ran pyscribe-code MCP server (pre-cleanup):** 971 nodes, 154 edges
 - **Ran pyscribe-code MCP server (post-cleanup):** 940 nodes, 149 edges (-31 nodes, -5 edges)
@@ -239,6 +268,24 @@ Transform the website from a generic corporate UI into a bold, playful, neo-brut
 - **Created cleanup summary:** `context/phase-1-cleanup-summary.md`
 - **Created redesign plan:** `context/neo-brutalist-redesign-plan.md`
 - **Ready for Phase 2:** Core Components Redesign (Header, Footer, Hero, Category Cards)
+
+### 2026-05-21 — Dark Mode Color Contrast Fix: Global Theme Resolution
+- **Root cause analysis:** Three distinct issues causing text invisibility in dark mode:
+  1. `--subject-*` CSS variables only defined in `:root` (light mode), missing from `[data-theme='dark']` — subject-colored cards/text had poor contrast against dark backgrounds
+  2. `utils.ts:getSubjectColor()` returned hardcoded hex values (`#3B82F6`, `#8B5CF6`, etc.) that don't respond to theme changes
+  3. 17+ components used `isDark ? '#FFFFFF' : '#1A1A1A'` for borders/shadows instead of `var(--color-border)` / `var(--color-shadow)` — duplicating logic and bypassing CSS variable system
+  4. Button text colors not explicitly set in hover/active states — MUI defaults caused text to disappear on background changes
+  5. Doodle SVG components used hardcoded `#1A1A1A` strokes that became invisible on dark backgrounds
+- **Fixed `index.css`** — added `--subject-*` variables to `[data-theme='dark']` block with adjusted values for dark mode contrast
+- **Fixed `utils.ts`** — `getSubjectColor()` now returns `var(--subject-*)` CSS variable names instead of hardcoded hex
+- **Fixed `ResourceCard.tsx`** — added explicit `color: 'var(--color-text)'` to all buttons in both default and hover states
+- **Fixed `BottomTabBar.tsx`** — added `&:active` color override, explicit `color: 'inherit'` on SVG icons
+- **Fixed `Header.tsx`** — added `color: 'var(--color-text)'` to theme toggle IconButton, drawer close IconButton, and all drawer nav Typography elements
+- **Fixed `ClassSpotlight.tsx`** — added explicit `color: 'var(--color-text)'` to subject name labels
+- **Replaced hardcoded colors in 17 components** — all `const borderColor = isDark ? '#FFFFFF' : '#1A1A1A'` → `const borderColor = 'var(--color-border)'` and all `const shadowColor = isDark ? '#000000' : '#1A1A1A'` → `const shadowColor = 'var(--color-shadow)'`
+- **Fixed hardcoded backgrounds in 5 components** — `isDark ? '#222240' : 'var(--color-*)'` → `isDark ? 'var(--color-bg-secondary)' : 'var(--color-*)'`
+- **Fixed 5 Doodle SVG components** — replaced `#1A1A1A` strokes with `var(--color-border)`, default colors with `var(--color-*)` variables
+- **Build verification:** TypeScript PASS (zero errors), Vite build PASS (811KB JS / 247KB gzipped, 12KB CSS / 3.65KB gzipped)
 
 ### 2026-05-21 — Phase 7: Neo-Brutalist Redesign — Phase 2 (Foundation + Core Components) COMPLETE
 - **Stakeholder decisions recorded:** Hybrid MUI approach, Framer Motion installed, inline SVG doodles, neo-brutalist dark mode, skip custom cursor, 3% paper texture, playful bouncy animations, mobile-first, playful copy, flexible performance budget

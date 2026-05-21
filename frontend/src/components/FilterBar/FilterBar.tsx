@@ -7,16 +7,16 @@ import {
     MenuItem,
     TextField,
     Button,
-    Chip,
     IconButton,
     Drawer,
     Typography,
     useMediaQuery,
-    useTheme,
+    useTheme as useMuiTheme,
 } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import CloseIcon from '@mui/icons-material/Close';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
+import { useTheme } from '@/context/ThemeContext';
 
 export interface FilterState {
     class: string;
@@ -44,9 +44,12 @@ export default function FilterBar({
     subjects: subjectOptions = SUBJECT_OPTIONS,
     types: typeOptions = TYPE_OPTIONS,
 }: FilterBarProps) {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const [isDark] = useTheme();
+    const muiTheme = useMuiTheme();
+    const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
 
     const hasActiveFilters =
         filters.class !== 'all' ||
@@ -79,14 +82,22 @@ export default function FilterBar({
                 }}
             >
                 <FormControl size="small" sx={{ minWidth: 120 }}>
-                    <InputLabel>Class</InputLabel>
+                    <InputLabel sx={{ color: 'var(--color-text-secondary)' }}>Class</InputLabel>
                     <Select
                         value={filters.class}
                         label="Class"
                         onChange={(e) => updateFilter('class', e.target.value)}
+                        sx={{
+                            bgcolor: 'var(--color-bg)',
+                            color: 'var(--color-text)',
+                            '& .MuiSelect-select': { color: 'var(--color-text)' },
+                            '& .MuiOutlinedInput-notchedOutline': { borderColor },
+                            '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--color-yellow)' },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderWidth: 2, borderColor: 'var(--color-yellow)' },
+                        }}
                     >
                         {classOptions.map((cls) => (
-                            <MenuItem key={cls} value={cls}>
+                            <MenuItem key={cls} value={cls} sx={{ color: 'var(--color-text)' }}>
                                 {cls === 'all' ? 'All Classes' : `Class ${cls}`}
                             </MenuItem>
                         ))}
@@ -94,14 +105,22 @@ export default function FilterBar({
                 </FormControl>
 
                 <FormControl size="small" sx={{ minWidth: 140 }}>
-                    <InputLabel>Subject</InputLabel>
+                    <InputLabel sx={{ color: 'var(--color-text-secondary)' }}>Subject</InputLabel>
                     <Select
                         value={filters.subject}
                         label="Subject"
                         onChange={(e) => updateFilter('subject', e.target.value)}
+                        sx={{
+                            bgcolor: 'var(--color-bg)',
+                            color: 'var(--color-text)',
+                            '& .MuiSelect-select': { color: 'var(--color-text)' },
+                            '& .MuiOutlinedInput-notchedOutline': { borderColor },
+                            '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--color-yellow)' },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderWidth: 2, borderColor: 'var(--color-yellow)' },
+                        }}
                     >
                         {subjectOptions.map((sub) => (
-                            <MenuItem key={sub} value={sub}>
+                            <MenuItem key={sub} value={sub} sx={{ color: 'var(--color-text)' }}>
                                 {sub === 'all' ? 'All Subjects' : sub}
                             </MenuItem>
                         ))}
@@ -109,14 +128,22 @@ export default function FilterBar({
                 </FormControl>
 
                 <FormControl size="small" sx={{ minWidth: 120 }}>
-                    <InputLabel>Type</InputLabel>
+                    <InputLabel sx={{ color: 'var(--color-text-secondary)' }}>Type</InputLabel>
                     <Select
                         value={filters.type}
                         label="Type"
                         onChange={(e) => updateFilter('type', e.target.value)}
+                        sx={{
+                            bgcolor: 'var(--color-bg)',
+                            color: 'var(--color-text)',
+                            '& .MuiSelect-select': { color: 'var(--color-text)' },
+                            '& .MuiOutlinedInput-notchedOutline': { borderColor },
+                            '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--color-yellow)' },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderWidth: 2, borderColor: 'var(--color-yellow)' },
+                        }}
                     >
                         {typeOptions.map((type) => (
-                            <MenuItem key={type} value={type}>
+                            <MenuItem key={type} value={type} sx={{ color: 'var(--color-text)' }}>
                                 {type === 'all' ? 'All Types' : type.toUpperCase()}
                             </MenuItem>
                         ))}
@@ -128,7 +155,17 @@ export default function FilterBar({
                     placeholder="Search within results..."
                     value={filters.search}
                     onChange={(e) => updateFilter('search', e.target.value)}
-                    sx={{ minWidth: 200, flex: 1 }}
+                    sx={{
+                        minWidth: 200,
+                        flex: 1,
+                        '& .MuiOutlinedInput-root': {
+                            bgcolor: 'var(--color-bg)',
+                            '& input': { color: 'var(--color-text)' },
+                            '& fieldset': { borderColor },
+                            '&:hover fieldset': { borderColor: 'var(--color-yellow)' },
+                            '&.Mui-focused fieldset': { borderWidth: 2, borderColor: 'var(--color-yellow)' },
+                        },
+                    }}
                 />
 
                 {hasActiveFilters && (
@@ -136,7 +173,11 @@ export default function FilterBar({
                         size="small"
                         startIcon={<ClearAllIcon />}
                         onClick={handleClearAll}
-                        color="secondary"
+                        sx={{
+                            color: 'var(--color-red)',
+                            border: `2px solid var(--color-red)`,
+                            '&:hover': { bgcolor: 'var(--color-red)', color: 'var(--color-bg)' },
+                        }}
                     >
                         Clear All
                     </Button>
@@ -146,13 +187,35 @@ export default function FilterBar({
             {activeFilterChips.length > 0 && (
                 <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     {activeFilterChips.map((chip) => (
-                        <Chip
+                        <Box
                             key={chip.key}
-                            label={chip.label}
-                            onDelete={() => updateFilter(chip.key, chip.key === 'class' ? 'all' : 'all')}
-                            size="small"
-                            variant="outlined"
-                        />
+                            onClick={() => updateFilter(chip.key, 'all')}
+                            sx={{
+                                px: 1.5,
+                                py: 0.5,
+                                bgcolor: 'var(--color-pink)',
+                                border: `2px solid ${borderColor}`,
+                                borderRadius: '9999px',
+                                fontFamily: "'Space Mono', monospace",
+                                fontWeight: 700,
+                                fontSize: '0.75rem',
+                                cursor: 'pointer',
+                                boxShadow: `2px 2px 0px ${shadowColor}`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 0.5,
+                                '&:hover': {
+                                    transform: 'translate(-1px, -1px)',
+                                    boxShadow: `3px 3px 0px ${shadowColor}`,
+                                },
+                                '&::after': {
+                                    content: '"✕"',
+                                    fontSize: '0.6rem',
+                                },
+                            }}
+                        >
+                            {chip.label}
+                        </Box>
                     ))}
                 </Box>
             )}
@@ -168,6 +231,17 @@ export default function FilterBar({
                         startIcon={<FilterListIcon />}
                         onClick={() => setDrawerOpen(true)}
                         fullWidth
+                        sx={{
+                            border: `3px solid ${borderColor}`,
+                            boxShadow: `3px 3px 0px ${shadowColor}`,
+                            bgcolor: 'var(--color-bg)',
+                            color: 'var(--color-text)',
+                            '&:hover': {
+                                bgcolor: 'var(--color-bg-secondary)',
+                                transform: 'translate(-1px, -1px)',
+                                boxShadow: `4px 4px 0px ${shadowColor}`,
+                            },
+                        }}
                     >
                         Filters {hasActiveFilters && `(${activeFilterChips.length})`}
                     </Button>
@@ -176,21 +250,49 @@ export default function FilterBar({
                 {activeFilterChips.length > 0 && (
                     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
                         {activeFilterChips.map((chip) => (
-                            <Chip
+                            <Box
                                 key={chip.key}
-                                label={chip.label}
-                                onDelete={() => updateFilter(chip.key, 'all')}
-                                size="small"
-                                variant="outlined"
-                            />
+                                onClick={() => updateFilter(chip.key, 'all')}
+                                sx={{
+                                    px: 1.5,
+                                    py: 0.5,
+                                    bgcolor: 'var(--color-pink)',
+                                    border: `2px solid ${borderColor}`,
+                                    borderRadius: '9999px',
+                                    fontFamily: "'Space Mono', monospace",
+                                    fontWeight: 700,
+                                    fontSize: '0.75rem',
+                                    cursor: 'pointer',
+                                    boxShadow: `2px 2px 0px ${shadowColor}`,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 0.5,
+                                    '&::after': {
+                                        content: '"✕"',
+                                        fontSize: '0.6rem',
+                                    },
+                                }}
+                            >
+                                {chip.label}
+                            </Box>
                         ))}
-                        <Chip
-                            label="Clear All"
-                            onDelete={handleClearAll}
-                            size="small"
-                            color="secondary"
-                            variant="outlined"
-                        />
+                        <Box
+                            onClick={handleClearAll}
+                            sx={{
+                                px: 1.5,
+                                py: 0.5,
+                                bgcolor: 'var(--color-bg)',
+                                border: `2px solid var(--color-red)`,
+                                borderRadius: '9999px',
+                                fontFamily: "'Space Mono', monospace",
+                                fontWeight: 700,
+                                fontSize: '0.75rem',
+                                cursor: 'pointer',
+                                color: 'var(--color-red)',
+                            }}
+                        >
+                            Clear All
+                        </Box>
                     </Box>
                 )}
 
@@ -199,30 +301,40 @@ export default function FilterBar({
                     open={drawerOpen}
                     onClose={() => setDrawerOpen(false)}
                 >
-                    <Box sx={{ p: 3, maxWidth: 500, mx: 'auto' }}>
+                    <Box sx={{ bgcolor: 'var(--color-bg)', borderTop: `3px solid ${borderColor}`, p: 3, maxWidth: 500, mx: 'auto' }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                            <Typography variant="h6">Filters</Typography>
-                            <IconButton onClick={() => setDrawerOpen(false)}>
-                                <CloseIcon />
-                            </IconButton>
-                        </Box>
-                        {filterContent}
-                        <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
-                            <Button
-                                variant="contained"
-                                fullWidth
-                                onClick={() => setDrawerOpen(false)}
-                            >
-                                Apply Filters
-                            </Button>
-                            <Button
-                                variant="outlined"
-                                fullWidth
-                                onClick={handleClearAll}
-                            >
-                                Clear All
-                            </Button>
-                        </Box>
+                        <Typography sx={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 800, fontSize: '1.25rem' }}>Filters</Typography>
+                        <IconButton onClick={() => setDrawerOpen(false)} sx={{ border: `2px solid ${borderColor}`, borderRadius: 0 }}>
+                            <CloseIcon />
+                        </IconButton>
+                    </Box>
+                    {filterContent}
+                    <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
+                        <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={() => setDrawerOpen(false)}
+                            sx={{
+                                bgcolor: 'var(--color-yellow)',
+                                color: '#1A1A1A',
+                                border: `3px solid ${borderColor}`,
+                                boxShadow: `3px 3px 0px ${shadowColor}`,
+                            }}
+                        >
+                            Apply Filters
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            fullWidth
+                            onClick={handleClearAll}
+                            sx={{
+                                border: `3px solid ${borderColor}`,
+                                color: 'var(--color-text)',
+                            }}
+                        >
+                            Clear All
+                        </Button>
+                    </Box>
                     </Box>
                 </Drawer>
             </>

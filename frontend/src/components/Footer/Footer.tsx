@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '@/context/ThemeContext';
 import navigation from '@/data/navigation.json';
 import siteConfig from '@/data/site-config.json';
 import { StarDoodle, SquiggleDoodle } from '@/components/Doodles';
@@ -12,7 +12,7 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
     const isDark = useTheme()[0];
     const footerLinks = navigation.footerLinks;
-    const borderColor = isDark ? '#FFFFFF' : '#1A1A1A';
+    const borderColor = 'var(--color-border)';
 
     const linkSection = (
         title: string,
@@ -79,7 +79,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <Box
             component="footer"
             sx={{
-                bgcolor: isDark ? '#222240' : 'var(--color-yellow)',
+                bgcolor: isDark ? 'var(--color-bg-secondary)' : 'var(--color-yellow)',
                 borderTop: `3px solid ${borderColor}`,
                 py: { xs: 6, md: 8 },
                 px: { xs: 2, md: 4 },

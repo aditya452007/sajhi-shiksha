@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Button, IconButton, Typography, Drawer, List, ListItem } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import MenuIcon from '@mui/icons-material/Menu';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '@/context/ThemeContext';
 import navigation from '@/data/navigation.json';
 import siteConfig from '@/data/site-config.json';
 import { BookDoodle } from '@/components/Doodles';
@@ -22,8 +23,8 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
     };
 
     const navItems = navigation.navItems.slice(0, 5);
-    const borderColor = isDark ? '#FFFFFF' : '#1A1A1A';
-    const shadowColor = isDark ? '#000000' : '#1A1A1A';
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
 
     const drawerContent = (
         <Box
@@ -51,6 +52,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                         fontFamily: "'Space Grotesk', sans-serif",
                         fontWeight: 800,
                         fontSize: '1.25rem',
+                        color: 'var(--color-text)',
                     }}
                 >
                     {siteConfig.siteName}
@@ -61,6 +63,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                         border: `2px solid ${borderColor}`,
                         borderRadius: 0,
                         boxShadow: `2px 2px 0px ${shadowColor}`,
+                        color: 'var(--color-text)',
                     }}
                 >
                     <CloseIcon />
@@ -84,6 +87,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                             sx={{
                                 fontFamily: "'Space Grotesk', sans-serif",
                                 fontWeight: 700,
+                                color: 'var(--color-text)',
                             }}
                         >
                             {item.label}
@@ -107,6 +111,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                             sx={{
                                 fontFamily: "'Space Grotesk', sans-serif",
                                 fontWeight: 700,
+                                color: 'var(--color-text)',
                             }}
                         >
                             {label}
@@ -156,6 +161,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                                 fontWeight: 800,
                                 fontSize: { xs: '1.25rem', md: '1.5rem' },
                                 lineHeight: 1,
+                                color: 'var(--color-text)',
                             }}
                         >
                             {siteConfig.siteName}
@@ -211,35 +217,41 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                     </Box>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <IconButton
-                            onClick={toggleTheme}
-                            sx={{
-                                border: `2px solid ${borderColor}`,
-                                borderRadius: '9999px',
-                                boxShadow: `2px 2px 0px ${shadowColor}`,
-                                bgcolor: isDark ? '#1A1A2E' : '#FFFDF7',
-                                transition: 'transform 100ms ease, box-shadow 100ms ease',
-                                '&:active': {
-                                    transform: 'translate(2px, 2px)',
-                                    boxShadow: `1px 1px 0px ${shadowColor}`,
-                                },
-                            }}
-                        >
-                            {isDark ? <LightModeIcon /> : <DarkModeIcon />}
-                        </IconButton>
+                <IconButton
+                    onClick={toggleTheme}
+                    sx={{
+                        border: `2px solid ${borderColor}`,
+                        borderRadius: '9999px',
+                        boxShadow: `2px 2px 0px ${shadowColor}`,
+                                bgcolor: 'var(--color-bg)',
+                        color: 'var(--color-text)',
+                        transition: 'transform 100ms ease, box-shadow 100ms ease',
+                        '&:active': {
+                            transform: 'translate(2px, 2px)',
+                            boxShadow: `1px 1px 0px ${shadowColor}`,
+                        },
+                    }}
+                >
+                    {isDark ? <LightModeIcon /> : <DarkModeIcon />}
+                </IconButton>
 
                         <Button
                             onClick={() => setMobileOpen(true)}
+                            startIcon={<MenuIcon />}
                             sx={{
                                 display: { xs: 'flex', md: 'none' },
                                 border: `2px solid ${borderColor}`,
                                 borderRadius: 0,
                                 boxShadow: `2px 2px 0px ${shadowColor}`,
                                 bgcolor: 'var(--color-yellow)',
+                                color: '#1A1A1A',
                                 fontFamily: "'Space Mono', monospace",
                                 fontWeight: 700,
                                 fontSize: '0.85rem',
                                 px: 2,
+                                '& .MuiButton-startIcon': {
+                                    color: '#1A1A1A',
+                                },
                                 '&:active': {
                                     transform: 'translate(2px, 2px)',
                                     boxShadow: `1px 1px 0px ${shadowColor}`,

@@ -52,13 +52,14 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <ClassSpotlight
                     title="Resources for Primary Classes"
                     classNumbers={[1, 2, 3, 4, 5]}
+                    onNavigate={onNavigate}
                 />
             </ScrollReveal>
             <ScrollReveal delay={200}>
-                <SecondaryClassSpotlight title="Resources for Secondary Classes" />
+                <SecondaryClassSpotlight title="Resources for Secondary Classes" onNavigate={onNavigate} />
             </ScrollReveal>
             <ScrollReveal delay={100}>
-                <QuickLinks />
+                <QuickLinks onNavigate={onNavigate} />
             </ScrollReveal>
             <ScrollReveal delay={150}>
                 <ContributeCTA />

@@ -7,27 +7,32 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '@/context/ThemeContext';
 import { SquiggleDoodle } from '@/components/Doodles';
 
 interface QuickLinkItem {
     id: string;
     title: string;
     icon: React.ElementType;
+    route: string;
 }
 
 const quickLinks: QuickLinkItem[] = [
-    { id: '1', title: 'Morning Assembly Formats', icon: EventNoteIcon },
-    { id: '2', title: 'GOI/KVS Rules', icon: GavelIcon },
-    { id: '3', title: 'Office Formats', icon: DescriptionIcon },
-    { id: '4', title: 'Time Table Templates', icon: TableChartIcon },
-    { id: '5', title: 'Income Tax Guide', icon: ReceiptIcon },
+    { id: '1', title: 'Morning Assembly Formats', icon: EventNoteIcon, route: '/resources/formats' },
+    { id: '2', title: 'GOI/KVS Rules', icon: GavelIcon, route: '/resources/formats' },
+    { id: '3', title: 'Office Formats', icon: DescriptionIcon, route: '/resources/formats' },
+    { id: '4', title: 'Time Table Templates', icon: TableChartIcon, route: '/resources/formats' },
+    { id: '5', title: 'Income Tax Guide', icon: ReceiptIcon, route: '/resources/formats' },
 ];
 
-const QuickLinks: React.FC = () => {
+interface QuickLinksProps {
+    onNavigate?: (route: string) => void;
+}
+
+const QuickLinks: React.FC<QuickLinksProps> = ({ onNavigate }) => {
     const [isDark] = useTheme();
-    const borderColor = isDark ? '#FFFFFF' : '#1A1A1A';
-    const shadowColor = isDark ? '#000000' : '#1A1A1A';
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
 
     return (
         <Box
@@ -74,13 +79,20 @@ const QuickLinks: React.FC = () => {
                         {quickLinks.map((link, i) => (
                             <ListItem
                                 key={link.id}
+                                onClick={() => onNavigate?.(link.route)}
                                 sx={{
                                     borderBottom: i < quickLinks.length - 1 ? `2px solid ${borderColor}` : 'none',
-                                    cursor: 'pointer',
+                                    cursor: onNavigate ? 'pointer' : 'default',
                                     transition: 'background-color 0.15s ease',
-                                    '&:hover': {
+                                    '&:hover': onNavigate ? {
                                         bgcolor: 'var(--color-yellow)',
-                                    },
+                                        '& .quick-link-title': {
+                                            color: '#1A1A1A',
+                                        },
+                                        '& .quick-link-chevron': {
+                                            color: '#1A1A1A',
+                                        },
+                                    } : {},
                                 }}
                             >
                                 <ListItemIcon sx={{ minWidth: 40 }}>
@@ -89,9 +101,12 @@ const QuickLinks: React.FC = () => {
                                 <ListItemText
                                     primary={
                                         <Typography
+                                            className="quick-link-title"
                                             sx={{
                                                 fontFamily: "'Space Grotesk', sans-serif",
                                                 fontWeight: 700,
+                                                color: 'var(--color-text)',
+                                                transition: 'color 0.15s ease',
                                             }}
                                         >
                                             {link.title}
@@ -99,9 +114,10 @@ const QuickLinks: React.FC = () => {
                                     }
                                 />
                                 <ChevronRightIcon
+                                    className="quick-link-chevron"
                                     sx={{
                                         color: 'var(--color-text-secondary)',
-                                        transition: 'transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                        transition: 'transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.15s ease',
                                     }}
                                 />
                             </ListItem>

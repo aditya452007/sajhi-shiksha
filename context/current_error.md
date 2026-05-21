@@ -1,0 +1,7 @@
+in the dark mode the subheadings are not clearly visible refer C:\Users\Hp\SAJHISHIKSHA\context\Screenshot\image.png  this image to understand 
+
+in the mobile view the bottom bar tags are not visible until you click on them in both the light mode and dark mode and the hambrugur menu also do not show the three line neither in light mode or dark mode 
+
+also some buttons has same problem when you click on them text disappears and colour change colour change is acceptable but text invisiblity is not acceptable anywhere in the website 
+
+I would like you to search the entire website and understand where the colour contrast is happening that is making the Text either not visible because it is not acceptable in the entire website that when you change the thing the text does not clearly visible not acceptable at all The text should change when the themes change So it is a global configuration Think about it clearly before writing any chord I would like you to understand why that is happening use agent skills ui ux or front end development guidelines Of how the front end texture and Etcetera things compile and work Think about that understand the problem find out the analysis because that is very every ai problem without finding the Root Causeway it starts to jump at the code first understand the root code Course and why and how you can solve it then purpose analysis and then execute 

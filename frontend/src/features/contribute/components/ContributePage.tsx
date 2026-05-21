@@ -1,4 +1,4 @@
-import { Box, Typography, Paper, Button, Grid, Avatar, Divider, Link } from '@mui/material';
+import { Box, Typography, Button, Grid, Avatar, Divider, Link } from '@mui/material';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import EmailIcon from '@mui/icons-material/Email';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -9,6 +9,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import HomeIcon from '@mui/icons-material/Home';
+import { useTheme } from '@/context/ThemeContext';
 import contributorsData from '@/data/contributors.json';
 
 interface ContributePageProps {
@@ -32,7 +33,7 @@ const STEPS = [
         number: 3,
         icon: <CheckCircleIcon sx={{ fontSize: 32 }} />,
         title: 'Credit',
-        description: 'We\'ll add it to the site with your name credited as the contributor.',
+        description: "We'll add it to the site with your name credited as the contributor.",
     },
 ];
 
@@ -44,49 +45,71 @@ const SHARE_TYPES = [
     { icon: <FavoriteIcon />, title: 'Monetary contributions', description: 'Support the platform to keep it free for everyone.' },
 ];
 
-const CONTRIBUTOR_COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'];
+const CONTRIBUTOR_COLORS = ['var(--color-blue)', 'var(--color-green)', 'var(--color-orange)', 'var(--color-purple)', 'var(--color-red)'];
 
 export default function ContributePage({ onNavigate }: ContributePageProps) {
+    const [isDark] = useTheme();
     const email = contributorsData.email;
     const mailtoLink = `mailto:${email}?subject=Resource Contribution to Sajhi Shiksha`;
+    const borderColor = 'var(--color-border)';
+    const shadowColor = 'var(--color-shadow)';
 
     return (
         <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, md: 4 }, py: 4 }}>
             <Box sx={{ mb: 4 }}>
-                <Link
-                    component="button"
+                <Button
                     onClick={() => onNavigate('/')}
-                    sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, mb: 2 }}
+                    sx={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 0.5,
+                        mb: 2,
+                        color: 'var(--color-text)',
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontWeight: 700,
+                        border: 'none',
+                        boxShadow: 'none',
+                        '&:hover': { bgcolor: 'transparent' },
+                    }}
+                    startIcon={<HomeIcon fontSize="small" />}
                 >
-                    <HomeIcon fontSize="small" />
                     Home
-                </Link>
+                </Button>
             </Box>
 
-            <Paper
+            <Box
                 sx={{
                     p: { xs: 4, md: 8 },
                     textAlign: 'center',
-                    background: 'linear-gradient(135deg, #FFF7ED 0%, #FEF3C7 100%)',
+                    bgcolor: isDark ? 'var(--color-bg-secondary)' : 'var(--color-yellow)',
+                    border: `3px solid ${borderColor}`,
+                    boxShadow: `6px 6px 0px ${shadowColor}`,
                     mb: 6,
                 }}
             >
                 <VolunteerActivismIcon
-                    sx={{ fontSize: 64, color: '#F59E0B', mb: 2 }}
+                    sx={{ fontSize: 64, color: 'var(--color-text)', mb: 2 }}
                 />
                 <Typography
-                    variant="h2"
-                    sx={{ fontWeight: 800, mb: 2, fontFamily: "'Nunito', sans-serif" }}
+                    sx={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontWeight: 800,
+                        fontSize: { xs: '2rem', md: '2.5rem' },
+                        mb: 2,
+                    }}
                 >
                     Share Your Knowledge
                 </Typography>
                 <Typography
-                    variant="h6"
-                    color="text.secondary"
-                    sx={{ mb: 4, maxWidth: 600, mx: 'auto' }}
+                    sx={{
+                        fontSize: '1.1rem',
+                        color: 'var(--color-text-secondary)',
+                        mb: 4,
+                        maxWidth: 600,
+                        mx: 'auto',
+                    }}
                 >
-                    Help fellow teachers and students by sharing your study materials,
-                    question papers, and resources.
+                    Help fellow teachers and students by sharing your study materials, question papers, and resources.
                 </Typography>
                 <Button
                     variant="contained"
@@ -97,33 +120,48 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                         px: 4,
                         py: 1.5,
                         fontSize: '1.1rem',
-                        fontWeight: 600,
-                        transition: 'transform 0.2s ease',
-                        '&:hover': { transform: 'scale(1.05)' },
+                        fontWeight: 700,
+                        bgcolor: 'var(--color-bg)',
+                        color: 'var(--color-text)',
+                        border: `3px solid ${borderColor}`,
+                        boxShadow: `4px 4px 0px ${shadowColor}`,
+                        '&:hover': {
+                            bgcolor: 'var(--color-bg-secondary)',
+                            color: 'var(--color-text)',
+                            transform: 'none',
+                            boxShadow: `4px 4px 0px ${shadowColor}`,
+                        },
                     }}
                 >
                     Email Us
                 </Button>
-            </Paper>
+            </Box>
 
             <Typography
-                variant="h4"
-                sx={{ fontWeight: 700, mb: 4, fontFamily: "'Nunito', sans-serif" }}
+                sx={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 800,
+                    fontSize: { xs: '1.5rem', md: '2rem' },
+                    mb: 4,
+                }}
             >
                 How It Works
             </Typography>
             <Grid container spacing={4} sx={{ mb: 8 }}>
                 {STEPS.map((step) => (
                     <Grid size={{ xs: 12, md: 4 }} key={step.number}>
-                        <Paper
+                        <Box
                             sx={{
                                 p: 4,
                                 textAlign: 'center',
                                 height: '100%',
-                                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                                bgcolor: 'var(--color-bg)',
+                                border: `3px solid ${borderColor}`,
+                                boxShadow: `4px 4px 0px ${shadowColor}`,
+                                transition: 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
                                 '&:hover': {
-                                    transform: 'translateY(-4px)',
-                                    boxShadow: '0 8px 24px rgba(0,0,0,0.1)',
+                                    transform: 'translate(-2px, -2px)',
+                                    boxShadow: `6px 6px 0px ${shadowColor}`,
                                 },
                                 position: 'relative',
                             }}
@@ -136,46 +174,66 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                                     transform: 'translateX(-50%)',
                                     width: 32,
                                     height: 32,
-                                    borderRadius: '50%',
-                                    bgcolor: 'primary.main',
-                                    color: 'white',
+                                    bgcolor: 'var(--color-yellow)',
+                                    border: `2px solid ${borderColor}`,
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    fontWeight: 700,
+                                    fontWeight: 800,
                                     fontSize: '0.875rem',
+                                    fontFamily: "'Space Grotesk', sans-serif",
+                                    color: '#1A1A1A',
                                 }}
                             >
                                 {step.number}
                             </Box>
-                            <Box sx={{ color: 'primary.main', mt: 1, mb: 2 }}>
+                            <Box sx={{ color: 'var(--color-text)', mt: 1, mb: 2 }}>
                                 {step.icon}
                             </Box>
-                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+                            <Typography
+                                sx={{
+                                    fontFamily: "'Space Grotesk', sans-serif",
+                                    fontWeight: 700,
+                                    fontSize: '1.1rem',
+                                    mb: 1,
+                                }}
+                            >
                                 {step.title}
                             </Typography>
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>
                                 {step.description}
                             </Typography>
-                        </Paper>
+                        </Box>
                     </Grid>
                 ))}
             </Grid>
 
             <Typography
-                variant="h4"
-                sx={{ fontWeight: 700, mb: 4, fontFamily: "'Nunito', sans-serif" }}
+                sx={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 800,
+                    fontSize: { xs: '1.5rem', md: '2rem' },
+                    mb: 4,
+                }}
             >
                 What You Can Share
             </Typography>
-            <Paper sx={{ p: 4, mb: 8 }}>
+            <Box
+                sx={{
+                    p: 4,
+                    mb: 8,
+                    bgcolor: 'var(--color-bg)',
+                    border: `3px solid ${borderColor}`,
+                    boxShadow: `4px 4px 0px ${shadowColor}`,
+                }}
+            >
                 <Grid container spacing={3}>
                     {SHARE_TYPES.map((item, index) => (
                         <Grid size={{ xs: 12, sm: 6 }} key={index}>
                             <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
                                 <Box
                                     sx={{
-                                        color: 'primary.main',
+                                        color: 'var(--color-text)',
                                         flexShrink: 0,
                                         mt: 0.5,
                                     }}
@@ -183,10 +241,16 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                                     {item.icon}
                                 </Box>
                                 <Box>
-                                    <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 0.5 }}>
+                                    <Typography
+                                        sx={{
+                                            fontFamily: "'Space Grotesk', sans-serif",
+                                            fontWeight: 700,
+                                            mb: 0.5,
+                                        }}
+                                    >
                                         {item.title}
                                     </Typography>
-                                    <Typography variant="body2" color="text.secondary">
+                                    <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>
                                         {item.description}
                                     </Typography>
                                 </Box>
@@ -194,15 +258,27 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                         </Grid>
                     ))}
                 </Grid>
-            </Paper>
+            </Box>
 
             <Typography
-                variant="h4"
-                sx={{ fontWeight: 700, mb: 4, fontFamily: "'Nunito', sans-serif" }}
+                sx={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 800,
+                    fontSize: { xs: '1.5rem', md: '2rem' },
+                    mb: 4,
+                }}
             >
                 Current Contributors
             </Typography>
-            <Paper sx={{ p: 4, mb: 8 }}>
+            <Box
+                sx={{
+                    p: 4,
+                    mb: 8,
+                    bgcolor: 'var(--color-bg)',
+                    border: `3px solid ${borderColor}`,
+                    boxShadow: `4px 4px 0px ${shadowColor}`,
+                }}
+            >
                 <Grid container spacing={3}>
                     {contributorsData.contributors.map((contributor, index) => (
                         <Grid size={{ xs: 12, sm: 6, md: 4 }} key={contributor.name}>
@@ -212,19 +288,32 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                                         bgcolor: CONTRIBUTOR_COLORS[index % CONTRIBUTOR_COLORS.length],
                                         width: 48,
                                         height: 48,
-                                        fontWeight: 700,
+                                        fontWeight: 800,
+                                        border: `2px solid ${borderColor}`,
+                                        fontFamily: "'Space Grotesk', sans-serif",
                                     }}
                                 >
                                     {contributor.initials}
                                 </Avatar>
                                 <Box>
-                                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                                    <Typography
+                                        sx={{
+                                            fontFamily: "'Space Grotesk', sans-serif",
+                                            fontWeight: 700,
+                                        }}
+                                    >
                                         {contributor.name}
                                     </Typography>
-                                    <Typography variant="body2" color="text.secondary">
+                                    <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
                                         {contributor.role}
                                     </Typography>
-                                    <Typography variant="caption" color="primary">
+                                    <Typography
+                                        sx={{
+                                            fontFamily: "'Space Mono', monospace",
+                                            fontSize: '0.75rem',
+                                            color: 'var(--color-yellow)',
+                                        }}
+                                    >
                                         {contributor.contribution}
                                     </Typography>
                                 </Box>
@@ -232,37 +321,48 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                         </Grid>
                     ))}
                 </Grid>
-                <Divider sx={{ my: 3 }} />
-                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
+                <Divider sx={{ my: 3, borderColor }} />
+                <Typography sx={{ color: 'var(--color-text-secondary)', textAlign: 'center', fontSize: '0.95rem' }}>
                     Want to be listed here?{' '}
-                    <Link href={mailtoLink} sx={{ fontWeight: 600 }}>
+                    <Link href={mailtoLink} sx={{ fontWeight: 700, color: 'var(--color-text)' }}>
                         Share your resources
                     </Link>
                 </Typography>
-            </Paper>
+            </Box>
 
             <Typography
-                variant="h4"
-                sx={{ fontWeight: 700, mb: 4, fontFamily: "'Nunito', sans-serif" }}
+                sx={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 800,
+                    fontSize: { xs: '1.5rem', md: '2rem' },
+                    mb: 4,
+                }}
             >
                 Contact Information
             </Typography>
-            <Paper sx={{ p: 4 }}>
+            <Box
+                sx={{
+                    p: 4,
+                    bgcolor: 'var(--color-bg)',
+                    border: `3px solid ${borderColor}`,
+                    boxShadow: `4px 4px 0px ${shadowColor}`,
+                }}
+            >
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                        <EmailIcon color="action" />
-                        <Link href={mailtoLink} sx={{ fontWeight: 500 }}>
+                        <EmailIcon sx={{ color: 'var(--color-text)' }} />
+                        <Link href={mailtoLink} sx={{ fontWeight: 700, color: 'var(--color-text)', fontFamily: "'Space Mono', monospace" }}>
                             {email}
                         </Link>
                     </Box>
                     {contributorsData.whatsapp && (
                         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                            <WhatsAppIcon color="action" />
-                            <Typography>{contributorsData.whatsapp}</Typography>
+                            <WhatsAppIcon sx={{ color: 'var(--color-text)' }} />
+                            <Typography sx={{ fontFamily: "'Space Mono', monospace" }}>{contributorsData.whatsapp}</Typography>
                         </Box>
                     )}
                 </Box>
-            </Paper>
+            </Box>
         </Box>
     );
 }

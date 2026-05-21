@@ -6,6 +6,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import SearchIcon from '@mui/icons-material/Search';
 import { useLocation, useNavigate } from '@tanstack/react-router';
+import { useTheme } from '@/context/ThemeContext';
 
 interface TabConfig {
     label: string;
@@ -24,6 +25,8 @@ const tabs: TabConfig[] = [
 const BottomTabBar: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const [isDark] = useTheme();
+    const borderColor = 'var(--color-border)';
 
     const activeIndex = tabs.findIndex((tab) => {
         if (tab.route === '/') return location.pathname === '/';
@@ -40,9 +43,8 @@ const BottomTabBar: React.FC = () => {
                 left: 0,
                 right: 0,
                 zIndex: 1100,
-                bgcolor: 'background.paper',
-                borderTop: '1px solid',
-                borderColor: 'divider',
+                bgcolor: 'var(--color-bg)',
+                borderTop: `3px solid ${borderColor}`,
                 paddingBottom: 'env(safe-area-inset-bottom, 0px)',
             }}
             aria-label="Mobile navigation"
@@ -60,12 +62,25 @@ const BottomTabBar: React.FC = () => {
                         minHeight: '48px',
                         minWidth: 0,
                         padding: '6px 4px 8px',
+                        color: 'var(--color-text)',
+                        '&.Mui-selected': {
+                            color: '#1A1A1A',
+                            bgcolor: 'var(--color-yellow)',
+                            border: `2px solid ${borderColor}`,
+                            borderRadius: 0,
+                            boxShadow: `2px 2px 0px var(--color-shadow)`,
+                        },
+                        '&:active': {
+                            color: 'var(--color-text)',
+                        },
                         '& .MuiBottomNavigationAction-label': {
                             fontSize: '0.675rem',
                             lineHeight: 1.2,
+                            fontFamily: "'Space Mono', monospace",
                         },
                         '& .MuiSvgIcon-root': {
                             fontSize: '1.3rem',
+                            color: 'inherit',
                         },
                     },
                 }}
