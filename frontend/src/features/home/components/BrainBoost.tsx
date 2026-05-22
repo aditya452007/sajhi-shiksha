@@ -65,7 +65,7 @@ const BrainBoost: React.FC = React.memo(() => {
         return () => clearInterval(timer);
     }, [next]);
 
-    const item = brainBoosts[current];
+    const item = brainBoosts[current]!;
 
     return (
         <Box
