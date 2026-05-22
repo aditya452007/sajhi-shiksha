@@ -1,3 +1,5 @@
+import type { Resource } from '@/types';
+
 export function getDriveEmbedUrl(driveUrl: string): string {
     if (!driveUrl || driveUrl.trim() === '') return '';
 
@@ -28,5 +30,36 @@ export function getSubjectColor(subject: string): string {
         general: 'var(--subject-general)',
     };
     return colors[subject.toLowerCase()] ?? 'var(--subject-general)';
+}
+
+export function teacherCardToResource(item: any, subject: string): Resource {
+    return {
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        category: 'teacher',
+        class: null,
+        subject,
+        type: 'pdf',
+        driveUrl: item.driveUrl ?? '',
+        thumbnail: null,
+        contributors: ['Sajhi Shiksha Team'],
+        lastUpdated: new Date().toISOString().split('T')[0] ?? '',
+    };
+}
+
+export function findTeacherResourceById(id: string, siteContent: any): Resource | null {
+    if (!siteContent?.teacherCards?.mainCards) return null;
+    for (const mainCard of siteContent.teacherCards.mainCards) {
+        const subject = mainCard.id === 'tgt-pgt' ? 'Mathematics' : 'General';
+        for (const subCard of mainCard.subCards ?? []) {
+            if (subCard.id === id) return teacherCardToResource(subCard, subject);
+            if (subCard.hasSubCards && subCard.subCards) {
+                const leaf = subCard.subCards.find((l: any) => l.id === id);
+                if (leaf) return teacherCardToResource(leaf, subject);
+            }
+        }
+    }
+    return null;
 }
 

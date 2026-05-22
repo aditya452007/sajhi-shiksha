@@ -61,8 +61,7 @@ const MathLoversPage: React.FC = () => {
                         key={block.id}
                         title={block.title}
                         description={block.description}
-                        driveUrl={block.driveUrl}
-                        lastUpdated={block.lastUpdated}
+                        links={block.links}
                     />
                 ))
             )}

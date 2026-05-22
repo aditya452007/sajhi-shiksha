@@ -4,8 +4,8 @@ import { MenuIcon, LightModeIcon, DarkModeIcon } from '@/components/Icons';
 import { useNavigate } from '@tanstack/react-router';
 import { useTheme } from '@/context/ThemeContext';
 import siteContent from '@/data/site-content.json';
-import { BookDoodle } from '@/components/Doodles';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
+const logoSrc = '/image.png';
 
 const Header: React.FC = () => {
     const [isDark, toggleTheme] = useTheme();
@@ -148,7 +148,12 @@ const Header: React.FC = () => {
                         }}
                         onClick={() => handleNavClick('/')}
                     >
-                        <BookDoodle size={32} />
+                        <Box
+                            component="img"
+                            src={logoSrc}
+                            alt="Sajhi Shiksha"
+                            sx={{ height: 40, width: 40, borderRadius: '50%', objectFit: 'cover' }}
+                        />
                         <Typography
                             sx={{
                                 fontFamily: FONT_HEADING,

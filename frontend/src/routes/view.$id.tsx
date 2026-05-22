@@ -4,7 +4,9 @@ import { Suspense, lazy, useMemo } from 'react';
 import { ViewPageSkeleton } from '@/components/Skeletons';
 import { useSEO } from '@/hooks/useSEO';
 import resources from '@/data/resources.json';
+import siteContent from '@/data/site-content.json';
 import type { Resource } from '@/types';
+import { findTeacherResourceById } from '@/lib/utils';
 
 const ResourceViewPage = lazy(() => import('@/features/viewer/components/ResourceViewPage'));
 
@@ -13,7 +15,9 @@ function ViewResourcePage(): React.ReactElement {
     const { id } = useParams({ from: Route.id });
 
     const resource = useMemo(() => {
-        return (resources as Resource[]).find((r) => r.id === id);
+        const fromResources = (resources as Resource[]).find((r) => r.id === id);
+        if (fromResources) return fromResources;
+        return findTeacherResourceById(id, siteContent);
     }, [id]);
 
     useSEO({

@@ -178,25 +178,27 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                 </Box>
 
                 <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-                    <Button
-                        variant="contained"
-                        startIcon={<DownloadIcon />}
-                        onClick={handleDownload}
-                        sx={{
-                            bgcolor: 'var(--color-yellow)',
-                            color: COLOR_TEXT_LIGHT,
-                            border: `3px solid ${borderColor}`,
-                            boxShadow: `3px 3px 0px ${shadowColor}`,
-                            '&:hover': {
-                                bgcolor: 'var(--color-bg-secondary)',
+                    {resource.driveUrl && (
+                        <Button
+                            variant="contained"
+                            startIcon={<DownloadIcon />}
+                            onClick={handleDownload}
+                            sx={{
+                                bgcolor: 'var(--color-yellow)',
                                 color: COLOR_TEXT_LIGHT,
-                                transform: 'translate(-2px, -2px)',
-                                boxShadow: `5px 5px 0px ${shadowColor}`,
-                            },
-                        }}
-                    >
-                        Download
-                    </Button>
+                                border: `3px solid ${borderColor}`,
+                                boxShadow: `3px 3px 0px ${shadowColor}`,
+                                '&:hover': {
+                                    bgcolor: 'var(--color-bg-secondary)',
+                                    color: COLOR_TEXT_LIGHT,
+                                    transform: 'translate(-2px, -2px)',
+                                    boxShadow: `5px 5px 0px ${shadowColor}`,
+                                },
+                            }}
+                        >
+                            Download
+                        </Button>
+                    )}
                     <Button
                         variant="outlined"
                         startIcon={<ShareIcon />}
@@ -214,26 +216,52 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                     >
                         Share
                     </Button>
-                    <Button
-                        startIcon={<OpenInNewIcon />}
-                        onClick={handleOpenInTab}
-                        sx={{
-                            bgcolor: 'transparent',
-                            color: 'var(--color-text)',
-                            border: 'none',
-                            boxShadow: 'none',
-                            '&:hover': { bgcolor: 'transparent' },
-                        }}
-                    >
-                        Open in New Tab
-                    </Button>
+                    {resource.driveUrl && (
+                        <Button
+                            startIcon={<OpenInNewIcon />}
+                            onClick={handleOpenInTab}
+                            sx={{
+                                bgcolor: 'transparent',
+                                color: 'var(--color-text)',
+                                border: 'none',
+                                boxShadow: 'none',
+                                '&:hover': { bgcolor: 'transparent' },
+                            }}
+                        >
+                            Open in New Tab
+                        </Button>
+                    )}
                 </Box>
             </Box>
 
-            <IframeViewer
-                driveUrl={resource.driveUrl}
-                title={resource.title}
-            />
+            {resource.driveUrl ? (
+                <IframeViewer
+                    driveUrl={resource.driveUrl}
+                    title={resource.title}
+                />
+            ) : (
+                <Box
+                    sx={{
+                        p: 4,
+                        textAlign: 'center',
+                        border: `3px solid ${borderColor}`,
+                        boxShadow: `4px 4px 0px ${shadowColor}`,
+                    }}
+                >
+                    <Box
+                        component="span"
+                        sx={{ fontSize: 48, display: 'block', mb: 2 }}
+                    >
+                        📄
+                    </Box>
+                    <Typography sx={{ fontFamily: FONT_HEADING, fontWeight: 700, mb: 1 }}>
+                        Content Coming Soon
+                    </Typography>
+                    <Typography sx={{ color: 'var(--color-text-secondary)', fontFamily: FONT_MONO, fontSize: '0.85rem' }}>
+                        The document URL will be added soon.
+                    </Typography>
+                </Box>
+            )}
 
             <Box
                 sx={{

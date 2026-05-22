@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import { MAX_CONTENT_WIDTH, FONT_HEADING, FONT_MONO, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
 import filterChips from '@/data/filters.json';
+import siteContent from '@/data/site-content.json';
 import { StarDoodle, PencilDoodle, BookDoodle } from '@/components/Doodles';
 
 const HeroSection: React.FC = React.memo(() => {
@@ -128,7 +129,7 @@ const HeroSection: React.FC = React.memo(() => {
                                     },
                                 }}
                             >
-                                learn
+                                {siteContent.homepage.heroHighlightWord}
                             </Box>{' '}
                             today?
                         </Typography>

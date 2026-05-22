@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
-import { SchoolIcon, MenuBookIcon, AutoAwesomeIcon } from '@/components/Icons';
+import { SchoolIcon, MenuBookIcon, AutoAwesomeIcon, ArrowForwardIcon } from '@/components/Icons';
 import siteContent from '@/data/site-content.json';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH } from '@/lib/constants';
 
@@ -139,9 +139,26 @@ const DoorwayCards: React.FC = () => {
                                             fontSize: '0.85rem',
                                             color: '#1A1A1A',
                                             opacity: 0.8,
+                                            mb: 2,
                                         }}
                                     >
                                         {section.subtitle}
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: 0.5,
+                                            fontFamily: FONT_MONO,
+                                            fontSize: '0.8rem',
+                                            fontWeight: 700,
+                                            color: '#1A1A1A',
+                                            opacity: 0.6,
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.5px',
+                                        }}
+                                    >
+                                        Explore <ArrowForwardIcon sx={{ fontSize: 16 }} />
                                     </Typography>
                                 </Box>
                             </motion.div>

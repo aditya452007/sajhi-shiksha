@@ -35,18 +35,59 @@ export interface SectionConfig {
     redirectRoute: string;
 }
 
+export interface LinkItem {
+    title: string;
+    url: string;
+}
+
 export interface ContentBlock {
     id: string;
     title: string;
     description: string;
+    driveUrl?: string;
+    lastUpdated?: string;
+    links?: LinkItem[];
+}
+
+export interface OfficialLink {
+    id: string;
+    title: string;
+    description: string;
+    url: string;
+    icon: string;
+}
+
+export interface TeacherSubCard {
+    id: string;
+    title: string;
+    description: string;
+    icon: string;
+    driveUrl?: string;
+    hasSubCards?: boolean;
+    subCards?: TeacherLeafCard[];
+}
+
+export interface TeacherLeafCard {
+    id: string;
+    title: string;
+    description: string;
     driveUrl: string;
-    lastUpdated: string;
+}
+
+export interface TeacherMainCard {
+    id: string;
+    title: string;
+    description: string;
+    icon: string;
+    buttonColor: string;
+    subCards: TeacherSubCard[];
 }
 
 export interface SiteContent {
     site: {
         name: string;
         tagline: string;
+        footerTagline: string;
         contactEmail: string;
         whatsappGroupUrl: string;
         whatsappNumber: string;
@@ -60,6 +101,12 @@ export interface SiteContent {
         students: SectionConfig & { filterParams: { class: string[]; subject: string[] } };
         teachers: SectionConfig & { categoryFilters: string[] };
         mathLovers: SectionConfig & { blocks: ContentBlock[] };
+    };
+    forStudents: {
+        officialLinks: OfficialLink[];
+    };
+    teacherCards: {
+        mainCards: TeacherMainCard[];
     };
     navigation: {
         headerLinks: NavLink[];

@@ -212,7 +212,7 @@ const Footer: React.FC = () => {
                             color: 'var(--color-text-secondary)',
                         }}
                     >
-                        Made with &hearts; by students, for students
+                        {siteContent.site.footerTagline}
                     </Typography>
                 </Box>
             </Box>
