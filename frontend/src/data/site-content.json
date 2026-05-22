@@ -16,7 +16,7 @@
         "students": {
             "enabled": true,
             "title": "For Students",
-            "subtitle": "Mathematics resources for Classes 6 to 12",
+            "subtitle": "Resources for Classes 6 to 12",
             "icon": "School",
             "buttonColor": "var(--color-blue)",
             "redirectRoute": "/for-students",

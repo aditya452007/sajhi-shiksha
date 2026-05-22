@@ -86,7 +86,7 @@ function ForStudentsPage(): React.ReactElement {
                     mb: 4,
                 }}
             >
-                Official resources and Mathematics study materials for Classes 6 to 12
+                Official resources and study materials for Classes 6 to 12
             </Typography>
 
             <Typography
