@@ -142,7 +142,7 @@ const HeroSection: React.FC = React.memo(() => {
                             maxWidth: '540px',
                         }}
                     >
-                        Free study materials, question papers, and resources for KVS students. No login needed.
+                        Free study materials, question papers, and resources for students and teachers. No login needed.
                     </Typography>
 
                     <TextField

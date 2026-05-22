@@ -8,8 +8,8 @@ const HomePage = lazy(() => import('@/features/home/HomePage'));
 
 function IndexComponent(): React.ReactElement {
     useSEO({
-        title: 'Sajhi Shiksha — Free Study Materials for KVS Students',
-        description: 'Free educational resources, study materials, question papers, and formats for KVS students (Classes 1-12). No login required. Sharing Knowledge — From You, For You.',
+        title: 'Sajhi Shiksha — Free Study Materials for Students & Teachers',
+        description: 'Free educational resources, study materials, question papers, and formats for KVS students and teachers (Classes 1-12). No login required. Sharing Knowledge — From You, For You.',
         canonicalPath: '/',
         jsonLd: {
             '@context': 'https://schema.org',
