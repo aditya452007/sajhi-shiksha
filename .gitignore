@@ -38,6 +38,18 @@ lerna-debug.log*
 .agent/
 .claude/
 
+# Context & docs (agent-generated, not app code)
+context/
+docs/
+Screenshot/
+
+# Root analysis files (scraped/audit data, not app code)
+/API_NETWORK_ANALYSIS.md
+/EXTRACTION_SUMMARY.md
+/JSON_DATA_STRUCTURE.md
+/website_analysis.md
+/scrape_*.json
+
 # OS files
 Thumbs.db
 ehthumbs.db
