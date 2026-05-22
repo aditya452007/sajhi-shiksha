@@ -3,7 +3,7 @@
         "name": "Sajhi Shiksha",
         "tagline": "Learn. Share. Inspire. — Together We Grow",
         "footerTagline": "Made with ♥ — Share. Learn. Grow.",
-        "contactEmail": "Mamta07691@gmail.com",
+        "contactEmail": "sajhishiksha@gmail.com",
         "whatsappGroupUrl": "https://whatsapp.com/channel/0029VajIeLSLtOjLglxFqi12",
         "whatsappNumber": "+919999999999"
     },
@@ -41,73 +41,70 @@
             "icon": "Calculator",
             "buttonColor": "var(--color-purple)",
             "redirectRoute": "/for-math-lovers",
+            "olympiadSection": {
+                "id": "ml-olympiad",
+                "title": "Mathematical Olympiad",
+                "description": "Comprehensive resources for the Mathematical Olympiad journey — from preparation books to official contest links.",
+                "links": [
+                    {
+                        "title": "Books and Notes PDFs",
+                        "url": "https://drive.google.com/drive/folders/10tgDz7rSVrxCUsto6DxifoFXN3qHy3KU"
+                    },
+                    {
+                        "title": "Stages of Maths Olympiad",
+                        "url": "https://olympiads.hbcse.tifr.res.in/about-olympiads/stages/mathematical-olympiad/"
+                    },
+                    {
+                        "title": "Eligibility Criteria (IOQM 2024-25)",
+                        "url": "https://olympiads.hbcse.tifr.res.in/wp-content/uploads/2024/06/elcrIOQM20242025.pdf"
+                    },
+                    {
+                        "title": "Syllabus",
+                        "url": "https://olympiads.hbcse.tifr.res.in/how-to-prepare/syllabus/#uagb-tabs__tab6"
+                    },
+                    {
+                        "title": "Previous Year Question Papers",
+                        "url": "https://olympiads.hbcse.tifr.res.in/how-to-prepare/past-papers/"
+                    },
+                    {
+                        "title": "Collection of last 40 years (47 countries) Olympiad Problems",
+                        "url": "https://mathnet.csail.mit.edu/explorer.html"
+                    },
+                    {
+                        "title": "International Mathematical Olympiad — Official Website",
+                        "url": "https://www.imo-official.org/"
+                    },
+                    {
+                        "title": "HBCSE Olympiad — Official Website",
+                        "url": "https://olympiads.hbcse.tifr.res.in/"
+                    }
+                ]
+            },
             "blocks": [
                 {
-                    "id": "ml-olympiad",
-                    "title": "Section 1 — Mathematical Olympiad",
-                    "description": "Comprehensive resources for the Mathematical Olympiad journey — from preparation books to official contest links.",
-                    "links": [
-                        {
-                            "title": "Books and Notes PDF (Google Drive folder)",
-                            "url": ""
-                        },
-                        {
-                            "title": "Stages of Maths Olympiad",
-                            "url": "https://olympiads.hbcse.tifr.res.in/about-olympiads/stages/mathematical-olympiad/"
-                        },
-                        {
-                            "title": "Eligibility Criteria (IOQM 2024-25)",
-                            "url": "https://olympiads.hbcse.tifr.res.in/wp-content/uploads/2024/06/elcrIOQM20242025.pdf"
-                        },
-                        {
-                            "title": "Syllabus",
-                            "url": "https://olympiads.hbcse.tifr.res.in/how-to-prepare/syllabus/#uagb-tabs__tab6"
-                        },
-                        {
-                            "title": "Previous Year Question Papers",
-                            "url": "https://olympiads.hbcse.tifr.res.in/how-to-prepare/past-papers/"
-                        },
-                        {
-                            "title": "Collection of 40 Years Olympiad Problems (47 Countries)",
-                            "url": "https://mathnet.csail.mit.edu/explorer.html"
-                        },
-                        {
-                            "title": "International Mathematical Olympiad — Official Website",
-                            "url": "https://www.imo-official.org/"
-                        },
-                        {
-                            "title": "HBCSE Olympiad — Official Website",
-                            "url": "https://olympiads.hbcse.tifr.res.in/"
-                        }
-                    ]
-                },
-                {
                     "id": "ml-puzzles",
-                    "title": "Section 2 — Puzzles",
-                    "description": "A curated collection of puzzles, games, and brain teasers from CCL IIT Gandhinagar.",
+                    "title": "Puzzles",
+                    "description": "A curated collection of puzzles, games, and brain teasers.",
                     "links": [
                         {
                             "title": "CCL IITGN Puzzles & Games Resources",
                             "url": "https://ccl.iitgn.ac.in/puzzles-games-resources"
+                        },
+                        {
+                            "title": "Puzzles & Games YouTube Playlist",
+                            "url": "https://youtube.com/playlist?list=PLGzX9Ri8oWs8T211MkzlHwdLLbNOfa5w_&si=dKmZPud5HqX0rZQ_"
                         }
                     ]
                 },
                 {
-                    "id": "ml-projects-en",
-                    "title": "Section 3 — Maths Project Ideas (English)",
-                    "description": "Hands-on mathematics project ideas in English — perfect for school exhibitions, lab activities, and inspiring young minds.",
+                    "id": "ml-projects",
+                    "title": "Maths Project Ideas",
+                    "description": "Hands-on mathematics project ideas in English and Hindi — perfect for school exhibitions, lab activities, and inspiring young minds.",
                     "links": [
                         {
                             "title": "Google Drive Folder (English)",
                             "url": "https://drive.google.com/drive/folders/1hB7zZC-lkU6WhOHGEo8JjnE-kg6urg4y"
-                        }
-                    ]
-                },
-                {
-                    "id": "ml-projects-hi",
-                    "title": "Section 4 — Maths Project Ideas (Hindi)",
-                    "description": "गणित परियोजना विचार हिंदी में — विद्यालय प्रदर्शनियों, प्रयोगशाला गतिविधियों और युवा मस्तिष्क को प्रेरित करने के लिए एकदम सही।",
-                    "links": [
+                        },
                         {
                             "title": "Google Drive Folder (Hindi)",
                             "url": "https://drive.google.com/drive/folders/0Bz-krFd5I3MrfmRkTHRBQlk2RjR3UUxQbVMwcU5MbmZzc1FrWTdhdXU1cEczdDA5VzhUbU0?resourcekey=0-LLe4oKQNkbjsSPDgIhE5pg"
@@ -116,7 +113,7 @@
                 },
                 {
                     "id": "ml-youtube",
-                    "title": "Section 5 — YouTube Channels for Maths Lovers",
+                    "title": "YouTube Channels for Maths Lovers",
                     "description": "Handpicked YouTube channels that make mathematics come alive — from olympiad training to visual explorations and puzzles.",
                     "links": [
                         {
@@ -393,7 +390,7 @@
     },
     "contact": {
         "showProfessorNames": false,
-        "email": "Mamta07691@gmail.com",
+        "email": "sajhishiksha@gmail.com",
         "showContributors": false
     }
 }

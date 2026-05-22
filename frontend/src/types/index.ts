@@ -118,3 +118,10 @@ export interface SiteContent {
         showContributors: boolean;
     };
 }
+
+export interface OlympiadSection {
+    id: string;
+    title: string;
+    description: string;
+    links: LinkItem[];
+}
