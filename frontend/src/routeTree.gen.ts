@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as ForTeachersRouteImport } from './routes/for-teachers'
+import { Route as ForStudentsRouteImport } from './routes/for-students'
+import { Route as ForMathLoversRouteImport } from './routes/for-math-lovers'
 import { Route as ContributeRouteImport } from './routes/contribute'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as SplatRouteImport } from './routes/$'
@@ -18,7 +21,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ViewIdRouteImport } from './routes/view.$id'
 import { Route as ResourcesSecondaryRouteImport } from './routes/resources.secondary'
 import { Route as ResourcesProgramsRouteImport } from './routes/resources.programs'
-import { Route as ResourcesPrimaryRouteImport } from './routes/resources.primary'
 import { Route as ResourcesFormatsRouteImport } from './routes/resources.formats'
 import { Route as ResourcesAdmissionsRouteImport } from './routes/resources.admissions'
 
@@ -30,6 +32,21 @@ const SearchRoute = SearchRouteImport.update({
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForTeachersRoute = ForTeachersRouteImport.update({
+  id: '/for-teachers',
+  path: '/for-teachers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForStudentsRoute = ForStudentsRouteImport.update({
+  id: '/for-students',
+  path: '/for-students',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForMathLoversRoute = ForMathLoversRouteImport.update({
+  id: '/for-math-lovers',
+  path: '/for-math-lovers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContributeRoute = ContributeRouteImport.update({
@@ -67,11 +84,6 @@ const ResourcesProgramsRoute = ResourcesProgramsRouteImport.update({
   path: '/programs',
   getParentRoute: () => ResourcesRoute,
 } as any)
-const ResourcesPrimaryRoute = ResourcesPrimaryRouteImport.update({
-  id: '/primary',
-  path: '/primary',
-  getParentRoute: () => ResourcesRoute,
-} as any)
 const ResourcesFormatsRoute = ResourcesFormatsRouteImport.update({
   id: '/formats',
   path: '/formats',
@@ -88,11 +100,13 @@ export interface FileRoutesByFullPath {
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/contribute': typeof ContributeRoute
+  '/for-math-lovers': typeof ForMathLoversRoute
+  '/for-students': typeof ForStudentsRoute
+  '/for-teachers': typeof ForTeachersRoute
   '/resources': typeof ResourcesRouteWithChildren
   '/search': typeof SearchRoute
   '/resources/admissions': typeof ResourcesAdmissionsRoute
   '/resources/formats': typeof ResourcesFormatsRoute
-  '/resources/primary': typeof ResourcesPrimaryRoute
   '/resources/programs': typeof ResourcesProgramsRoute
   '/resources/secondary': typeof ResourcesSecondaryRoute
   '/view/$id': typeof ViewIdRoute
@@ -102,11 +116,13 @@ export interface FileRoutesByTo {
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/contribute': typeof ContributeRoute
+  '/for-math-lovers': typeof ForMathLoversRoute
+  '/for-students': typeof ForStudentsRoute
+  '/for-teachers': typeof ForTeachersRoute
   '/resources': typeof ResourcesRouteWithChildren
   '/search': typeof SearchRoute
   '/resources/admissions': typeof ResourcesAdmissionsRoute
   '/resources/formats': typeof ResourcesFormatsRoute
-  '/resources/primary': typeof ResourcesPrimaryRoute
   '/resources/programs': typeof ResourcesProgramsRoute
   '/resources/secondary': typeof ResourcesSecondaryRoute
   '/view/$id': typeof ViewIdRoute
@@ -117,11 +133,13 @@ export interface FileRoutesById {
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/contribute': typeof ContributeRoute
+  '/for-math-lovers': typeof ForMathLoversRoute
+  '/for-students': typeof ForStudentsRoute
+  '/for-teachers': typeof ForTeachersRoute
   '/resources': typeof ResourcesRouteWithChildren
   '/search': typeof SearchRoute
   '/resources/admissions': typeof ResourcesAdmissionsRoute
   '/resources/formats': typeof ResourcesFormatsRoute
-  '/resources/primary': typeof ResourcesPrimaryRoute
   '/resources/programs': typeof ResourcesProgramsRoute
   '/resources/secondary': typeof ResourcesSecondaryRoute
   '/view/$id': typeof ViewIdRoute
@@ -133,11 +151,13 @@ export interface FileRouteTypes {
     | '/$'
     | '/about'
     | '/contribute'
+    | '/for-math-lovers'
+    | '/for-students'
+    | '/for-teachers'
     | '/resources'
     | '/search'
     | '/resources/admissions'
     | '/resources/formats'
-    | '/resources/primary'
     | '/resources/programs'
     | '/resources/secondary'
     | '/view/$id'
@@ -147,11 +167,13 @@ export interface FileRouteTypes {
     | '/$'
     | '/about'
     | '/contribute'
+    | '/for-math-lovers'
+    | '/for-students'
+    | '/for-teachers'
     | '/resources'
     | '/search'
     | '/resources/admissions'
     | '/resources/formats'
-    | '/resources/primary'
     | '/resources/programs'
     | '/resources/secondary'
     | '/view/$id'
@@ -161,11 +183,13 @@ export interface FileRouteTypes {
     | '/$'
     | '/about'
     | '/contribute'
+    | '/for-math-lovers'
+    | '/for-students'
+    | '/for-teachers'
     | '/resources'
     | '/search'
     | '/resources/admissions'
     | '/resources/formats'
-    | '/resources/primary'
     | '/resources/programs'
     | '/resources/secondary'
     | '/view/$id'
@@ -176,6 +200,9 @@ export interface RootRouteChildren {
   SplatRoute: typeof SplatRoute
   AboutRoute: typeof AboutRoute
   ContributeRoute: typeof ContributeRoute
+  ForMathLoversRoute: typeof ForMathLoversRoute
+  ForStudentsRoute: typeof ForStudentsRoute
+  ForTeachersRoute: typeof ForTeachersRoute
   ResourcesRoute: typeof ResourcesRouteWithChildren
   SearchRoute: typeof SearchRoute
   ViewIdRoute: typeof ViewIdRoute
@@ -195,6 +222,27 @@ declare module '@tanstack/react-router' {
       path: '/resources'
       fullPath: '/resources'
       preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-teachers': {
+      id: '/for-teachers'
+      path: '/for-teachers'
+      fullPath: '/for-teachers'
+      preLoaderRoute: typeof ForTeachersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-students': {
+      id: '/for-students'
+      path: '/for-students'
+      fullPath: '/for-students'
+      preLoaderRoute: typeof ForStudentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-math-lovers': {
+      id: '/for-math-lovers'
+      path: '/for-math-lovers'
+      fullPath: '/for-math-lovers'
+      preLoaderRoute: typeof ForMathLoversRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contribute': {
@@ -246,13 +294,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesProgramsRouteImport
       parentRoute: typeof ResourcesRoute
     }
-    '/resources/primary': {
-      id: '/resources/primary'
-      path: '/primary'
-      fullPath: '/resources/primary'
-      preLoaderRoute: typeof ResourcesPrimaryRouteImport
-      parentRoute: typeof ResourcesRoute
-    }
     '/resources/formats': {
       id: '/resources/formats'
       path: '/formats'
@@ -273,7 +314,6 @@ declare module '@tanstack/react-router' {
 interface ResourcesRouteChildren {
   ResourcesAdmissionsRoute: typeof ResourcesAdmissionsRoute
   ResourcesFormatsRoute: typeof ResourcesFormatsRoute
-  ResourcesPrimaryRoute: typeof ResourcesPrimaryRoute
   ResourcesProgramsRoute: typeof ResourcesProgramsRoute
   ResourcesSecondaryRoute: typeof ResourcesSecondaryRoute
 }
@@ -281,7 +321,6 @@ interface ResourcesRouteChildren {
 const ResourcesRouteChildren: ResourcesRouteChildren = {
   ResourcesAdmissionsRoute: ResourcesAdmissionsRoute,
   ResourcesFormatsRoute: ResourcesFormatsRoute,
-  ResourcesPrimaryRoute: ResourcesPrimaryRoute,
   ResourcesProgramsRoute: ResourcesProgramsRoute,
   ResourcesSecondaryRoute: ResourcesSecondaryRoute,
 }
@@ -295,6 +334,9 @@ const rootRouteChildren: RootRouteChildren = {
   SplatRoute: SplatRoute,
   AboutRoute: AboutRoute,
   ContributeRoute: ContributeRoute,
+  ForMathLoversRoute: ForMathLoversRoute,
+  ForStudentsRoute: ForStudentsRoute,
+  ForTeachersRoute: ForTeachersRoute,
   ResourcesRoute: ResourcesRouteWithChildren,
   SearchRoute: SearchRoute,
   ViewIdRoute: ViewIdRoute,

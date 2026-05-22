@@ -1,0 +1,120 @@
+{
+    "site": {
+        "name": "Sajhi Shiksha",
+        "tagline": "Learn. Share. Inspire. — Together We Grow",
+        "contactEmail": "Mamta07691@gmail.com",
+        "whatsappGroupUrl": "https://chat.whatsapp.com/sajhishiksha",
+        "whatsappNumber": "+919999999999"
+    },
+    "homepage": {
+        "heroTitle": "What do you want to learn today?",
+        "heroHighlightWord": "learn",
+        "heroSubtitle": "Free study materials, question papers, and resources for KVS students. No login needed."
+    },
+    "sections": {
+        "students": {
+            "enabled": true,
+            "title": "For Students",
+            "subtitle": "Mathematics resources for Classes 6 to 12",
+            "icon": "School",
+            "buttonColor": "var(--color-blue)",
+            "redirectRoute": "/for-students",
+            "filterParams": {
+                "class": ["6", "7", "8", "9", "10", "11", "12"],
+                "subject": ["Mathematics"]
+            }
+        },
+        "teachers": {
+            "enabled": true,
+            "title": "For Teachers",
+            "subtitle": "Programs, Formats & Rules, Admissions, and more",
+            "icon": "ChalkboardTeacher",
+            "buttonColor": "var(--color-green)",
+            "redirectRoute": "/for-teachers",
+            "categoryFilters": ["programs", "formats", "admissions"]
+        },
+        "mathLovers": {
+            "enabled": true,
+            "title": "For Math Lovers",
+            "subtitle": "Explore the beauty of mathematics",
+            "icon": "Calculator",
+            "buttonColor": "var(--color-purple)",
+            "redirectRoute": "/for-math-lovers",
+            "blocks": [
+                {
+                    "id": "ml-block-1",
+                    "title": "Interesting Math Facts",
+                    "description": "Fun facts about numbers and patterns",
+                    "driveUrl": "",
+                    "lastUpdated": "2026-05-22"
+                },
+                {
+                    "id": "ml-block-2",
+                    "title": "Magic of Prime Numbers",
+                    "description": "Discover why prime numbers are the building blocks of mathematics and how they appear in nature, from cicada life cycles to encryption that keeps your data safe.",
+                    "driveUrl": "",
+                    "lastUpdated": "2026-05-20"
+                },
+                {
+                    "id": "ml-block-3",
+                    "title": "Fibonacci in Nature",
+                    "description": "Explore the Fibonacci sequence — from sunflower seeds to pinecones, nautilus shells to galaxy spirals. Nature speaks the language of mathematics!",
+                    "driveUrl": "",
+                    "lastUpdated": "2026-05-18"
+                },
+                {
+                    "id": "ml-block-4",
+                    "title": "Puzzles & Brain Teasers",
+                    "description": "Challenge yourself with a collection of classic math puzzles, logic problems, and number games that make learning mathematics fun and engaging.",
+                    "driveUrl": "",
+                    "lastUpdated": "2026-05-15"
+                },
+                {
+                    "id": "ml-block-5",
+                    "title": "The Story of Zero",
+                    "description": "Did you know zero was invented in India? Journey through the fascinating history of how 'shunya' changed mathematics forever and became the foundation of modern computing.",
+                    "driveUrl": "",
+                    "lastUpdated": "2026-05-12"
+                }
+            ]
+        }
+    },
+    "navigation": {
+        "headerLinks": [
+            { "label": "Home", "route": "/" },
+            { "label": "Students", "route": "/for-students" },
+            { "label": "Teachers", "route": "/for-teachers" },
+            { "label": "Math Lovers", "route": "/for-math-lovers" },
+            { "label": "Contribute", "route": "/contribute" },
+            { "label": "About", "route": "/about" }
+        ],
+        "footerGroups": [
+            {
+                "heading": "For Students",
+                "links": [
+                    { "label": "Classes 6-12 Maths", "route": "/for-students" }
+                ]
+            },
+            {
+                "heading": "For Teachers",
+                "links": [
+                    { "label": "Programs", "route": "/resources/programs" },
+                    { "label": "Formats & Rules", "route": "/resources/formats" },
+                    { "label": "Admissions", "route": "/resources/admissions" }
+                ]
+            },
+            {
+                "heading": "More",
+                "links": [
+                    { "label": "About Us", "route": "/about" },
+                    { "label": "Contribute", "route": "/contribute" }
+                ]
+            }
+        ]
+    },
+    "contact": {
+        "showProfessorNames": false,
+        "email": "Mamta07691@gmail.com",
+        "showContributors": false
+    }
+}

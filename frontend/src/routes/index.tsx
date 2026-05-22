@@ -1,4 +1,4 @@
-import { createRoute, useNavigate } from '@tanstack/react-router';
+import { createRoute } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { Suspense, lazy } from 'react';
 import { HomePageSkeleton } from '@/components/Skeletons';
@@ -17,15 +17,9 @@ function IndexComponent(): React.ReactElement {
         },
     });
 
-    const navigate = useNavigate();
-
-    const handleNavigate = (route: string): void => {
-        navigate({ to: route });
-    };
-
     return (
         <Suspense fallback={<HomePageSkeleton />}>
-            <HomePage onNavigate={handleNavigate} />
+            <HomePage />
         </Suspense>
     );
 }

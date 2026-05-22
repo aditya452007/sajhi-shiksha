@@ -6,6 +6,7 @@ import Footer from '@/components/Footer/Footer';
 import BottomTabBar from '@/components/BottomTabBar/BottomTabBar';
 import PageTransition from '@/components/PageTransition/PageTransition';
 import CookieConsent from '@/components/CookieConsent/CookieConsent';
+import WhatsAppButton from '@/components/WhatsAppButton/WhatsAppButton';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
 export const Route = createRootRoute({
@@ -36,6 +37,7 @@ function RootComponent(): React.ReactElement {
                 </PageTransition>
             </Box>
             <Footer />
+            <WhatsAppButton />
             <BottomTabBar />
             <CookieConsent />
             {isDev && Devtools && (

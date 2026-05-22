@@ -2,8 +2,7 @@ import React, { useCallback } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { useTheme } from '@/context/ThemeContext';
-import navigation from '@/data/navigation.json';
-import siteConfig from '@/data/site-config.json';
+import siteContent from '@/data/site-content.json';
 import { StarDoodle, SquiggleDoodle } from '@/components/Doodles';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH } from '@/lib/constants';
 
@@ -89,7 +88,7 @@ FooterLinkSection.displayName = 'FooterLinkSection';
 
 const Footer: React.FC = () => {
     const [isDark] = useTheme();
-    const footerLinks = navigation.footerLinks;
+    const footerGroups = siteContent.navigation.footerGroups;
     const borderColor = 'var(--color-border)';
 
     return (
@@ -153,7 +152,7 @@ const Footer: React.FC = () => {
                                 gap: 1,
                             }}
                         >
-                            {siteConfig.siteName}
+                            {siteContent.site.name}
                         </Typography>
                         <Typography
                             sx={{
@@ -163,7 +162,7 @@ const Footer: React.FC = () => {
                             mb: 2,
                             }}
                         >
-                            {siteConfig.tagline}
+                            {siteContent.site.tagline}
                         </Typography>
                         <Box sx={{ display: { xs: 'none', md: 'block' } }} aria-hidden="true">
                             <SquiggleDoodle width={120} />
@@ -178,15 +177,11 @@ const Footer: React.FC = () => {
                             gap: { xs: 3, md: 4 },
                         }}
                     >
-                        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                            <FooterLinkSection title="Quick Links" items={footerLinks.quickLinks} />
-                        </Box>
-                        <Box>
-                            <FooterLinkSection title="Resources" items={footerLinks.resources} />
-                        </Box>
-                        <Box>
-                            <FooterLinkSection title="About" items={footerLinks.about} />
-                        </Box>
+                        {footerGroups.map((group) => (
+                            <Box key={group.heading}>
+                                <FooterLinkSection title={group.heading} items={group.links} />
+                            </Box>
+                        ))}
                     </Box>
                 </Box>
 
@@ -208,7 +203,7 @@ const Footer: React.FC = () => {
                             color: 'var(--color-text-secondary)',
                         }}
                     >
-                        &copy; {new Date().getFullYear()} {siteConfig.siteName}
+                        &copy; {new Date().getFullYear()} {siteContent.site.name}
                     </Typography>
                     <Typography
                         sx={{

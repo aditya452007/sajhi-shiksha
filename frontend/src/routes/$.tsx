@@ -20,10 +20,10 @@ function NotFoundPage(): React.ReactElement {
     const borderColor = 'var(--color-border)';
 
     const quickLinks = [
-        { label: 'Classes 1-5', route: '/resources/primary' },
         { label: 'Classes 6-12', route: '/resources/secondary' },
         { label: 'Search', route: '/search' },
         { label: 'Programs', route: '/resources/programs' },
+        { label: 'Formats', route: '/resources/formats' },
     ];
 
     return (

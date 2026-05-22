@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Grid, Avatar, Divider, Link } from '@mui/material';
+import { Box, Typography, Button, Grid, Link } from '@mui/material';
 import { VolunteerActivismIcon, EmailIcon, DescriptionIcon, ArticleIcon, InsertDriveFileIcon, LinkIcon, FavoriteIcon, CheckCircleIcon, WhatsAppIcon } from '@/components/Icons';
 import { useTheme } from '@/context/ThemeContext';
 import contributorsData from '@/data/contributors.json';
@@ -37,8 +37,6 @@ const SHARE_TYPES = [
     { icon: <LinkIcon />, title: 'Useful educational links', description: 'Links to helpful websites, videos, and online resources.' },
     { icon: <FavoriteIcon />, title: 'Monetary contributions', description: 'Support the platform to keep it free for everyone.' },
 ];
-
-const CONTRIBUTOR_COLORS = ['var(--color-blue)', 'var(--color-green)', 'var(--color-orange)', 'var(--color-purple)', 'var(--color-red)'];
 
 export default function ContributePage({ onNavigate }: ContributePageProps) {
     const [isDark] = useTheme();
@@ -235,76 +233,6 @@ export default function ContributePage({ onNavigate }: ContributePageProps) {
                         </Grid>
                     ))}
                 </Grid>
-            </Box>
-
-            <Typography
-                sx={{
-                    fontFamily: FONT_HEADING,
-                    fontWeight: 800,
-                    fontSize: { xs: '1.5rem', md: '2rem' },
-                    mb: 4,
-                }}
-            >
-                Current Contributors
-            </Typography>
-            <Box
-                sx={{
-                    p: 4,
-                    mb: 8,
-                    bgcolor: 'var(--color-bg)',
-                    border: `3px solid ${borderColor}`,
-                    boxShadow: `4px 4px 0px ${shadowColor}`,
-                }}
-            >
-                <Grid container spacing={3}>
-                    {contributorsData.contributors.map((contributor, index) => (
-                        <Grid size={{ xs: 12, sm: 6, md: 4 }} key={contributor.name}>
-                            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                                <Avatar
-                                    sx={{
-                                        bgcolor: CONTRIBUTOR_COLORS[index % CONTRIBUTOR_COLORS.length],
-                                        width: 48,
-                                        height: 48,
-                                        fontWeight: 800,
-                                        border: `2px solid ${borderColor}`,
-                                        fontFamily: FONT_HEADING,
-                                    }}
-                                >
-                                    {contributor.initials}
-                                </Avatar>
-                                <Box>
-                                    <Typography
-                                        sx={{
-                                            fontFamily: FONT_HEADING,
-                                            fontWeight: 700,
-                                        }}
-                                    >
-                                        {contributor.name}
-                                    </Typography>
-                                    <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
-                                        {contributor.role}
-                                    </Typography>
-                                    <Typography
-                                        sx={{
-                                            fontFamily: FONT_MONO,
-                                            fontSize: '0.75rem',
-                                            color: 'var(--color-yellow)',
-                                        }}
-                                    >
-                                        {contributor.contribution}
-                                    </Typography>
-                                </Box>
-                            </Box>
-                        </Grid>
-                    ))}
-                </Grid>
-                <Divider sx={{ my: 3, borderColor }} />
-                <Typography sx={{ color: 'var(--color-text-secondary)', textAlign: 'center', fontSize: '0.95rem' }}>
-                    Want to be listed here?{' '}
-                    <Link href={mailtoLink} sx={{ fontWeight: 700, color: 'var(--color-text)' }}>
-                        Share your resources
-                    </Link>
-                </Typography>
             </Box>
 
             <Typography

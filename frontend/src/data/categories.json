@@ -1,13 +1,5 @@
 [
     {
-        "id": "primary",
-        "title": "Classes 1-5",
-        "description": "Primary class study materials",
-        "icon": "MenuBook",
-        "resourceCount": 15,
-        "route": "/resources/primary"
-    },
-    {
         "id": "secondary",
         "title": "Classes 6-12",
         "description": "Question papers and resources",

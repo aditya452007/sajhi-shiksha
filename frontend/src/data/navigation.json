@@ -1,7 +1,6 @@
 {
     "navItems": [
         { "label": "Home", "route": "/" },
-        { "label": "Classes 1-5", "route": "/resources/primary" },
         { "label": "Classes 6-12", "route": "/resources/secondary" },
         { "label": "Programs", "route": "/resources/programs" },
         { "label": "Formats & Rules", "route": "/resources/formats" },
@@ -12,7 +11,6 @@
     "footerLinks": {
         "quickLinks": [
             { "label": "Home", "route": "/" },
-            { "label": "Classes 1-5", "route": "/resources/primary" },
             { "label": "Classes 6-12", "route": "/resources/secondary" },
             { "label": "Programs", "route": "/resources/programs" }
         ],

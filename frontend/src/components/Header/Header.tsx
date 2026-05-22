@@ -1,10 +1,9 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Box, Button, IconButton, Typography, Drawer, List, ListItem } from '@mui/material';
-import { CloseIcon, MenuIcon, LightModeIcon, DarkModeIcon } from '@/components/Icons';
+import { MenuIcon, LightModeIcon, DarkModeIcon } from '@/components/Icons';
 import { useNavigate } from '@tanstack/react-router';
 import { useTheme } from '@/context/ThemeContext';
-import navigation from '@/data/navigation.json';
-import siteConfig from '@/data/site-config.json';
+import siteContent from '@/data/site-content.json';
 import { BookDoodle } from '@/components/Doodles';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
 
@@ -51,7 +50,7 @@ const Header: React.FC = () => {
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [mobileOpen]);
 
-    const navItems = navigation.navItems.slice(0, 5);
+    const navItems = siteContent.navigation.headerLinks.slice(0, 5);
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
 
@@ -85,23 +84,11 @@ const Header: React.FC = () => {
                         color: 'var(--color-text)',
                     }}
                 >
-                    {siteConfig.siteName}
+                    {siteContent.site.name}
                 </Typography>
-                <IconButton
-                    onClick={() => setMobileOpen(false)}
-                    aria-label="Close navigation menu"
-                    sx={{
-                        border: `2px solid ${borderColor}`,
-                        borderRadius: 0,
-                        boxShadow: `2px 2px 0px ${shadowColor}`,
-                        color: 'var(--color-text)',
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
             </Box>
             <List sx={{ flex: 1, p: 2 }}>
-                {navItems.map((item) => (
+                {siteContent.navigation.headerLinks.map((item) => (
                     <ListItem
                         key={item.label}
                         onClick={() => handleNavClick(item.route)}
@@ -122,30 +109,6 @@ const Header: React.FC = () => {
                             }}
                         >
                             {item.label}
-                        </Typography>
-                    </ListItem>
-                ))}
-                {['Contribute', 'About'].map((label) => (
-                    <ListItem
-                        key={label}
-                        onClick={() => handleNavClick(`/${label.toLowerCase()}`)}
-                        sx={{
-                            cursor: 'pointer',
-                            borderRadius: 0,
-                            mb: 1,
-                            '&:hover': {
-                                bgcolor: 'var(--color-yellow)',
-                            },
-                        }}
-                    >
-                        <Typography
-                            sx={{
-                                fontFamily: FONT_HEADING,
-                                fontWeight: 700,
-                                color: 'var(--color-text)',
-                            }}
-                        >
-                            {label}
                         </Typography>
                     </ListItem>
                 ))}
@@ -195,7 +158,7 @@ const Header: React.FC = () => {
                                 color: 'var(--color-text)',
                             }}
                         >
-                            {siteConfig.siteName}
+                            {siteContent.site.name}
                         </Typography>
                     </Box>
 

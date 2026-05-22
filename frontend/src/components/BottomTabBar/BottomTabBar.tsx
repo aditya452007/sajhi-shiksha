@@ -1,7 +1,8 @@
 import React from 'react';
-import { BottomNavigation, BottomNavigationAction, Box } from '@mui/material';
-import { HomeIcon, SchoolIcon, MenuBookIcon, AutoAwesomeIcon, SearchIcon } from '@/components/Icons';
+import { BottomNavigation, BottomNavigationAction, Box, IconButton } from '@mui/material';
+import { HomeIcon, SchoolIcon, MenuBookIcon, FavoriteIcon, MenuIcon, WhatsAppIcon } from '@/components/Icons';
 import { useLocation, useNavigate } from '@tanstack/react-router';
+import siteContent from '@/data/site-content.json';
 import { FONT_MONO, COLOR_TEXT_LIGHT } from '@/lib/constants';
 
 interface TabConfig {
@@ -12,10 +13,10 @@ interface TabConfig {
 
 const tabs: TabConfig[] = [
     { label: 'Home', route: '/', icon: <HomeIcon /> },
-    { label: 'Class 1-5', route: '/resources/primary', icon: <SchoolIcon /> },
-    { label: 'Class 6-12', route: '/resources/secondary', icon: <MenuBookIcon /> },
-    { label: 'Programs', route: '/resources/programs', icon: <AutoAwesomeIcon /> },
-    { label: 'Search', route: '/search', icon: <SearchIcon /> },
+    { label: 'Students', route: '/for-students', icon: <SchoolIcon /> },
+    { label: 'Teachers', route: '/for-teachers', icon: <MenuBookIcon /> },
+    { label: 'Math', route: '/for-math-lovers', icon: <FavoriteIcon /> },
+    { label: 'Menu', route: '/search', icon: <MenuIcon /> },
 ];
 
 const BottomTabBar: React.FC = () => {
@@ -27,6 +28,8 @@ const BottomTabBar: React.FC = () => {
         if (tab.route === '/') return location.pathname === '/';
         return location.pathname.startsWith(tab.route);
     });
+
+    const whatsappUrl = siteContent.site.whatsappGroupUrl;
 
     return (
         <Box
@@ -44,6 +47,32 @@ const BottomTabBar: React.FC = () => {
             }}
             aria-label="Mobile navigation"
         >
+            {whatsappUrl && (
+                <IconButton
+                    component="a"
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Join WhatsApp group"
+                    sx={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: '50%',
+                        bgcolor: '#25D366',
+                        border: `2px solid ${borderColor}`,
+                        boxShadow: `2px 2px 0px var(--color-shadow)`,
+                        color: '#FFFFFF',
+                        alignSelf: 'center',
+                        ml: 1,
+                        '&:hover': {
+                            bgcolor: '#25D366',
+                            transform: 'translateY(-1px)',
+                        },
+                    }}
+                >
+                    <WhatsAppIcon sx={{ fontSize: 20 }} />
+                </IconButton>
+            )}
             <BottomNavigation
                 value={activeIndex >= 0 ? activeIndex : false}
                 onChange={(_event: React.SyntheticEvent, newValue: number): void => {

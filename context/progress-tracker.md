@@ -2,11 +2,32 @@
 
 ## Current Phase
 
-**Phase 9: Performance Optimization — COMPLETE**
+**Phase 10: Content Restructure & CMS Migration — IMPLEMENTATION COMPLETE**
 
 ## Current Goal
 
-Transform the website from a generic corporate UI into a bold, playful, neo-brutalist design that students will love. Execute the implementation plan in `context/neo-brutalist-redesign-plan.md`.
+Restructure the homepage from section-based layout (Classes 1-5, Programs, etc.) to a 3-doorway system (For Students / For Teachers / For Math Lovers), remove all Classes 1-5 content, hide professor names, and migrate all editable strings to a single JSON config file (`site-content.json`) that the non-technical professor can edit directly.
+
+## Planning — Delivered Documentation
+
+### 22 May 2026 — Restructure Planning Session
+
+Delivered 4 documentation files for client review before any code changes:
+
+| File | Description |
+|------|-------------|
+| `docs/redesign/CMS-CONFIG-SCHEMA.md` | Full JSON config schema reference with editing rules for non-technical professor |
+| `docs/redesign/VISUAL-SPEC.md` | ASCII-art visual mockup of desktop + mobile views with WhatsApp toggle positioning |
+| `docs/redesign/UPGRADE-CHANGES.md` | Detailed technical changes: files to create/delete/modify, component spec, implementation order, risk assessment |
+| `frontend/src/data/site-content.json` | The actual flat JSON config file (ready to be consumed by codebase) |
+
+### Key Decisions (Client-Confirmed)
+- **3 doorway buttons**: Students (6-12 Maths only), Teachers (programs/formats/admissions), Math Lovers (Google Doc block feed)
+- **Search page with filters** for both Students and Teachers landing pages (not dedicated pages)
+- **Math Lovers**: Scrollable feed of iframe blocks (professor adds/removes via JSON array)
+- **WhatsApp link**: Placeholder in config (`whatsappGroupUrl`), professor fills in later
+- **Professors**: All names hidden behind `showProfessorNames: false` flag
+- **JSON config**: Simple flat structure, single file, no nested TypeScript types
 
 ## Performance Optimization Results (Phase 9)
 
@@ -123,6 +144,21 @@ Transform the website from a generic corporate UI into a bold, playful, neo-brut
 ## In Progress
 
 - None
+
+### 22 May 2026 — Phase 10: Content Restructure & CMS Migration — IMPLEMENTED
+
+- **Removed Classes 1-5 content**: Deleted 14 resources from `resources.json`, removed `primary` category, removed "Classes 1-5" nav items, removed `SUBJECTS_PRIMARY` and `CLASS_RANGES.primary` constants
+- **Deleted deprecated files**: `ClassSpotlight.tsx`, `resources.primary.tsx`
+- **Removed `/resources/primary` route** from route tree
+- **Created DoorwayCards component** — 3 neo-brutalist cards (Students/Teachers/Math Lovers) reading from `site-content.json`
+- **Created 3 new routes**: `/for-students`, `/for-teachers`, `/for-math-lovers`
+- **Created Math Lovers page** — `MathLoversPage` with `ContentBlock` components for Google Doc iframe feed
+- **Created WhatsAppButton** — desktop floating green circle (fixed bottom-right) with neo-brutalist styling and pulse animation; mobile icon on BottomTabBar
+- **Updated Header/Footer** — now reads navigation links from `site-content.json`
+- **Updated BottomTabBar** — new tabs: Home, Students, Teachers, Math, Menu; WhatsApp icon added
+- **Updated AboutPage** — conditionally hides "Behind Sajhi Shiksha" section based on `showProfessorNames`/`showContributors` flags
+- **Added SiteContent TypeScript interface** to `types/index.ts`
+- **Build passes**: TypeScript ✅ | Vite ✅
 
 ## Next Up
 

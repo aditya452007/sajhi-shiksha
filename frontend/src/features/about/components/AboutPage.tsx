@@ -1,13 +1,15 @@
-import { Box, Typography, Avatar, Link } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 import { CheckCircleIcon, EmailIcon, PublicIcon } from '@/components/Icons';
 import { useTheme } from '@/context/ThemeContext';
-import contributorsData from '@/data/contributors.json';
+import siteContent from '@/data/site-content.json';
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH } from '@/lib/constants';
 
 interface AboutPageProps {
     onNavigate: (route: string) => void;
 }
+
+const CONTACT_EMAIL = 'Mamta07691@gmail.com';
 
 const MISSION_POINTS = [
     'Free access for all students',
@@ -16,11 +18,9 @@ const MISSION_POINTS = [
     'Always growing, always free',
 ];
 
-const TEAM_COLORS = ['var(--color-blue)', 'var(--color-green)', 'var(--color-orange)', 'var(--color-purple)', 'var(--color-red)'];
-
 export default function AboutPage({ onNavigate }: AboutPageProps) {
     const [isDark] = useTheme();
-    const email = contributorsData.email;
+    const email = siteContent.contact.email || CONTACT_EMAIL;
     const mailtoLink = `mailto:${email}?subject=Question about Sajhi Shiksha`;
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
@@ -106,85 +106,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                 </Box>
             </Box>
 
-            <Typography
-                sx={{
-                    fontFamily: FONT_HEADING,
-                    fontWeight: 800,
-                    fontSize: { xs: '1.5rem', md: '2rem' },
-                    mb: 4,
-                }}
-            >
-                Behind Sajhi Shiksha
-            </Typography>
-            <Box
-                sx={{
-                    p: 4,
-                    mb: 8,
-                    bgcolor: 'var(--color-bg)',
-                    border: `3px solid ${borderColor}`,
-                    boxShadow: `4px 4px 0px ${shadowColor}`,
-                }}
-            >
-                <Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' },
-                        gap: 3,
-                    }}
-                >
-                    {contributorsData.contributors.map((member, index) => (
-                        <Box
-                            key={member.name}
-                            sx={{
-                                p: 3,
-                                textAlign: 'center',
-                                border: `2px solid ${borderColor}`,
-                                boxShadow: `3px 3px 0px ${shadowColor}`,
-                                transition: 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                                '&:hover': { transform: 'translate(-2px, -2px)' },
-                            }}
-                        >
-                            <Avatar
-                                sx={{
-                                    bgcolor: TEAM_COLORS[index % TEAM_COLORS.length],
-                                    width: 64,
-                                    height: 64,
-                                    fontSize: '1.5rem',
-                                    fontWeight: 800,
-                                    mx: 'auto',
-                                    mb: 2,
-                                    border: `2px solid ${borderColor}`,
-                                    fontFamily: FONT_HEADING,
-                                }}
-                            >
-                                {member.initials}
-                            </Avatar>
-                            <Typography
-                                sx={{
-                                    fontFamily: FONT_HEADING,
-                                    fontWeight: 700,
-                                    mb: 0.5,
-                                }}
-                            >
-                                {member.name}
-                            </Typography>
-                            <Typography sx={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', mb: 1 }}>
-                                {member.role}
-                            </Typography>
-                            <Typography
-                                sx={{
-                                    fontFamily: FONT_MONO,
-                                    fontSize: '0.75rem',
-                                    color: 'var(--color-yellow)',
-                                    fontWeight: 700,
-                                }}
-                            >
-                                {member.contribution}
-                            </Typography>
-                        </Box>
-                    ))}
-                </Box>
-            </Box>
+
 
             <Typography
                 sx={{

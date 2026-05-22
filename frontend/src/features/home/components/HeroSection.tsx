@@ -4,14 +4,11 @@ import { SearchIcon } from '@/components/Icons';
 import { useNavigate } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
-import { FILTER_CHIPS, MAX_CONTENT_WIDTH, FONT_HEADING, FONT_MONO, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
+import { MAX_CONTENT_WIDTH, FONT_HEADING, FONT_MONO, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
+import filterChips from '@/data/filters.json';
 import { StarDoodle, PencilDoodle, BookDoodle } from '@/components/Doodles';
 
-interface HeroSectionProps {
-    onFilter: (filter: string) => void;
-}
-
-const HeroSection: React.FC<HeroSectionProps> = React.memo(({ onFilter }) => {
+const HeroSection: React.FC = React.memo(() => {
     const navigate = useNavigate();
     const [_isDark] = useTheme();
     const [activeFilter, setActiveFilter] = useState('all');
@@ -26,8 +23,8 @@ const HeroSection: React.FC<HeroSectionProps> = React.memo(({ onFilter }) => {
 
     const handleFilterClick = useCallback((value: string) => {
         setActiveFilter(value);
-        onFilter(value);
-    }, [onFilter]);
+        navigate({ to: '/search', search: value !== 'all' ? { q: value } as any : undefined });
+    }, [navigate]);
 
     const chipColors = useMemo(() => [
         'var(--color-yellow)',
@@ -191,7 +188,7 @@ const HeroSection: React.FC<HeroSectionProps> = React.memo(({ onFilter }) => {
                             gap: 1.5,
                         }}
                     >
-                        {FILTER_CHIPS.map((chip, i) => (
+                        {filterChips.map((chip: { label: string; value: string }, i: number) => (
                             <button
                                 key={chip.value}
                                 onClick={() => handleFilterClick(chip.value)}
