@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { VolunteerActivismIcon } from '@/components/Icons';
 import { useTheme } from '@/context/ThemeContext';
-import siteConfig from '@/data/site-config.json';
+import siteContent from '@/data/site-content.json';
 import { ArrowDoodle, StarDoodle } from '@/components/Doodles';
 import { MAX_CONTENT_WIDTH, FONT_HEADING } from '@/lib/constants';
 
@@ -86,7 +86,7 @@ const ContributeCTA: React.FC = React.memo(() => {
                 <Button
                     variant="contained"
                     size="large"
-                    href={`mailto:${siteConfig.contactEmail}`}
+                    href={`mailto:${siteContent.site.contactEmail}`}
                     sx={{
                         bgcolor: 'var(--color-bg)',
                         color: 'var(--color-text)',

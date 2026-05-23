@@ -34,14 +34,4 @@ export function searchParamsToFilters(params: URLSearchParams): FilterState {
     };
 }
 
-export function isValidClass(value: string): boolean {
-    return VALID_CLASSES.includes(value);
-}
 
-export function isValidSubject(value: string): boolean {
-    return VALID_SUBJECTS.includes(value);
-}
-
-export function isValidType(value: string): boolean {
-    return VALID_TYPES.includes(value);
-}

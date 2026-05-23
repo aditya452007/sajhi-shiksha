@@ -19,19 +19,6 @@ export function formatResourceCount(count: number): string {
     return `${count} resources`;
 }
 
-export function getSubjectColor(subject: string): string {
-    const colors: Record<string, string> = {
-        mathematics: 'var(--subject-math)',
-        english: 'var(--subject-english)',
-        hindi: 'var(--subject-hindi)',
-        science: 'var(--subject-science)',
-        'social science': 'var(--subject-social)',
-        evs: 'var(--subject-science)',
-        general: 'var(--subject-general)',
-    };
-    return colors[subject.toLowerCase()] ?? 'var(--subject-general)';
-}
-
 /**
  * Creates a structured resource object from teacher card data.
  * Correctly maps `item.driveUrl` and sets the `type` dynamically.
@@ -50,6 +37,28 @@ export function teacherCardToResource(item: any, subject: string): Resource {
         contributors: item.contributors || ['Sajhi Shiksha Team'],
         lastUpdated: item.lastUpdated ?? new Date().toISOString().split('T')[0],
     };
+}
+
+export function findCardDeep(id: string, cards: any[]): any | null {
+    for (const card of cards) {
+        if (card.id === id) return card;
+        if (card.subCards?.length) {
+            const found = findCardDeep(id, card.subCards);
+            if (found) return found;
+        }
+    }
+    return null;
+}
+
+export function getCardPath(id: string, cards: any[], parents: any[] = []): any[] | null {
+    for (const card of cards) {
+        if (card.id === id) return [...parents, card];
+        if (card.subCards?.length) {
+            const found = getCardPath(id, card.subCards, [...parents, card]);
+            if (found) return found;
+        }
+    }
+    return null;
 }
 
 // --- CRITICAL FIX: Robust recursive lookup for teacher cards ---

@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { WhatsAppIcon, EmailIcon } from '@/components/Icons';
 import siteContent from '@/data/site-content.json';
-import siteConfig from '@/data/site-config.json';
 import { StarDoodle } from '@/components/Doodles';
 import { MAX_CONTENT_WIDTH, FONT_HEADING, FONT_MONO } from '@/lib/constants';
 import { useTheme } from '@/context/ThemeContext';
@@ -11,8 +10,7 @@ const ContactSection: React.FC = React.memo(() => {
     const [isDark] = useTheme();
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
-    const { contactEmail } = siteConfig;
-    const { whatsappGroupUrl } = siteContent.site;
+    const { contactEmail, whatsappGroupUrl } = siteContent.site;
 
     return (
         <Box

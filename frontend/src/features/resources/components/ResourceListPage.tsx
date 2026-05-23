@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Box, Typography, ToggleButtonGroup, ToggleButton, Button } from '@mui/material';
 import { ViewListIcon, GridViewIcon, SearchOffIcon } from '@/components/Icons';
 import { useNavigate } from '@tanstack/react-router';
-import { useTheme } from '@/context/ThemeContext';
 import resources from '@/data/resources.json';
 import FilterBar, { type FilterState } from '@/components/FilterBar/FilterBar';
 import ResourceCard from '@/components/ResourceCard/ResourceCard';
@@ -28,7 +27,6 @@ export default function ResourceListPage({
     onViewResource,
     onNavigate,
 }: ResourceListPageProps) {
-    const [_isDark] = useTheme();
     const navigate = useNavigate();
     const [filters, setFilters] = useState<FilterState>(initialFilters);
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');

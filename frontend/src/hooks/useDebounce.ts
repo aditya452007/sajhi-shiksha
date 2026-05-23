@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 /**
  * Debounce hook for search inputs.
@@ -30,24 +30,4 @@ export function useDebounceCallback<T extends (...args: Parameters<T>) => void>(
         }) as T,
         [callback, delay]
     );
-}
-
-/**
- * Debounce hook for values.
- * Returns the debounced value after `delay` ms of inactivity.
- */
-export function useDebounceValue<T>(value: T, delay: number): T {
-    const [debouncedValue, setDebouncedValue] = useState<T>(value);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setDebouncedValue(value);
-        }, delay);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [value, delay]);
-
-    return debouncedValue;
 }

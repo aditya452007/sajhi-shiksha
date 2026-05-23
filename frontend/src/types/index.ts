@@ -12,15 +12,6 @@ export interface Resource {
     lastUpdated: string;
 }
 
-export interface CategoryCard {
-    id: string;
-    title: string;
-    description: string;
-    icon: string;
-    resourceCount: number;
-    route: string;
-}
-
 export interface NavLink {
     label: string;
     route: string;

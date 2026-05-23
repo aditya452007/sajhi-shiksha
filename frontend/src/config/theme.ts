@@ -142,11 +142,9 @@ export default createAppTheme;
 
 declare module '@mui/material/styles' {
     interface Palette {
-        warm: Palette['primary'];
         accent: Palette['primary'];
     }
     interface PaletteOptions {
-        warm?: PaletteOptions['primary'];
         accent?: PaletteOptions['primary'];
     }
 }
