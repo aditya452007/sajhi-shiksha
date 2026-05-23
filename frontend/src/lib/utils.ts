@@ -32,6 +32,10 @@ export function getSubjectColor(subject: string): string {
     return colors[subject.toLowerCase()] ?? 'var(--subject-general)';
 }
 
+/**
+ * Creates a structured resource object from teacher card data.
+ * Correctly maps `item.driveUrl` and sets the `type` dynamically.
+ */
 export function teacherCardToResource(item: any, subject: string): Resource {
     return {
         id: item.id,
@@ -40,26 +44,33 @@ export function teacherCardToResource(item: any, subject: string): Resource {
         category: 'teacher',
         class: null,
         subject,
-        type: 'pdf',
+        type: item.driveUrl ? 'pdf' : 'document',
         driveUrl: item.driveUrl ?? '',
         thumbnail: null,
-        contributors: ['Sajhi Shiksha Team'],
-        lastUpdated: new Date().toISOString().split('T')[0] ?? '',
+        contributors: item.contributors || ['Sajhi Shiksha Team'],
+        lastUpdated: item.lastUpdated ?? new Date().toISOString().split('T')[0],
     };
+}
+
+// --- CRITICAL FIX: Robust recursive lookup for teacher cards ---
+
+function findResourceDeep(id: string, cards: any[], subject: string): Resource | null {
+    for (const card of cards) {
+        if (card.id === id) return teacherCardToResource(card, subject);
+        if (card.subCards?.length) {
+            const found = findResourceDeep(id, card.subCards, subject);
+            if (found) return found;
+        }
+    }
+    return null;
 }
 
 export function findTeacherResourceById(id: string, siteContent: any): Resource | null {
     if (!siteContent?.teacherCards?.mainCards) return null;
     for (const mainCard of siteContent.teacherCards.mainCards) {
         const subject = mainCard.id === 'tgt-pgt' ? 'Mathematics' : 'General';
-        for (const subCard of mainCard.subCards ?? []) {
-            if (subCard.id === id) return teacherCardToResource(subCard, subject);
-            if (subCard.hasSubCards && subCard.subCards) {
-                const leaf = subCard.subCards.find((l: any) => l.id === id);
-                if (leaf) return teacherCardToResource(leaf, subject);
-            }
-        }
+        const found = findResourceDeep(id, mainCard.subCards ?? [], subject);
+        if (found) return found;
     }
     return null;
 }
-

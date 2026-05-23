@@ -235,7 +235,7 @@
                 "subCards": [
                     {
                         "id": "question-papers",
-                        "title": "Question Papers",
+                        "title": "Question Paper",
                         "description": "Exam question papers for all terms",
                         "icon": "Assignment",
                         "hasSubCards": true,
@@ -244,113 +244,228 @@
                                 "id": "periodic-test",
                                 "title": "Periodic Test",
                                 "description": "Periodic Test question papers",
-                                "driveUrl": ""
+                                "driveUrl": "https://drive.google.com/drive/folders/1x50PirEuuh78CkWFfJrDschSsnHenb1V"
                             },
                             {
                                 "id": "half-yearly",
-                                "title": "Half Yearly",
+                                "title": "Half Yearly Exam",
                                 "description": "Half Yearly exam question papers",
-                                "driveUrl": ""
+                                "driveUrl": "https://drive.google.com/drive/folders/1Uw2Nac2rF29H7Xklh10mhEPllYjPXJ1D"
                             },
                             {
                                 "id": "session-ending",
-                                "title": "Session Ending",
+                                "title": "Session Ending Exam",
                                 "description": "Session Ending exam question papers",
-                                "driveUrl": ""
+                                "driveUrl": "https://drive.google.com/drive/folders/1v_DMFtOAPXaqgAF6OM3tMjOdTUnyswk7"
                             },
                             {
                                 "id": "pre-board",
                                 "title": "Pre Board",
                                 "description": "Pre Board exam question papers",
-                                "driveUrl": ""
+                                "driveUrl": "https://drive.google.com/drive/folders/1bPB5hS7fvYbDhmKm9ywb_3RgWYgIe6jN"
                             }
                         ]
                     },
                     {
                         "id": "question-bank",
-                        "title": "Question Bank",
-                        "description": "Comprehensive question banks for practice",
+                        "title": "Question Bank / Study Material",
+                        "description": "Comprehensive question banks and study material for practice",
                         "icon": "MenuBook",
-                        "driveUrl": ""
+                        "driveUrl": "https://drive.google.com/drive/folders/1iSW7Vxx0sWfmGiawWvulxIcyqqR9UTvU"
                     },
                     {
                         "id": "maths-lab",
                         "title": "Maths Lab",
-                        "description": "Mathematics lab activities and manuals",
+                        "description": "Mathematics lab activities, manuals, and project ideas",
                         "icon": "Science",
-                        "driveUrl": ""
+                        "hasSubCards": true,
+                        "subCards": [
+                            {
+                                "id": "ncert-lab-manual",
+                                "title": "NCERT Lab Manual",
+                                "description": "NCERT Science Laboratory Manual for Maths lab",
+                                "driveUrl": "https://ncert.nic.in/science-laboratory-manual.php?ln=en"
+                            },
+                            {
+                                "id": "lab-activities",
+                                "title": "Maths Lab Activities",
+                                "description": "Maths Lab activities with solutions",
+                                "driveUrl": "https://drive.google.com/drive/folders/19W-ouw4vbXPduBMJsXUxUaWJZuzSewnW"
+                            },
+                            {
+                                "id": "lab-ideas",
+                                "title": "Maths Lab Ideas",
+                                "description": "Ideas for Maths Lab activities",
+                                "driveUrl": "https://drive.google.com/drive/folders/138lT9PwhYpj6AWtC6WR1hNI7atrjwg4E"
+                            },
+                            {
+                                "id": "project-ideas",
+                                "title": "Maths Project Ideas",
+                                "description": "Mathematics project ideas for exhibitions and lab activities",
+                                "driveUrl": "https://drive.google.com/drive/folders/1hB7zZC-lkU6WhOHGEo8JjnE-kg6urg4y"
+                            }
+                        ]
                     },
                     {
                         "id": "holiday-homework",
                         "title": "Holiday Homework",
-                        "description": "Holiday homework assignments",
+                        "description": "Holiday homework assignments for students",
                         "icon": "Description",
-                        "driveUrl": ""
+                        "driveUrl": "https://drive.google.com/drive/folders/1l5SlBSUsExqQd19IpOd9JHy1vekytMq3"
                     },
                     {
                         "id": "lesson-plan",
-                        "title": "Lesson Plan",
-                        "description": "Lesson plans for Mathematics",
+                        "title": "Lesson Plan / Subject Committee",
+                        "description": "Lesson plans and subject committee meeting records",
                         "icon": "Article",
-                        "driveUrl": ""
+                        "driveUrl": "https://drive.google.com/drive/folders/1QxqTrq5NmCZuEGNrms-q-o-qdfW__zB8"
                     },
                     {
-                        "id": "subject-committee",
-                        "title": "Subject Committee",
-                        "description": "Subject committee meeting records",
-                        "icon": "AccountTree",
-                        "driveUrl": ""
+                        "id": "ppts-worksheets",
+                        "title": "PPTs / Worksheets",
+                        "description": "PowerPoint presentations and worksheets for Mathematics",
+                        "icon": "Description",
+                        "driveUrl": "https://drive.google.com/drive/folders/1HxDsBB-4KxValby-I6hCMZImB5dTIArr"
                     }
                 ]
             },
             {
                 "id": "circular-formats",
-                "title": "Circular / Formats",
+                "title": "Circulars / Formats",
                 "description": "GOI/KVS circulars, admission formats, timetables, and more",
                 "icon": "FolderOpen",
                 "buttonColor": "var(--color-green)",
                 "subCards": [
                     {
-                        "id": "goi-kvs-rules",
-                        "title": "GOI/KVS Circular",
-                        "description": "Government of India and KVS circulars",
+                        "id": "goi-kvs-circulars",
+                        "title": "GOI / KVS Circulars",
+                        "description": "Government of India and KVS circulars and rules",
                         "icon": "Gavel",
-                        "driveUrl": ""
+                        "hasSubCards": true,
+                        "subCards": [
+                            {
+                                "id": "goi-rules",
+                                "title": "GOI Rules",
+                                "description": "Government of India rules and circulars",
+                                "driveUrl": "https://drive.google.com/drive/folders/1FCEHcCUAoVJwG7dd0UCJBjaXxhIIWOja"
+                            },
+                            {
+                                "id": "kvs-rules",
+                                "title": "KVS Rules",
+                                "description": "Kendriya Vidyalaya Sangathan rules and circulars",
+                                "driveUrl": "https://drive.google.com/drive/folders/1U4SAP3WxZxkAakwM-etnWbcL_7GcU6Xm"
+                            }
+                        ]
                     },
                     {
                         "id": "admission",
-                        "title": "KVS Admission Guideline/Formats",
-                        "description": "KVS admission guidelines and formats",
+                        "title": "KVS Admission Guidelines / Formats",
+                        "description": "KVS admission guidelines and application formats",
                         "icon": "Description",
-                        "driveUrl": ""
+                        "driveUrl": "https://drive.google.com/drive/folders/17JXk96lfAjLdva8_aW5KMesfKkEwVX_S"
                     },
                     {
                         "id": "time-table",
-                        "title": "Timetable Circular & Software",
-                        "description": "Timetable circulars and scheduling software",
+                        "title": "Time Table Circulars and Software",
+                        "description": "Timetable circulars, scheduling software, and tutorials",
                         "icon": "CalendarMonth",
-                        "driveUrl": ""
+                        "hasSubCards": true,
+                        "subCards": [
+                            {
+                                "id": "kvs-tt-circulars",
+                                "title": "KVS Time Table Circulars",
+                                "description": "KVS timetable circulars and guidelines",
+                                "driveUrl": "https://drive.google.com/drive/folders/17hbgX1IxjOVLaf0Ba1FD7yoDQeov3fzn"
+                            },
+                            {
+                                "id": "tt-softwares",
+                                "title": "Softwares and Formats",
+                                "description": "Timetable software and format files",
+                                "driveUrl": "https://drive.google.com/drive/folders/1i_GtbaA7a2800HkotbAyO0PLwcCaq5Dj"
+                            },
+                            {
+                                "id": "fet-software",
+                                "title": "FET Time Table Software",
+                                "description": "Free open-source timetable scheduling software",
+                                "driveUrl": "https://lalescu.ro/liviu/fet/"
+                            },
+                            {
+                                "id": "fet-tutorial",
+                                "title": "FET Software Tutorial",
+                                "description": "Video tutorials for FET timetable software",
+                                "hasSubCards": true,
+                                "subCards": [
+                                    {
+                                        "id": "fet-tutorial-hindi",
+                                        "title": "Hindi",
+                                        "description": "FET software tutorial in Hindi",
+                                        "driveUrl": "https://youtube.com/playlist?list=PLC92an0f-oqDbFgpj-4fz-7amv7U6RGrb&si=k8LfbSJfau98cfDJ"
+                                    },
+                                    {
+                                        "id": "fet-tutorial-english",
+                                        "title": "English",
+                                        "description": "FET software tutorial in English",
+                                        "driveUrl": "https://youtube.com/playlist?list=PLxSRqFIznAtWXJP5o941CwBuXrOq8Q9gY&si=ws5n6zT-csiSlmxf"
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         "id": "cbsenios",
-                        "title": "CBSE/NIOS Format & Circulars",
+                        "title": "CBSE / NIOS Formats / Circulars",
                         "description": "CBSE and NIOS format and circular documents",
                         "icon": "School",
-                        "driveUrl": ""
+                        "hasSubCards": true,
+                        "subCards": [
+                            {
+                                "id": "cbse",
+                                "title": "CBSE",
+                                "description": "CBSE formats and circulars",
+                                "driveUrl": "https://drive.google.com/drive/folders/1d8AzeAo0KPaSL58kREiRwXHDZJ0-SzzB"
+                            },
+                            {
+                                "id": "nios",
+                                "title": "NIOS",
+                                "description": "NIOS formats and circulars",
+                                "driveUrl": "https://drive.google.com/drive/folders/1qsSR8AXO7RXRubGp_mW-l6wl3E9t_RVN"
+                            }
+                        ]
                     },
                     {
                         "id": "morning-assembly",
                         "title": "Morning Assembly",
                         "description": "Morning assembly formats and content",
                         "icon": "AutoStories",
-                        "driveUrl": ""
+                        "driveUrl": "https://drive.google.com/drive/folders/12JVlUWW6QyDOlDMUWm8ipxm6dR1pwRKx"
                     },
                     {
                         "id": "office-formats",
+                        "title": "Office Related Formats",
+                        "description": "Office-related document formats and templates",
+                        "icon": "FolderOpen",
+                        "driveUrl": "https://drive.google.com/drive/folders/1lYWwDwvtw0tORS0Tgbc1PuzQHoyaqqkA"
+                    },
+                    {
+                        "id": "miscellaneous",
                         "title": "Miscellaneous",
                         "description": "Other miscellaneous formats and documents",
-                        "icon": "FolderOpen",
-                        "driveUrl": ""
+                        "icon": "Description",
+                        "hasSubCards": true,
+                        "subCards": [
+                            {
+                                "id": "apar",
+                                "title": "APAR",
+                                "description": "Annual Performance Appraisal Report formats",
+                                "driveUrl": "https://drive.google.com/drive/folders/1mz24NF6JTS8MMMSF2LGoGaZ_Eic3nDum"
+                            },
+                            {
+                                "id": "others",
+                                "title": "Others",
+                                "description": "Other miscellaneous documents",
+                                "driveUrl": "https://drive.google.com/drive/folders/1NFdXj6ijN_NspZCQL-OQEHjRbg70qd3o"
+                            }
+                        ]
                     }
                 ]
             }

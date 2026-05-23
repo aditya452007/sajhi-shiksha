@@ -1,26 +1,21 @@
-import { useMemo } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { ArrowBackIcon, DownloadIcon, ShareIcon, OpenInNewIcon } from '@/components/Icons';
 import { useTheme } from '@/context/ThemeContext';
 import { useSnackbar } from '@/components/Snackbar/Snackbar';
-import resources from '@/data/resources.json';
 import IframeViewer from '@/components/IframeViewer/IframeViewer';
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
 import type { Resource } from '@/types';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
 
 interface ResourceViewPageProps {
-    resourceId: string;
+    resource: Resource | null;
     onBack: () => void;
     onNavigate: (route: string) => void;
 }
 
-export default function ResourceViewPage({ resourceId, onBack, onNavigate }: ResourceViewPageProps) {
+export default function ResourceViewPage({ resource, onBack, onNavigate }: ResourceViewPageProps) {
     const [_isDark] = useTheme();
     const { showSnackbar } = useSnackbar();
-    const resource = useMemo(() => {
-        return (resources as Resource[]).find((r) => r.id === resourceId);
-    }, [resourceId]);
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
 
@@ -173,7 +168,7 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                             boxShadow: `2px 2px 0px ${shadowColor}`,
                         }}
                     >
-                        {resource.type.toUpperCase()}
+                        {resource.type ? resource.type.toUpperCase() : 'RESOURCE'}
                     </Box>
                 </Box>
 
@@ -279,7 +274,7 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                             color: 'var(--color-text-secondary)',
                         }}
                     >
-                        Contributors: {resource.contributors.join(', ')}
+                        Contributors: {resource.contributors?.join(', ') || 'Sajhi Shiksha Team'}
                     </Typography>
                     <Typography
                         sx={{
@@ -288,10 +283,10 @@ export default function ResourceViewPage({ resourceId, onBack, onNavigate }: Res
                             color: 'var(--color-text-secondary)',
                         }}
                     >
-                        Last Updated: {new Date(resource.lastUpdated).toLocaleDateString('en-IN', {
+                        Last Updated: {resource.lastUpdated ? new Date(resource.lastUpdated).toLocaleDateString('en-IN', {
                             year: 'numeric',
                             month: 'long',
-                        })}
+                        }) : 'Recently'}
                     </Typography>
                 </Box>
                 <Button

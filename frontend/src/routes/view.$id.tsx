@@ -37,7 +37,7 @@ function ViewResourcePage(): React.ReactElement {
     return (
         <Suspense fallback={<ViewPageSkeleton />}>
             <ResourceViewPage
-                resourceId={id}
+                resource={resource}
                 onBack={handleBack}
                 onNavigate={handleNavigate}
             />
