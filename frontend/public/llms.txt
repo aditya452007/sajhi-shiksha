@@ -4,11 +4,11 @@ Sajhi Shiksha is a free, open educational resource-sharing platform for KVS (Ken
 
 ## What is Sajhi Shiksha?
 
-A website that provides free access to study materials, question papers, assembly formats, government rule documents, and teacher-contributed resources for Classes 1-12. No login required.
+A website that provides free access to study materials, question papers, assembly formats, government rule documents, and teacher-contributed resources for Classes 6-12. No login required.
 
 ## Key Features
 
-- Free study materials for Classes 1-12
+- Free study materials for Classes 6-12
 - Question papers and answer keys
 - Morning assembly formats
 - GOI/KVS rules and office formats
@@ -19,24 +19,23 @@ A website that provides free access to study materials, question papers, assembl
 
 ## Content Categories
 
-1. Classes 1-5: Primary class study materials (Math, English, Hindi, EVS)
-2. Classes 6-12: Question papers and resources by subject
-3. Programs: Nipun/FLN, CMP, TBP, Cub & Bulbul
-4. Formats: Morning assembly, GOI/KVS rules, office formats
-5. Admissions: CBSE/NIOS, KVS admission info, income tax guide
+1. Students: Official CBSE/NCERT resources and searchable question papers for Classes 6-12 Mathematics
+2. Teachers (TGT/PGT Maths): Question papers, question banks, maths lab activities, holiday homework, lesson plans, PPTs/worksheets
+3. Teachers (Circulars/Formats): GOI/KVS circulars, admission formats, time table software, CBSE/NIOS formats, morning assembly, office formats
+4. Math Lovers: Olympiad resources, puzzles, maths project ideas, YouTube channels for math enthusiasts
 
 ## How to Contribute
 
-Email resources to Mamta07691@gmail.com with subject, class, and description.
+Email resources to sajhishiksha@gmail.com with subject, class, and description.
 
 ## URL Structure
 
 - Homepage: https://www.sajhishiksha.in/
-- Resources (Classes 1-5): https://www.sajhishiksha.in/resources/primary
-- Resources (Classes 6-12): https://www.sajhishiksha.in/resources/secondary
-- Formats & Rules: https://www.sajhishiksha.in/resources/formats
-- Programs: https://www.sajhishiksha.in/resources/programs
-- Admissions: https://www.sajhishiksha.in/resources/admissions
+- Students: https://www.sajhishiksha.in/for-students
+- Teachers: https://www.sajhishiksha.in/for-teachers
+- TGT/PGT Maths: https://www.sajhishiksha.in/for-teachers/tgt-pgt
+- Circulars/Formats: https://www.sajhishiksha.in/for-teachers/circular-formats
+- Math Lovers: https://www.sajhishiksha.in/for-math-lovers
 - Search: https://www.sajhishiksha.in/search
 - Contribute: https://www.sajhishiksha.in/contribute
 - About: https://www.sajhishiksha.in/about

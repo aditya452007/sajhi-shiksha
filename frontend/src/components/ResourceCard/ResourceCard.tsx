@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import { DescriptionIcon, PictureAsPdfIcon, LinkIcon, InsertDriveFileIcon, DownloadIcon, VisibilityIcon } from '@/components/Icons';
+import { DescriptionIcon, PictureAsPdfIcon, LinkIcon, InsertDriveFileIcon, DownloadIcon, VisibilityIcon, PublicIcon, OpenInNewIcon } from '@/components/Icons';
 import { useTheme } from '@/context/ThemeContext';
 import type { Resource } from '@/types';
 import { FONT_HEADING, FONT_MONO, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
@@ -93,10 +93,43 @@ ResourceCardTags.displayName = 'ResourceCardTags';
 const ResourceCard: React.FC<ResourceCardProps> = React.memo(
     ({ resource, viewMode = 'grid', onView, onDownload }) => {
         const [_isDark] = useTheme();
-        const IconComponent = typeIconMap[resource.type] ?? DescriptionIcon;
-        const iconColor = typeColorMap[resource.type] ?? 'var(--color-text-secondary)';
         const borderColor = 'var(--color-border)';
         const shadowColor = 'var(--color-shadow)';
+
+        const isYoutube = resource.urlType === 'youtube';
+        const isWebsite = resource.urlType === 'website';
+
+
+        const openExternalLink = () => {
+            window.open(resource.driveUrl, '_blank', 'noopener,noreferrer');
+        };
+
+        const handleCardClick = () => {
+            if (isYoutube || isWebsite) {
+                openExternalLink();
+            } else {
+                onView(resource.id);
+            }
+        };
+
+        // Determine Icon component and color
+        let IconComponent = typeIconMap[resource.type] ?? DescriptionIcon;
+        let iconColor = typeColorMap[resource.type] ?? 'var(--color-text-secondary)';
+        let iconBg = `${iconColor}20`;
+
+        if (isYoutube) {
+            IconComponent = () => (
+                <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
+                    <path d="M19.615 3.184c-1.604-.178-3.384-.32-6.615-.32-3.23 0-5.01.142-6.615.32-1.639.182-2.735.9-2.852 3.078C3.43 7.24 3.5 8.67 3.5 11.999c0 3.33-.07 4.76-.357 6.737-.117 2.18 1.013 2.896 2.852 3.078 1.604.178 3.384.32 6.615.32 3.23 0 5.01-.142 6.615-.32 1.639-.182 2.735-.9 2.852-3.078.286-1.977.357-3.407.357-6.737 0-3.33-.07-4.76-.357-6.737-.117-2.18-1.013-2.896-2.852-3.078zM9.5 16.5v-9l7 4.5-7 4.5z" fill="#FF0000"/>
+                </svg>
+            );
+            iconColor = '#FF0000';
+            iconBg = 'rgba(255, 0, 0, 0.1)';
+        } else if (isWebsite) {
+            IconComponent = PublicIcon;
+            iconColor = '#4285F4';
+            iconBg = 'rgba(66, 133, 244, 0.1)';
+        }
 
         if (viewMode === 'list') {
             return (
@@ -111,23 +144,37 @@ const ResourceCard: React.FC<ResourceCardProps> = React.memo(
                         border: `2px solid ${borderColor}`,
                         boxShadow: `3px 3px 0px ${shadowColor}`,
                         transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+                        cursor: 'pointer',
                         '&:hover': {
                             transform: 'translate(-2px, -2px)',
                             boxShadow: `5px 5px 0px ${shadowColor}`,
                         },
+                    }}
+                    onClick={handleCardClick}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleCardClick();
+                        }
                     }}
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1, minWidth: 0, width: { xs: '100%', sm: 'auto' } }}>
                         <Box
                             sx={{
                                 p: 1,
-                                bgcolor: `${iconColor}20`,
+                                width: 44,
+                                height: 44,
+                                bgcolor: iconBg,
                                 border: `2px solid ${borderColor}`,
                                 display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                                 flexShrink: 0,
                             }}
                         >
-                            <IconComponent sx={{ fontSize: 24, color: iconColor }} />
+                            {isYoutube ? <IconComponent /> : <IconComponent sx={{ fontSize: 24, color: iconColor }} />}
                         </Box>
                         <Box sx={{ flex: 1, minWidth: 0 }}>
                             <Typography
@@ -145,43 +192,106 @@ const ResourceCard: React.FC<ResourceCardProps> = React.memo(
                         </Box>
                     </Box>
                     <ResourceCardTags resource={resource} />
+                    
                     <Box sx={{ display: 'flex', gap: 1, flexShrink: 0, width: { xs: '100%', sm: 'auto' } }}>
-                        <Button
-                            size="small"
-                            startIcon={<VisibilityIcon />}
-                            onClick={() => onView(resource.id)}
-                            sx={{
-                                color: 'var(--color-text)',
-                                border: `2px solid ${borderColor}`,
-                                boxShadow: `2px 2px 0px ${shadowColor}`,
-                                flex: { xs: 1, sm: 'none' },
-                                justifyContent: 'center',
-                                '&:hover': {
-                                    transform: 'translate(-1px, -1px)',
-                                    boxShadow: `3px 3px 0px ${shadowColor}`,
-                                },
-                            }}
-                        >
-                            View
-                        </Button>
-                        <Button
-                            size="small"
-                            startIcon={<DownloadIcon />}
-                            onClick={() => onDownload(resource.driveUrl)}
-                            sx={{
-                                color: 'var(--color-text)',
-                                border: `2px solid ${borderColor}`,
-                                boxShadow: `2px 2px 0px ${shadowColor}`,
-                                flex: { xs: 1, sm: 'none' },
-                                justifyContent: 'center',
-                                '&:hover': {
-                                    transform: 'translate(-1px, -1px)',
-                                    boxShadow: `3px 3px 0px ${shadowColor}`,
-                                },
-                            }}
-                        >
-                            Download
-                        </Button>
+                        {isYoutube ? (
+                            <Button
+                                size="small"
+                                variant="contained"
+                                startIcon={<OpenInNewIcon />}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    openExternalLink();
+                                }}
+                                sx={{
+                                    bgcolor: '#FF0000',
+                                    color: '#fff',
+                                    border: `2px solid ${borderColor}`,
+                                    boxShadow: `2px 2px 0px ${shadowColor}`,
+                                    flex: { xs: 1, sm: 'none' },
+                                    justifyContent: 'center',
+                                    '&:hover': {
+                                        bgcolor: '#cc0000',
+                                        color: '#fff',
+                                        transform: 'translate(-1px, -1px)',
+                                        boxShadow: `3px 3px 0px ${shadowColor}`,
+                                    },
+                                }}
+                            >
+                                Watch on YouTube
+                            </Button>
+                        ) : isWebsite ? (
+                            <Button
+                                size="small"
+                                variant="contained"
+                                startIcon={<OpenInNewIcon />}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    openExternalLink();
+                                }}
+                                sx={{
+                                    bgcolor: '#4285F4',
+                                    color: '#fff',
+                                    border: `2px solid ${borderColor}`,
+                                    boxShadow: `2px 2px 0px ${shadowColor}`,
+                                    flex: { xs: 1, sm: 'none' },
+                                    justifyContent: 'center',
+                                    '&:hover': {
+                                        bgcolor: '#3367d6',
+                                        color: '#fff',
+                                        transform: 'translate(-1px, -1px)',
+                                        boxShadow: `3px 3px 0px ${shadowColor}`,
+                                    },
+                                }}
+                            >
+                                Open Website
+                            </Button>
+                        ) : (
+                            <>
+                                <Button
+                                    size="small"
+                                    startIcon={<VisibilityIcon />}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onView(resource.id);
+                                    }}
+                                    sx={{
+                                        color: 'var(--color-text)',
+                                        border: `2px solid ${borderColor}`,
+                                        boxShadow: `2px 2px 0px ${shadowColor}`,
+                                        flex: { xs: 1, sm: 'none' },
+                                        justifyContent: 'center',
+                                        '&:hover': {
+                                            transform: 'translate(-1px, -1px)',
+                                            boxShadow: `3px 3px 0px ${shadowColor}`,
+                                        },
+                                    }}
+                                >
+                                    View
+                                </Button>
+                                <Button
+                                    size="small"
+                                    startIcon={<DownloadIcon />}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onDownload(resource.driveUrl);
+                                    }}
+                                    sx={{
+                                        color: 'var(--color-text)',
+                                        border: `2px solid ${borderColor}`,
+                                        boxShadow: `2px 2px 0px ${shadowColor}`,
+                                        flex: { xs: 1, sm: 'none' },
+                                        justifyContent: 'center',
+                                        '&:hover': {
+                                            transform: 'translate(-1px, -1px)',
+                                            boxShadow: `3px 3px 0px ${shadowColor}`,
+                                        },
+                                    }}
+                                >
+                                    Download
+                                </Button>
+                            </>
+                        )}
                     </Box>
                 </Box>
             );
@@ -203,13 +313,13 @@ const ResourceCard: React.FC<ResourceCardProps> = React.memo(
                     },
                     cursor: 'pointer',
                 }}
-                onClick={() => onView(resource.id)}
+                onClick={handleCardClick}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        onView(resource.id);
+                        handleCardClick();
                     }
                 }}
             >
@@ -217,13 +327,17 @@ const ResourceCard: React.FC<ResourceCardProps> = React.memo(
                     <Box
                         sx={{
                             p: 1.5,
-                            bgcolor: `${iconColor}20`,
+                            width: 56,
+                            height: 56,
+                            bgcolor: iconBg,
                             border: `2px solid ${borderColor}`,
                             display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             mb: 2,
                         }}
                     >
-                        <IconComponent sx={{ fontSize: 32, color: iconColor }} />
+                        {isYoutube ? <IconComponent /> : <IconComponent sx={{ fontSize: 32, color: iconColor }} />}
                     </Box>
                     <Typography
                         sx={{ mb: 1, fontWeight: 800, fontFamily: FONT_HEADING, fontSize: '1.1rem' }}
@@ -234,6 +348,7 @@ const ResourceCard: React.FC<ResourceCardProps> = React.memo(
                     <ResourceCardTags resource={resource} />
                     <Typography
                         sx={{
+                            mt: 1.5,
                             color: 'var(--color-text-secondary)',
                             fontSize: '0.9rem',
                             display: '-webkit-box',
@@ -245,52 +360,105 @@ const ResourceCard: React.FC<ResourceCardProps> = React.memo(
                         {resource.description}
                     </Typography>
                 </Box>
+                
                 <Box sx={{ p: 2, pt: 0, display: 'flex', gap: 1 }}>
-                    <Button
-                        size="small"
-                        variant="contained"
-                        startIcon={<VisibilityIcon />}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onView(resource.id);
-                        }}
-                        sx={{
-                            bgcolor: 'var(--color-yellow)',
-                            color: COLOR_TEXT_LIGHT,
-                            border: `2px solid ${borderColor}`,
-                            boxShadow: `2px 2px 0px ${shadowColor}`,
-                            '&:hover': {
-                                bgcolor: 'var(--color-bg-secondary)',
-                                color: COLOR_TEXT_LIGHT,
-                                transform: 'translate(-1px, -1px)',
-                                boxShadow: `3px 3px 0px ${shadowColor}`,
-                            },
-                        }}
-                    >
-                        View
-                    </Button>
-                    <Button
-                        size="small"
-                        startIcon={<DownloadIcon />}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onDownload(resource.driveUrl);
-                        }}
-                        sx={{
-                            bgcolor: 'var(--color-bg)',
-                            color: 'var(--color-text)',
-                            border: `2px solid ${borderColor}`,
-                            boxShadow: `2px 2px 0px ${shadowColor}`,
-                            '&:hover': {
-                                bgcolor: 'var(--color-bg-secondary)',
-                                color: 'var(--color-text)',
-                                transform: 'translate(-1px, -1px)',
-                                boxShadow: `3px 3px 0px ${shadowColor}`,
-                            },
-                        }}
-                    >
-                        Download
-                    </Button>
+                    {isYoutube ? (
+                        <Button
+                            size="small"
+                            variant="contained"
+                            startIcon={<OpenInNewIcon />}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                openExternalLink();
+                            }}
+                            sx={{
+                                bgcolor: '#FF0000',
+                                color: '#fff',
+                                border: `2px solid ${borderColor}`,
+                                boxShadow: `2px 2px 0px ${shadowColor}`,
+                                '&:hover': {
+                                    bgcolor: '#cc0000',
+                                    color: '#fff',
+                                    transform: 'translate(-1px, -1px)',
+                                    boxShadow: `3px 3px 0px ${shadowColor}`,
+                                },
+                            }}
+                        >
+                            Watch on YouTube
+                        </Button>
+                    ) : isWebsite ? (
+                        <Button
+                            size="small"
+                            variant="contained"
+                            startIcon={<OpenInNewIcon />}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                openExternalLink();
+                            }}
+                            sx={{
+                                bgcolor: '#4285F4',
+                                color: '#fff',
+                                border: `2px solid ${borderColor}`,
+                                boxShadow: `2px 2px 0px ${shadowColor}`,
+                                '&:hover': {
+                                    bgcolor: '#3367d6',
+                                    color: '#fff',
+                                    transform: 'translate(-1px, -1px)',
+                                    boxShadow: `3px 3px 0px ${shadowColor}`,
+                                },
+                            }}
+                        >
+                            Open Website
+                        </Button>
+                    ) : (
+                        <>
+                            <Button
+                                size="small"
+                                variant="contained"
+                                startIcon={<VisibilityIcon />}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onView(resource.id);
+                                }}
+                                sx={{
+                                    bgcolor: 'var(--color-yellow)',
+                                    color: COLOR_TEXT_LIGHT,
+                                    border: `2px solid ${borderColor}`,
+                                    boxShadow: `2px 2px 0px ${shadowColor}`,
+                                    '&:hover': {
+                                        bgcolor: 'var(--color-bg-secondary)',
+                                        color: COLOR_TEXT_LIGHT,
+                                        transform: 'translate(-1px, -1px)',
+                                        boxShadow: `3px 3px 0px ${shadowColor}`,
+                                    },
+                                }}
+                            >
+                                View
+                            </Button>
+                            <Button
+                                size="small"
+                                startIcon={<DownloadIcon />}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDownload(resource.driveUrl);
+                                }}
+                                sx={{
+                                    bgcolor: 'var(--color-bg)',
+                                    color: 'var(--color-text)',
+                                    border: `2px solid ${borderColor}`,
+                                    boxShadow: `2px 2px 0px ${shadowColor}`,
+                                    '&:hover': {
+                                        bgcolor: 'var(--color-bg-secondary)',
+                                        color: 'var(--color-text)',
+                                        transform: 'translate(-1px, -1px)',
+                                        boxShadow: `3px 3px 0px ${shadowColor}`,
+                                    },
+                                }}
+                            >
+                                Download
+                            </Button>
+                        </>
+                    )}
                 </Box>
             </Box>
         );

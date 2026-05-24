@@ -4,7 +4,8 @@ import { useState, useCallback } from 'react';
 import { Box, Typography } from '@mui/material';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH } from '@/lib/constants';
 import { findCardDeep, getCardPath } from '@/lib/utils';
-import siteContent from '@/data/site-content.json';
+import teachersData from '@/data/teachers.json';
+import navigationData from '@/data/navigation.json';
 import {
     BackButton, EmptyState, LeafView, FolderCard, ResourceCardWrapper,
     TeacherBreadcrumbs
@@ -12,8 +13,8 @@ import {
 
 function CircularFormatsPage(): React.ReactElement {
     const navigate = useNavigate();
-    const mainCard = siteContent.teacherCards.mainCards.find((c) => c.id === 'circular-formats');
-    const parentLabel = siteContent.navigation.headerLinks.find((l) => l.route === '/for-teachers')?.label ?? 'For Teachers';
+    const mainCard = teachersData.mainCards.find((c) => c.id === 'circular-formats');
+    const parentLabel = navigationData.headerLinks.find((l) => l.route === '/for-teachers')?.label ?? 'For Teachers';
     const pageTitle = mainCard?.title ?? '';
     const allSubCards = mainCard?.subCards ?? [];
 
@@ -98,19 +99,22 @@ function CircularFormatsPage(): React.ReactElement {
                 {folderChildren.length === 0 ? (
                     <EmptyState title="No resources yet" message="Resources will appear here once added." />
                 ) : (
-                    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 3 }}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 3 }}>
                         {folderChildren.map((child: any) => {
                             const childHasChildren = child.hasSubCards && !!child.subCards?.length;
-                            return childHasChildren ? (
-                                <FolderCard
-                                    key={child.id}
-                                    title={child.title}
-                                    description={child.description}
-                                    parentTitle={currentFolder.title}
-                                    onClick={() => setSelectedFolder(child.id)}
-                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedFolder(child.id); } }}
-                                />
-                            ) : (
+                            if (childHasChildren) {
+                                return (
+                                    <FolderCard
+                                        key={child.id}
+                                        title={child.title}
+                                        description={child.description}
+                                        parentTitle={currentFolder.title}
+                                        onClick={() => setSelectedFolder(child.id)}
+                                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedFolder(child.id); } }}
+                                    />
+                                );
+                            }
+                            return (
                                 <ResourceCardWrapper
                                     key={child.id}
                                     item={child}
@@ -144,19 +148,22 @@ function CircularFormatsPage(): React.ReactElement {
             {allSubCards.length === 0 ? (
                 <EmptyState title="No resources yet" message="Resources will appear here once added." />
             ) : (
-                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' }, gap: 3 }}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 3 }}>
                     {allSubCards.map((subCard) => {
                         const hasChildren = subCard.hasSubCards && !!subCard.subCards?.length;
-                        return hasChildren ? (
-                            <FolderCard
-                                key={subCard.id}
-                                title={subCard.title}
-                                description={subCard.description}
-                                parentTitle={pageTitle}
-                                onClick={() => setSelectedFolder(subCard.id)}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedFolder(subCard.id); } }}
-                            />
-                        ) : (
+                        if (hasChildren) {
+                            return (
+                                <FolderCard
+                                    key={subCard.id}
+                                    title={subCard.title}
+                                    description={subCard.description}
+                                    parentTitle={pageTitle}
+                                    onClick={() => setSelectedFolder(subCard.id)}
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedFolder(subCard.id); } }}
+                                />
+                            );
+                        }
+                        return (
                             <ResourceCardWrapper
                                 key={subCard.id}
                                 item={subCard}

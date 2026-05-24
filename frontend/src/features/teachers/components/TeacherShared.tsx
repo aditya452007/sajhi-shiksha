@@ -4,6 +4,7 @@ import { ArrowBackIcon, SearchOffIcon, OpenInNewIcon, DownloadIcon, PictureAsPdf
 import IframeViewer from '@/components/IframeViewer/IframeViewer';
 import ResourceCard from '@/components/ResourceCard/ResourceCard';
 import { teacherCardToResource } from '@/lib/utils';
+import { getUrlType } from '@/lib/urlUtils';
 import { FONT_HEADING, FONT_MONO } from '@/lib/constants';
 
 export const BORDER = 'var(--color-border)';
@@ -117,17 +118,39 @@ export const LeafView: React.FC<LeafViewProps> = ({ title, description, driveUrl
             {description}
         </Typography>
         {driveUrl ? (
-            <>
-                <IframeViewer driveUrl={driveUrl} title={title} height="75vh" minHeight="500px" />
-                <Box sx={{ display: 'flex', gap: 2, mt: 3, flexWrap: 'wrap' }}>
+            getUrlType(driveUrl) !== 'drive' ? (
+                <Box
+                    sx={{
+                        p: 4,
+                        textAlign: 'center',
+                        border: `3px solid ${BORDER}`,
+                        boxShadow: `4px 4px 0px ${SHADOW}`,
+                        bgcolor: 'var(--color-bg)',
+                    }}
+                >
+                    <Typography sx={{ fontFamily: FONT_HEADING, fontWeight: 700, mb: 2 }}>
+                        External Resource
+                    </Typography>
+                    <Typography sx={{ color: 'var(--color-text-secondary)', mb: 3 }}>
+                        This resource is hosted externally. Click below to open it in a new tab.
+                    </Typography>
                     <Button variant="contained" onClick={() => onOpenLink(driveUrl)} sx={yellowBtnSx}>
-                        <OpenInNewIcon sx={{ mr: 1.5 }} /> View in New Tab
-                    </Button>
-                    <Button variant="outlined" onClick={() => onOpenLink(driveUrl)} sx={outlineBtnSx}>
-                        <DownloadIcon sx={{ mr: 1.5 }} /> Download
+                        <OpenInNewIcon sx={{ mr: 1.5 }} /> Open in New Tab
                     </Button>
                 </Box>
-            </>
+            ) : (
+                <>
+                    <IframeViewer driveUrl={driveUrl} title={title} height="75vh" minHeight="500px" />
+                    <Box sx={{ display: 'flex', gap: 2, mt: 3, flexWrap: 'wrap' }}>
+                        <Button variant="contained" onClick={() => onOpenLink(driveUrl)} sx={yellowBtnSx}>
+                            <OpenInNewIcon sx={{ mr: 1.5 }} /> View in New Tab
+                        </Button>
+                        <Button variant="outlined" onClick={() => onOpenLink(driveUrl)} sx={outlineBtnSx}>
+                            <DownloadIcon sx={{ mr: 1.5 }} /> Download
+                        </Button>
+                    </Box>
+                </>
+            )
         ) : (
             <EmptyState title="Content Coming Soon" message="The document URL will be added soon." />
         )}
@@ -188,6 +211,8 @@ export const ResourceCardWrapper: React.FC<ResourceCardWrapperProps> = ({ item, 
         onDownload={onDownload}
     />
 );
+
+// ExternalLinkCard and cardColors have been removed as all leaf components are now rendered by the unified ResourceCard.
 
 interface BreadcrumbItem {
     label: string;

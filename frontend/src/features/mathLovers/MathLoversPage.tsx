@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { ArrowBackIcon, ArrowForwardIcon } from '@/components/Icons';
-import siteContent from '@/data/site-content.json';
+import siteContent from '@/data/sections.json';
 import ContentBlock from './components/ContentBlock';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH } from '@/lib/constants';
 
@@ -143,6 +143,7 @@ function ExpandedSectionView({ section, onBack }: { section: SectionCard; onBack
                 Back
             </Box>
             <ContentBlock
+                id={section.id}
                 title={section.title}
                 description={section.description}
                 links={section.links}
@@ -152,7 +153,7 @@ function ExpandedSectionView({ section, onBack }: { section: SectionCard; onBack
 }
 
 const MathLoversPage: React.FC = () => {
-    const { mathLovers } = siteContent.sections;
+    const { mathLovers } = siteContent;
     const blocks = mathLovers.blocks || [];
     const olympiadSection = (mathLovers as unknown as Record<string, SectionCard | undefined>).olympiadSection;
 

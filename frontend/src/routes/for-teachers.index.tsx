@@ -7,7 +7,7 @@ import {
 } from '@/components/Icons';
 import { useSEO } from '@/hooks/useSEO';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH } from '@/lib/constants';
-import siteContent from '@/data/site-content.json';
+import teachersData from '@/data/teachers.json';
 
 const iconMap: Record<string, React.ReactElement> = {
     School: <SchoolIcon sx={{ fontSize: 48, color: 'var(--color-text)' }} />,
@@ -25,8 +25,7 @@ function ForTeachersIndexPage(): React.ReactElement {
         description: 'Teacher resources including TGT/PGT Maths materials, circulars, formats, and KVS teaching resources.',
         canonicalPath: '/for-teachers',
     });
-
-    const mainCards = siteContent.teacherCards.mainCards;
+    const mainCards = teachersData.mainCards;
 
     const handleNavigate = useCallback((path: string) => {
         navigate({ to: path });

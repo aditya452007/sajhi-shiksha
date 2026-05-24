@@ -1,15 +1,52 @@
-import React from 'react';
-import { Box, Typography, Link } from '@mui/material';
-import { FONT_HEADING, FONT_MONO } from '@/lib/constants';
+import React, { useMemo } from 'react';
+import { Box, Typography } from '@mui/material';
+import { useNavigate } from '@tanstack/react-router';
+import { FONT_HEADING } from '@/lib/constants';
 import type { LinkItem } from '@/types';
+import { getUrlType } from '@/lib/urlUtils';
+import ResourceCard from '@/components/ResourceCard/ResourceCard';
 
 interface ContentBlockProps {
+    id: string;
     title: string;
     description: string;
     links?: LinkItem[];
 }
 
-const ContentBlock: React.FC<ContentBlockProps> = ({ title, description, links }) => {
+const ContentBlock: React.FC<ContentBlockProps> = ({ id, title, description, links }) => {
+    const navigate = useNavigate();
+
+    // Map mathematical link items to unified Resource format for ResourceCard consumption
+    const mappedResources = useMemo(() => {
+        if (!links) return [];
+        return links.map((link) => {
+            const prefix = id === 'ml-olympiad' ? 'olympiad' : id;
+            const linkId = `${prefix}-${link.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
+            return {
+                id: linkId,
+                title: link.title,
+                description: `${title} - ${link.title}`,
+                category: 'math-lovers',
+                class: null,
+                subject: 'Mathematics',
+                type: 'link' as const,
+                driveUrl: link.url,
+                urlType: getUrlType(link.url),
+                thumbnail: null,
+                contributors: ['Sajhi Shiksha Team'],
+                lastUpdated: new Date().toISOString().split('T')[0] || '',
+            };
+        });
+    }, [links, title, id]);
+
+    const handleView = (resourceId: string) => {
+        navigate({ to: '/view/$id', params: { id: resourceId } });
+    };
+
+    const handleDownload = (url: string) => {
+        window.open(url, '_blank');
+    };
+
     return (
         <Box
             sx={{
@@ -39,93 +76,23 @@ const ContentBlock: React.FC<ContentBlockProps> = ({ title, description, links }
             >
                 {description}
             </Typography>
-            {links && links.length > 0 && (
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-                    {links.map((link, index) => (
-                        link.url ? (
-                            <Link
-                                key={index}
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                underline="none"
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 1.5,
-                                    px: 2.5,
-                                    py: 1.75,
-                                    bgcolor: 'var(--color-bg-secondary)',
-                                    border: '2px solid var(--color-border)',
-                                    boxShadow: '3px 3px 0px var(--color-shadow)',
-                                    fontFamily: FONT_MONO,
-                                    fontSize: '0.9rem',
-                                    color: 'var(--color-text)',
-                                    transition: 'all 0.15s ease',
-                                    '&:hover': {
-                                        boxShadow: '1px 1px 0px var(--color-shadow)',
-                                        transform: 'translate(2px, 2px)',
-                                        bgcolor: 'var(--color-accent-bg)',
-                                    },
-                                }}
-                            >
-                                <Box
-                                    component="span"
-                                    sx={{
-                                        width: 6,
-                                        height: 6,
-                                        minWidth: 6,
-                                        borderRadius: '50%',
-                                        bgcolor: 'var(--color-purple)',
-                                        display: 'inline-block',
-                                    }}
-                                />
-                                <Box component="span" sx={{ flex: 1 }}>
-                                    {link.title}
-                                </Box>
-                                <Box
-                                    component="span"
-                                    sx={{
-                                        fontSize: '0.75rem',
-                                        color: 'var(--color-text-muted)',
-                                        fontFamily: FONT_MONO,
-                                    }}
-                                >
-                                    ↗
-                                </Box>
-                            </Link>
-                        ) : (
-                            <Box
-                                key={index}
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 1.5,
-                                    px: 2.5,
-                                    py: 1.75,
-                                    bgcolor: 'var(--color-bg-secondary)',
-                                    border: '2px dashed var(--color-border)',
-                                    fontFamily: FONT_MONO,
-                                    fontSize: '0.9rem',
-                                    color: 'var(--color-text-muted)',
-                                }}
-                            >
-                                <Box
-                                    component="span"
-                                    sx={{
-                                        width: 6,
-                                        height: 6,
-                                        minWidth: 6,
-                                        borderRadius: '50%',
-                                        bgcolor: 'var(--color-text-muted)',
-                                        display: 'inline-block',
-                                    }}
-                                />
-                                <Box component="span" sx={{ flex: 1 }}>
-                                    {link.title} — <em>link not available yet</em>
-                                </Box>
-                            </Box>
-                        )
+
+            {mappedResources.length > 0 && (
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                        gap: 3,
+                    }}
+                >
+                    {mappedResources.map((resource) => (
+                        <ResourceCard
+                            key={resource.id}
+                            resource={resource}
+                            viewMode="grid"
+                            onView={handleView}
+                            onDownload={handleDownload}
+                        />
                     ))}
                 </Box>
             )}

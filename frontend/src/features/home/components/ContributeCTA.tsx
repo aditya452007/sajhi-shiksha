@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { VolunteerActivismIcon } from '@/components/Icons';
 import { useTheme } from '@/context/ThemeContext';
-import siteContent from '@/data/site-content.json';
+import siteContent from '@/data/site.json';
 import { ArrowDoodle, StarDoodle } from '@/components/Doodles';
 import { MAX_CONTENT_WIDTH, FONT_HEADING } from '@/lib/constants';
 

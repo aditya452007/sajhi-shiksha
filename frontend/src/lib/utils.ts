@@ -1,4 +1,10 @@
 import type { Resource } from '@/types';
+import { getUrlType } from '@/lib/urlUtils';
+
+export function isYouTubeUrl(url: string): boolean {
+    if (!url) return false;
+    return /youtube\.com|youtu\.be/i.test(url);
+}
 
 export function getDriveEmbedUrl(driveUrl: string): string {
     if (!driveUrl || driveUrl.trim() === '') return '';
@@ -24,6 +30,18 @@ export function formatResourceCount(count: number): string {
  * Correctly maps `item.driveUrl` and sets the `type` dynamically.
  */
 export function teacherCardToResource(item: any, subject: string): Resource {
+    const driveUrl = item.driveUrl ?? '';
+    const urlType = getUrlType(driveUrl);
+    let type: 'pdf' | 'document' | 'format' | 'link' = 'document';
+    if (urlType === 'youtube' || urlType === 'website') {
+        type = 'link';
+    } else if (urlType === 'drive') {
+        if (driveUrl.toLowerCase().includes('folder') || driveUrl.toLowerCase().includes('list')) {
+            type = 'format';
+        } else {
+            type = 'pdf';
+        }
+    }
     return {
         id: item.id,
         title: item.title,
@@ -31,8 +49,9 @@ export function teacherCardToResource(item: any, subject: string): Resource {
         category: 'teacher',
         class: null,
         subject,
-        type: item.driveUrl ? 'pdf' : 'document',
-        driveUrl: item.driveUrl ?? '',
+        type: item.type ?? type,
+        driveUrl,
+        urlType,
         thumbnail: null,
         contributors: item.contributors || ['Sajhi Shiksha Team'],
         lastUpdated: item.lastUpdated ?? new Date().toISOString().split('T')[0],
@@ -74,9 +93,9 @@ function findResourceDeep(id: string, cards: any[], subject: string): Resource |
     return null;
 }
 
-export function findTeacherResourceById(id: string, siteContent: any): Resource | null {
-    if (!siteContent?.teacherCards?.mainCards) return null;
-    for (const mainCard of siteContent.teacherCards.mainCards) {
+export function findTeacherResourceById(id: string, teachersData: any): Resource | null {
+    if (!teachersData?.mainCards) return null;
+    for (const mainCard of teachersData.mainCards) {
         const subject = mainCard.id === 'tgt-pgt' ? 'Mathematics' : 'General';
         const found = findResourceDeep(id, mainCard.subCards ?? [], subject);
         if (found) return found;

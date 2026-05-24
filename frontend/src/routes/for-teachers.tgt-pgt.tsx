@@ -3,7 +3,8 @@ import { Route as forTeachersRoute } from './for-teachers';
 import { useState, useCallback } from 'react';
 import { Box, Typography } from '@mui/material';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH } from '@/lib/constants';
-import siteContent from '@/data/site-content.json';
+import teachersData from '@/data/teachers.json';
+import navigationData from '@/data/navigation.json';
 import {
     BackButton, EmptyState, LeafView, FolderCard, ResourceCardWrapper,
     TeacherBreadcrumbs
@@ -11,8 +12,8 @@ import {
 
 function TgtPgtPage(): React.ReactElement {
     const navigate = useNavigate();
-    const mainCard = siteContent.teacherCards.mainCards.find((c) => c.id === 'tgt-pgt');
-    const parentLabel = siteContent.navigation.headerLinks.find((l) => l.route === '/for-teachers')?.label ?? 'For Teachers';
+    const mainCard = teachersData.mainCards.find((c) => c.id === 'tgt-pgt');
+    const parentLabel = navigationData.headerLinks.find((l) => l.route === '/for-teachers')?.label ?? 'For Teachers';
     const pageTitle = mainCard?.title ?? '';
     const allSubCards = mainCard?.subCards ?? [];
 
@@ -77,7 +78,7 @@ function TgtPgtPage(): React.ReactElement {
                 <Typography sx={{ fontFamily: FONT_MONO, fontSize: '0.9rem', color: 'var(--color-text-secondary)', mb: 4 }}>
                     {currentSubCard.description}
                 </Typography>
-                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 3 }}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 3 }}>
                     {leafItems.map((leaf) => (
                         <ResourceCardWrapper
                             key={leaf.id}
@@ -110,19 +111,22 @@ function TgtPgtPage(): React.ReactElement {
             {allSubCards.length === 0 ? (
                 <EmptyState title="No resources yet" message="Resources will appear here once added." />
             ) : (
-                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' }, gap: 3 }}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 3 }}>
                     {allSubCards.map((subCard) => {
                         const hasChildren = subCard.hasSubCards && !!subCard.subCards?.length;
-                        return hasChildren ? (
-                            <FolderCard
-                                key={subCard.id}
-                                title={subCard.title}
-                                description={subCard.description}
-                                parentTitle={pageTitle}
-                                onClick={() => setSelectedSubCard(subCard.id)}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedSubCard(subCard.id); } }}
-                            />
-                        ) : (
+                        if (hasChildren) {
+                            return (
+                                <FolderCard
+                                    key={subCard.id}
+                                    title={subCard.title}
+                                    description={subCard.description}
+                                    parentTitle={pageTitle}
+                                    onClick={() => setSelectedSubCard(subCard.id)}
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedSubCard(subCard.id); } }}
+                                />
+                            );
+                        }
+                        return (
                             <ResourceCardWrapper
                                 key={subCard.id}
                                 item={subCard}

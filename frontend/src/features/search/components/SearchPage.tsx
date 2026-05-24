@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Box, Typography, Chip } from '@mui/material';
 import { SearchIcon } from '@/components/Icons';
 import { useNavigate } from '@tanstack/react-router';
-import resources from '@/data/resources.json';
+import { getAllResources } from '@/lib/resourceAggregator';
 import SearchInput from '@/components/SearchBar/SearchInput';
 import FilterBar, { type FilterState } from '@/components/FilterBar/FilterBar';
 import ResourceCard from '@/components/ResourceCard/ResourceCard';
@@ -76,7 +76,7 @@ export default function SearchPage({
         setFilters(initialFilters);
     }, [initialFilters]);
 
-    const allResources = useMemo(() => resources as Resource[], []);
+    const allResources = useMemo(() => getAllResources(), []);
 
     const results = useMemo(() => {
         if (!hasSearched) return [];
@@ -139,6 +139,8 @@ export default function SearchPage({
     const handleDownload = (url: string) => {
         window.open(url, '_blank');
     };
+
+
 
     const recentSearches = getRecentSearches();
 
@@ -306,7 +308,7 @@ export default function SearchPage({
                 <Box
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' },
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
                         gap: 3,
                     }}
                 >

@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SearchRouteImport } from './routes/search'
-import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as ForTeachersRouteImport } from './routes/for-teachers'
 import { Route as ForStudentsRouteImport } from './routes/for-students'
 import { Route as ForMathLoversRouteImport } from './routes/for-math-lovers'
@@ -20,21 +19,12 @@ import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ForTeachersIndexRouteImport } from './routes/for-teachers.index'
 import { Route as ViewIdRouteImport } from './routes/view.$id'
-import { Route as ResourcesSecondaryRouteImport } from './routes/resources.secondary'
-import { Route as ResourcesProgramsRouteImport } from './routes/resources.programs'
-import { Route as ResourcesFormatsRouteImport } from './routes/resources.formats'
-import { Route as ResourcesAdmissionsRouteImport } from './routes/resources.admissions'
 import { Route as ForTeachersTgtPgtRouteImport } from './routes/for-teachers.tgt-pgt'
 import { Route as ForTeachersCircularFormatsRouteImport } from './routes/for-teachers.circular-formats'
 
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResourcesRoute = ResourcesRouteImport.update({
-  id: '/resources',
-  path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForTeachersRoute = ForTeachersRouteImport.update({
@@ -82,26 +72,6 @@ const ViewIdRoute = ViewIdRouteImport.update({
   path: '/view/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ResourcesSecondaryRoute = ResourcesSecondaryRouteImport.update({
-  id: '/secondary',
-  path: '/secondary',
-  getParentRoute: () => ResourcesRoute,
-} as any)
-const ResourcesProgramsRoute = ResourcesProgramsRouteImport.update({
-  id: '/programs',
-  path: '/programs',
-  getParentRoute: () => ResourcesRoute,
-} as any)
-const ResourcesFormatsRoute = ResourcesFormatsRouteImport.update({
-  id: '/formats',
-  path: '/formats',
-  getParentRoute: () => ResourcesRoute,
-} as any)
-const ResourcesAdmissionsRoute = ResourcesAdmissionsRouteImport.update({
-  id: '/admissions',
-  path: '/admissions',
-  getParentRoute: () => ResourcesRoute,
-} as any)
 const ForTeachersTgtPgtRoute = ForTeachersTgtPgtRouteImport.update({
   id: '/tgt-pgt',
   path: '/tgt-pgt',
@@ -122,14 +92,9 @@ export interface FileRoutesByFullPath {
   '/for-math-lovers': typeof ForMathLoversRoute
   '/for-students': typeof ForStudentsRoute
   '/for-teachers': typeof ForTeachersRouteWithChildren
-  '/resources': typeof ResourcesRouteWithChildren
   '/search': typeof SearchRoute
   '/for-teachers/circular-formats': typeof ForTeachersCircularFormatsRoute
   '/for-teachers/tgt-pgt': typeof ForTeachersTgtPgtRoute
-  '/resources/admissions': typeof ResourcesAdmissionsRoute
-  '/resources/formats': typeof ResourcesFormatsRoute
-  '/resources/programs': typeof ResourcesProgramsRoute
-  '/resources/secondary': typeof ResourcesSecondaryRoute
   '/view/$id': typeof ViewIdRoute
   '/for-teachers/': typeof ForTeachersIndexRoute
 }
@@ -140,14 +105,9 @@ export interface FileRoutesByTo {
   '/contribute': typeof ContributeRoute
   '/for-math-lovers': typeof ForMathLoversRoute
   '/for-students': typeof ForStudentsRoute
-  '/resources': typeof ResourcesRouteWithChildren
   '/search': typeof SearchRoute
   '/for-teachers/circular-formats': typeof ForTeachersCircularFormatsRoute
   '/for-teachers/tgt-pgt': typeof ForTeachersTgtPgtRoute
-  '/resources/admissions': typeof ResourcesAdmissionsRoute
-  '/resources/formats': typeof ResourcesFormatsRoute
-  '/resources/programs': typeof ResourcesProgramsRoute
-  '/resources/secondary': typeof ResourcesSecondaryRoute
   '/view/$id': typeof ViewIdRoute
   '/for-teachers': typeof ForTeachersIndexRoute
 }
@@ -160,14 +120,9 @@ export interface FileRoutesById {
   '/for-math-lovers': typeof ForMathLoversRoute
   '/for-students': typeof ForStudentsRoute
   '/for-teachers': typeof ForTeachersRouteWithChildren
-  '/resources': typeof ResourcesRouteWithChildren
   '/search': typeof SearchRoute
   '/for-teachers/circular-formats': typeof ForTeachersCircularFormatsRoute
   '/for-teachers/tgt-pgt': typeof ForTeachersTgtPgtRoute
-  '/resources/admissions': typeof ResourcesAdmissionsRoute
-  '/resources/formats': typeof ResourcesFormatsRoute
-  '/resources/programs': typeof ResourcesProgramsRoute
-  '/resources/secondary': typeof ResourcesSecondaryRoute
   '/view/$id': typeof ViewIdRoute
   '/for-teachers/': typeof ForTeachersIndexRoute
 }
@@ -181,14 +136,9 @@ export interface FileRouteTypes {
     | '/for-math-lovers'
     | '/for-students'
     | '/for-teachers'
-    | '/resources'
     | '/search'
     | '/for-teachers/circular-formats'
     | '/for-teachers/tgt-pgt'
-    | '/resources/admissions'
-    | '/resources/formats'
-    | '/resources/programs'
-    | '/resources/secondary'
     | '/view/$id'
     | '/for-teachers/'
   fileRoutesByTo: FileRoutesByTo
@@ -199,14 +149,9 @@ export interface FileRouteTypes {
     | '/contribute'
     | '/for-math-lovers'
     | '/for-students'
-    | '/resources'
     | '/search'
     | '/for-teachers/circular-formats'
     | '/for-teachers/tgt-pgt'
-    | '/resources/admissions'
-    | '/resources/formats'
-    | '/resources/programs'
-    | '/resources/secondary'
     | '/view/$id'
     | '/for-teachers'
   id:
@@ -218,14 +163,9 @@ export interface FileRouteTypes {
     | '/for-math-lovers'
     | '/for-students'
     | '/for-teachers'
-    | '/resources'
     | '/search'
     | '/for-teachers/circular-formats'
     | '/for-teachers/tgt-pgt'
-    | '/resources/admissions'
-    | '/resources/formats'
-    | '/resources/programs'
-    | '/resources/secondary'
     | '/view/$id'
     | '/for-teachers/'
   fileRoutesById: FileRoutesById
@@ -238,7 +178,6 @@ export interface RootRouteChildren {
   ForMathLoversRoute: typeof ForMathLoversRoute
   ForStudentsRoute: typeof ForStudentsRoute
   ForTeachersRoute: typeof ForTeachersRouteWithChildren
-  ResourcesRoute: typeof ResourcesRouteWithChildren
   SearchRoute: typeof SearchRoute
   ViewIdRoute: typeof ViewIdRoute
 }
@@ -250,13 +189,6 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/resources': {
-      id: '/resources'
-      path: '/resources'
-      fullPath: '/resources'
-      preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/for-teachers': {
@@ -322,34 +254,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViewIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/resources/secondary': {
-      id: '/resources/secondary'
-      path: '/secondary'
-      fullPath: '/resources/secondary'
-      preLoaderRoute: typeof ResourcesSecondaryRouteImport
-      parentRoute: typeof ResourcesRoute
-    }
-    '/resources/programs': {
-      id: '/resources/programs'
-      path: '/programs'
-      fullPath: '/resources/programs'
-      preLoaderRoute: typeof ResourcesProgramsRouteImport
-      parentRoute: typeof ResourcesRoute
-    }
-    '/resources/formats': {
-      id: '/resources/formats'
-      path: '/formats'
-      fullPath: '/resources/formats'
-      preLoaderRoute: typeof ResourcesFormatsRouteImport
-      parentRoute: typeof ResourcesRoute
-    }
-    '/resources/admissions': {
-      id: '/resources/admissions'
-      path: '/admissions'
-      fullPath: '/resources/admissions'
-      preLoaderRoute: typeof ResourcesAdmissionsRouteImport
-      parentRoute: typeof ResourcesRoute
-    }
     '/for-teachers/tgt-pgt': {
       id: '/for-teachers/tgt-pgt'
       path: '/tgt-pgt'
@@ -383,24 +287,6 @@ const ForTeachersRouteWithChildren = ForTeachersRoute._addFileChildren(
   ForTeachersRouteChildren,
 )
 
-interface ResourcesRouteChildren {
-  ResourcesAdmissionsRoute: typeof ResourcesAdmissionsRoute
-  ResourcesFormatsRoute: typeof ResourcesFormatsRoute
-  ResourcesProgramsRoute: typeof ResourcesProgramsRoute
-  ResourcesSecondaryRoute: typeof ResourcesSecondaryRoute
-}
-
-const ResourcesRouteChildren: ResourcesRouteChildren = {
-  ResourcesAdmissionsRoute: ResourcesAdmissionsRoute,
-  ResourcesFormatsRoute: ResourcesFormatsRoute,
-  ResourcesProgramsRoute: ResourcesProgramsRoute,
-  ResourcesSecondaryRoute: ResourcesSecondaryRoute,
-}
-
-const ResourcesRouteWithChildren = ResourcesRoute._addFileChildren(
-  ResourcesRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
@@ -409,7 +295,6 @@ const rootRouteChildren: RootRouteChildren = {
   ForMathLoversRoute: ForMathLoversRoute,
   ForStudentsRoute: ForStudentsRoute,
   ForTeachersRoute: ForTeachersRouteWithChildren,
-  ResourcesRoute: ResourcesRouteWithChildren,
   SearchRoute: SearchRoute,
   ViewIdRoute: ViewIdRoute,
 }

@@ -26,7 +26,14 @@ export default function IframeViewer({
     onError,
 }: IframeViewerProps) {
     const [_isDark] = useTheme();
-    const [loading, setLoading] = useState(true);
+    const cacheKey = `iframe-loaded-${driveUrl}`;
+    const [loading, setLoading] = useState(() => {
+        try {
+            return sessionStorage.getItem(cacheKey) !== 'true';
+        } catch {
+            return true;
+        }
+    });
     const [error, setError] = useState(false);
     const embedUrl = getDriveEmbedUrl(driveUrl);
     const borderColor = 'var(--color-border)';
@@ -34,8 +41,13 @@ export default function IframeViewer({
 
     const handleLoad = useCallback(() => {
         setLoading(false);
+        try {
+            sessionStorage.setItem(cacheKey, 'true');
+        } catch {
+            // storage unavailable
+        }
         onLoad?.();
-    }, [onLoad]);
+    }, [onLoad, cacheKey]);
 
     const handleError = useCallback(() => {
         setLoading(false);
@@ -46,6 +58,11 @@ export default function IframeViewer({
     const handleRetry = () => {
         setLoading(true);
         setError(false);
+        try {
+            sessionStorage.removeItem(cacheKey);
+        } catch {
+            // storage unavailable
+        }
     };
 
     useEffect(() => {

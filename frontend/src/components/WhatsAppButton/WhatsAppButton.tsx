@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Tooltip } from '@mui/material';
 import { WhatsAppIcon } from '@/components/Icons';
-import siteContent from '@/data/site-content.json';
+import siteContent from '@/data/site.json';
 
 const WhatsAppButton: React.FC = () => {
     const [showPulse, setShowPulse] = useState(false);

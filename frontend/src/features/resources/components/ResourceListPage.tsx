@@ -2,11 +2,10 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Box, Typography, ToggleButtonGroup, ToggleButton, Button } from '@mui/material';
 import { ViewListIcon, GridViewIcon, SearchOffIcon } from '@/components/Icons';
 import { useNavigate } from '@tanstack/react-router';
-import resources from '@/data/resources.json';
+import { getAllResources } from '@/lib/resourceAggregator';
 import FilterBar, { type FilterState } from '@/components/FilterBar/FilterBar';
 import ResourceCard from '@/components/ResourceCard/ResourceCard';
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
-import type { Resource } from '@/types';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH, COLOR_TEXT_LIGHT } from '@/lib/constants';
 import { filtersToSearchParams, DEFAULT_FILTERS } from '@/lib/filterUtils';
 
@@ -38,7 +37,7 @@ export default function ResourceListPage({
     }, [initialFilters]);
 
     const categoryResources = useMemo(() => {
-        return (resources as Resource[]).filter((r) => r.category === category);
+        return getAllResources().filter((r) => r.category === category);
     }, [category]);
 
     const filteredResources = useMemo(() => {
@@ -198,7 +197,7 @@ export default function ResourceListPage({
                 <Box
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' },
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
                         gap: 3,
                     }}
                 >

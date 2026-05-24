@@ -7,6 +7,7 @@ export interface Resource {
     subject: string | null;
     type: 'pdf' | 'document' | 'format' | 'link';
     driveUrl: string;
+    urlType: 'youtube' | 'drive' | 'website';
     thumbnail: string | null;
     contributors: string[];
     lastUpdated: string;

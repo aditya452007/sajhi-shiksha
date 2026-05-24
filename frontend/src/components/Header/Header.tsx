@@ -3,7 +3,8 @@ import { Box, Button, IconButton, Typography, Drawer, List, ListItem } from '@mu
 import { MenuIcon, LightModeIcon, DarkModeIcon } from '@/components/Icons';
 import { useNavigate } from '@tanstack/react-router';
 import { useTheme } from '@/context/ThemeContext';
-import siteContent from '@/data/site-content.json';
+import siteContent from '@/data/site.json';
+import navigationData from '@/data/navigation.json';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
 const logoSrc = '/image.png';
 
@@ -50,7 +51,7 @@ const Header: React.FC = () => {
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [mobileOpen]);
 
-    const navItems = siteContent.navigation.headerLinks.slice(0, 5);
+    const navItems = navigationData.headerLinks.slice(0, 5);
     const borderColor = 'var(--color-border)';
     const shadowColor = 'var(--color-shadow)';
 
@@ -88,7 +89,7 @@ const Header: React.FC = () => {
                 </Typography>
             </Box>
             <List sx={{ flex: 1, p: 2 }}>
-                {siteContent.navigation.headerLinks.map((item) => (
+                {navigationData.headerLinks.map((item) => (
                     <ListItem
                         key={item.label}
                         onClick={() => handleNavClick(item.route)}

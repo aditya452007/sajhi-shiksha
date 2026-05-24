@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { WhatsAppIcon, EmailIcon } from '@/components/Icons';
-import siteContent from '@/data/site-content.json';
+import siteContent from '@/data/site.json';
 import { StarDoodle } from '@/components/Doodles';
 import { MAX_CONTENT_WIDTH, FONT_HEADING, FONT_MONO } from '@/lib/constants';
 import { useTheme } from '@/context/ThemeContext';

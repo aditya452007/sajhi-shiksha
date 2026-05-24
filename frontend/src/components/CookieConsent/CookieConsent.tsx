@@ -71,7 +71,7 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept }) => {
                     mb: 1,
                 }}
             >
-                We use cookies
+                We use cookies and local caching
             </Typography>
             <Typography
                 id="cookie-consent-desc"
@@ -82,7 +82,7 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept }) => {
                     lineHeight: 1.5,
                 }}
             >
-                This site uses Google Analytics to understand how visitors use the site. No personal data is collected. By accepting, you help us improve the experience for everyone.
+                This site uses Google Analytics to understand visitor usage and browser runtime caching to make pages and resources load faster on subsequent visits. No personal data is collected.
             </Typography>
             <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Button

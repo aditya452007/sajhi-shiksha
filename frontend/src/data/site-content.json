@@ -1,4 +1,5 @@
 {
+    "_comment": "THIS FILE IS DEPRECATED. Its data has been split into: site.json, homepage.json, sections.json, students.json, teachers.json, navigation.json, contact.json. Update the relevant split file instead. Kept for reference only.",
     "siteUrl": "https://www.sajhishiksha.in",
     "analyticsId": "",
     "site": {

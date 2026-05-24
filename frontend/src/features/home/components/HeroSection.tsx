@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import { MAX_CONTENT_WIDTH, FONT_HEADING, FONT_MONO, COLOR_TEXT_LIGHT, BORDER_RADIUS_PILL } from '@/lib/constants';
 import filterChips from '@/data/filters.json';
-import siteContent from '@/data/site-content.json';
+import siteContent from '@/data/homepage.json';
 import { StarDoodle, PencilDoodle, BookDoodle } from '@/components/Doodles';
 
 const HeroSection: React.FC = React.memo(() => {
@@ -110,28 +110,7 @@ const HeroSection: React.FC = React.memo(() => {
                                 mb: 3,
                             }}
                         >
-                            What do you want to{' '}
-                            <Box
-                                component="span"
-                                sx={{
-                                    position: 'relative',
-                                    display: 'inline-block',
-                                    '&::after': {
-                                        content: '""',
-                                        position: 'absolute',
-                                        bottom: 2,
-                                        left: 0,
-                                        right: 0,
-                                        height: '8px',
-                                        bgcolor: 'var(--color-yellow)',
-                                        zIndex: -1,
-                                        transform: 'rotate(-1deg)',
-                                    },
-                                }}
-                            >
-                                {siteContent.homepage.heroHighlightWord}
-                            </Box>{' '}
-                            today?
+                            {siteContent.heroTitle || 'What do you want to search today?'}
                         </Typography>
                     </motion.div>
 
@@ -143,7 +122,7 @@ const HeroSection: React.FC = React.memo(() => {
                             maxWidth: '540px',
                         }}
                     >
-                        Free study materials, question papers, and resources for students and teachers. No login needed.
+                        {siteContent.heroSubtitle || 'Free study materials, question papers, and resources for students and teachers. No login needed.'}
                     </Typography>
 
                     <TextField

@@ -2,7 +2,7 @@ import React from 'react';
 import { BottomNavigation, BottomNavigationAction, Box, IconButton } from '@mui/material';
 import { HomeIcon, SchoolIcon, MenuBookIcon, FavoriteIcon, MenuIcon, WhatsAppIcon } from '@/components/Icons';
 import { useLocation, useNavigate } from '@tanstack/react-router';
-import siteContent from '@/data/site-content.json';
+import siteContent from '@/data/site.json';
 import { FONT_MONO, COLOR_TEXT_LIGHT } from '@/lib/constants';
 
 interface TabConfig {

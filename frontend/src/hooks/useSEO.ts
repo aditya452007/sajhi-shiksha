@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import siteData from '@/data/site.json';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                               */
@@ -17,7 +18,7 @@ interface SEOConfig {
 /*  Constants                                                           */
 /* ------------------------------------------------------------------ */
 
-const SITE_URL = 'https://www.sajhishiksha.in';
+const SITE_URL = siteData.siteUrl;
 const DEFAULT_TITLE = 'Sajhi Shiksha — Free Study Materials for KVS Students';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-image.png`;
 const DEFAULT_KEYWORDS =

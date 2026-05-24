@@ -2,7 +2,8 @@ import React, { useCallback } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { useTheme } from '@/context/ThemeContext';
-import siteContent from '@/data/site-content.json';
+import siteContent from '@/data/site.json';
+import navigationData from '@/data/navigation.json';
 import { StarDoodle, SquiggleDoodle } from '@/components/Doodles';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH } from '@/lib/constants';
 
@@ -88,7 +89,7 @@ FooterLinkSection.displayName = 'FooterLinkSection';
 
 const Footer: React.FC = () => {
     const [isDark] = useTheme();
-    const footerGroups = siteContent.navigation.footerGroups;
+    const footerGroups = navigationData.footerGroups;
     const borderColor = 'var(--color-border)';
 
     return (
