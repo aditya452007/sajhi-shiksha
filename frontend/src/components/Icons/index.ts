@@ -45,3 +45,8 @@ export { default as HelpOutlinedIcon } from '@mui/icons-material/HelpOutlined';
 export { default as AutoStoriesIcon } from '@mui/icons-material/AutoStories';
 export { default as FolderOpenIcon } from '@mui/icons-material/FolderOpen';
 export { default as ArrowForwardIcon } from '@mui/icons-material/ArrowForward';
+export { default as FacebookIcon } from '@mui/icons-material/Facebook';
+export { default as TwitterIcon } from '@mui/icons-material/Twitter';
+export { default as LinkedInIcon } from '@mui/icons-material/LinkedIn';
+export { default as TelegramIcon } from '@mui/icons-material/Telegram';
+

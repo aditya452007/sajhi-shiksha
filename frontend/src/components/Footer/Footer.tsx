@@ -5,6 +5,7 @@ import { useTheme } from '@/context/ThemeContext';
 import siteContent from '@/data/site.json';
 import navigationData from '@/data/navigation.json';
 import { StarDoodle, SquiggleDoodle } from '@/components/Doodles';
+import { FacebookIcon, TwitterIcon, LinkedInIcon, TelegramIcon, WhatsAppIcon } from '@/components/Icons';
 import { FONT_HEADING, FONT_MONO, MAX_CONTENT_WIDTH } from '@/lib/constants';
 
 interface FooterLinkSectionProps {
@@ -92,6 +93,44 @@ const Footer: React.FC = () => {
     const footerGroups = navigationData.footerGroups;
     const borderColor = 'var(--color-border)';
 
+    const shareUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.sajhishiksha.in';
+    const shareText = 'Sajhi Shiksha — Free Study Materials, Notes, Question Papers & Formats for Students and Teachers! Open for all education boards (KVS, CBSE, State Boards) completely free.';
+    const encodedUrl = encodeURIComponent(shareUrl);
+    const encodedText = encodeURIComponent(shareText);
+
+    const sharePlatforms = [
+        {
+            name: 'Facebook',
+            icon: <FacebookIcon sx={{ fontSize: 20 }} />,
+            url: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+            hoverColor: '#1877F2',
+        },
+        {
+            name: 'Twitter',
+            icon: <TwitterIcon sx={{ fontSize: 20 }} />,
+            url: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`,
+            hoverColor: '#1DA1F2',
+        },
+        {
+            name: 'LinkedIn',
+            icon: <LinkedInIcon sx={{ fontSize: 20 }} />,
+            url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+            hoverColor: '#0077B5',
+        },
+        {
+            name: 'WhatsApp',
+            icon: <WhatsAppIcon sx={{ fontSize: 20 }} />,
+            url: `https://api.whatsapp.com/send?text=${encodedText}%20${encodedUrl}`,
+            hoverColor: '#25D366',
+        },
+        {
+            name: 'Telegram',
+            icon: <TelegramIcon sx={{ fontSize: 20 }} />,
+            url: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`,
+            hoverColor: '#229ED9',
+        },
+    ];
+
     return (
         <Box
             component="footer"
@@ -165,8 +204,62 @@ const Footer: React.FC = () => {
                         >
                             {siteContent.site.tagline}
                         </Typography>
-                        <Box sx={{ display: { xs: 'none', md: 'block' } }} aria-hidden="true">
+                        <Box sx={{ display: { xs: 'none', md: 'block' }, mb: 3 }} aria-hidden="true">
                             <SquiggleDoodle width={120} />
+                        </Box>
+
+                        {/* Premium Sharing Widget */}
+                        <Box sx={{ mt: 3 }}>
+                            <Typography
+                                sx={{
+                                    fontFamily: FONT_MONO,
+                                    fontSize: '0.8rem',
+                                    fontWeight: 700,
+                                    textTransform: 'uppercase',
+                                    color: 'var(--color-text-secondary)',
+                                    mb: 1.5,
+                                    letterSpacing: '0.5px',
+                                }}
+                            >
+                                Share This Platform
+                            </Typography>
+                            <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
+                                {sharePlatforms.map((platform) => (
+                                    <Box
+                                        key={platform.name}
+                                        component="a"
+                                        href={platform.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={`Share on ${platform.name}`}
+                                        sx={{
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: 40,
+                                            height: 40,
+                                            bgcolor: 'var(--color-bg)',
+                                            border: `2px solid ${borderColor}`,
+                                            boxShadow: `2px 2px 0px ${borderColor}`,
+                                            color: 'var(--color-text)',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                            '&:hover': {
+                                                bgcolor: platform.hoverColor,
+                                                color: '#FFFFFF',
+                                                transform: 'translateY(-3px)',
+                                                boxShadow: `4px 4px 0px ${borderColor}`,
+                                            },
+                                            '&:active': {
+                                                transform: 'translateY(0px)',
+                                                boxShadow: `1px 1px 0px ${borderColor}`,
+                                            },
+                                        }}
+                                    >
+                                        {platform.icon}
+                                    </Box>
+                                ))}
+                            </Box>
                         </Box>
                     </Box>
 
