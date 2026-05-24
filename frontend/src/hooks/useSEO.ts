@@ -87,7 +87,7 @@ export function useSEO({
         setMeta('keywords', DEFAULT_KEYWORDS);
         setMeta('author', 'Sajhi Shiksha');
         setMeta('robots', noIndex ? 'noindex, nofollow' : 'index, follow');
-        setMeta('language', 'English');
+        setMeta('language', 'en');
 
         const canonical = canonicalPath ? `${SITE_URL}${canonicalPath}` : SITE_URL;
         setLink('canonical', canonical);
